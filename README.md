@@ -1,2 +1,2 @@
-# edugate
-edugate-front-end
+# EduGate
+EduGate-front-end
