@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exams - EduPlatform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-mark">&#127891;</div>
+      <span class="sidebar__logo-name">EduPlatform</span>
+    </div>
+    <div class="sidebar__user">
+      <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+      <div>
+        <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
+        <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+      </div>
+    </div>
+    <nav class="sidebar__nav" id="sidebar-nav"></nav>
+    <div class="sidebar__bottom">
+      <button class="sidebar__logout" id="logout-btn">
+        <span class="nav-icon">&#128682;</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+        <div>
+          <div class="topbar__title">Exams</div>
+          <div class="topbar__breadcrumb"><a href="dashboard.html">Home</a> &rsaquo; Exams</div>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="topbar-search">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" placeholder="Search exams..." id="search-exams" />
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+      </div>
+    </header>
+
+    <main class="page-body">
+      <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between">
+        <div>
+          <h1 id="exams-heading">Exams</h1>
+          <p id="exams-subheading">Loading...</p>
+        </div>
+        <div id="teacher-exam-actions" style="display:none;margin-top:4px">
+          <button class="btn-amber" onclick="openModal('create-exam-modal')">+ Create Exam</button>
+        </div>
+      </div>
+
+      <div class="stats-row" id="exam-stats" style="display:none"></div>
+
+      <div class="filter-bar" style="margin-bottom:24px">
+        <button class="filter-pill active" data-status="all">All Exams</button>
+        <button class="filter-pill" data-status="pending">Pending</button>
+        <button class="filter-pill" data-status="completed">Completed</button>
+        <button class="filter-pill" data-status="missed">Missed</button>
+      </div>
+
+      <div class="exams-grid" id="exams-grid"></div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="create-exam-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Create New Exam</div>
+      <button class="modal-close" data-close-modal="create-exam-modal">&times;</button>
+    </div>
+    <form id="create-exam-form" novalidate>
+      <div class="form-group">
+        <label>Exam Title</label>
+        <input type="text" id="exam-title" placeholder="e.g. Python Midterm Exam" />
+        <div class="field-error"></div>
+      </div>
+      <div class="form-group">
+        <label>Course</label>
+        <select id="exam-course">
+          <option value="">Select a course</option>
+          <option value="1">Python Fundamentals</option>
+          <option value="2">Data Structures & Algorithms</option>
+          <option value="3">UI/UX Design Fundamentals</option>
+        </select>
+        <div class="field-error"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Duration (minutes)</label>
+          <input type="number" id="exam-duration" placeholder="30" min="5" max="180" />
+        </div>
+        <div class="form-group">
+          <label>Total Questions</label>
+          <input type="number" id="exam-questions" placeholder="20" min="1" max="100" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Due Date</label>
+        <input type="date" id="exam-due" />
+      </div>
+      <div class="form-group">
+        <label>Instructions (optional)</label>
+        <textarea id="exam-instructions" rows="3" placeholder="Exam instructions for students..." style="resize:vertical"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close-modal="create-exam-modal">Cancel</button>
+        <button type="submit" class="btn-amber" id="create-exam-btn">Create Exam</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  requireAuth();
+  populateSidebarUser();
+
+  const user = getUser();
+  const isTeacher = user?.role === 'teacher';
+  if (!isTeacher) document.body.classList.add('student-shell');
+
+  const navItems = isTeacher
+    ? [
+        { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html' },
+        { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
+        { icon: '&#128221;', label: 'Exams', page: 'exams.html' },
+        { icon: '&#128101;', label: 'Students', page: 'dashboard.html?view=students' },
+        { icon: '&#128202;', label: 'Analytics', page: 'dashboard.html?view=analytics' },
+        { icon: '&#9881;', label: 'Settings', page: 'dashboard.html?view=settings' },
+      ]
+    : [
+        { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html' },
+        { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
+        { icon: '&#128221;', label: 'Exams', page: 'exams.html', badge: '2' },
+        { icon: '&#127942;', label: 'Progress', page: 'dashboard.html?view=progress' },
+        { icon: '&#128197;', label: 'Schedule', page: 'dashboard.html?view=schedule' },
+        { icon: '&#9881;', label: 'Settings', page: 'dashboard.html?view=settings' },
+      ];
+
+  document.getElementById('sidebar-nav').innerHTML =
+    '<div class="sidebar__nav-section">Workspace</div>' +
+    navItems.map((item) => `
+      <a href="${item.page}" class="nav-item" data-page="${item.page}">
+        <span class="nav-icon">${item.icon}</span>
+        <span>${item.label}</span>
+        ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+      </a>
+    `).join('');
+
+  document.querySelectorAll('#sidebar-nav .nav-item').forEach((item) => {
+    const href = item.getAttribute('href');
+    if (href === 'exams.html') item.classList.add('active');
+  });
+
+  document.getElementById('sidebar-peek-toggle')?.addEventListener('click', () => {
+    if (isTeacher) return;
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const open = sidebar.classList.toggle('open');
+    overlay.style.display = open ? 'block' : 'none';
+  });
+  document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+    if (isTeacher) return;
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').style.display = 'none';
+  });
+
+  if (isTeacher) {
+    document.getElementById('exams-heading').textContent = 'Manage Exams';
+    document.getElementById('exams-subheading').textContent = 'Create and manage exams for your courses';
+    document.getElementById('teacher-exam-actions').style.display = 'flex';
+  } else {
+    document.getElementById('exams-heading').textContent = 'My Exams';
+    document.getElementById('exams-subheading').textContent = 'Track your upcoming and completed exams';
+    document.getElementById('exam-stats').style.display = 'grid';
+  }
+
+  let allExams = [];
+  let currentFilter = 'all';
+  let searchQuery = '';
+
+  async function loadExams() {
+    showSkeletons('exams-grid', 4, 'list');
+    allExams = await api.get(isTeacher ? '/teacher/exams' : '/student/exams');
+    if (!isTeacher) renderStudentStats();
+    applyFilters();
+  }
+
+  function renderStudentStats() {
+    const completed = allExams.filter((exam) => exam.status === 'completed');
+    const pending = allExams.filter((exam) => exam.status === 'pending');
+    const avgScore = completed.length
+      ? Math.round(completed.reduce((sum, exam) => sum + (exam.score || 0), 0) / completed.length)
+      : 0;
+
+    document.getElementById('exam-stats').innerHTML = `
+      <div class="stat-card">
+        <div class="stat-card__icon">&#128221;</div>
+        <div class="stat-card__num">${allExams.length}</div>
+        <div class="stat-card__label">Total Exams</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon">&#9989;</div>
+        <div class="stat-card__num">${completed.length}</div>
+        <div class="stat-card__label">Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon">&#9203;</div>
+        <div class="stat-card__num">${pending.length}</div>
+        <div class="stat-card__label">Pending</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__icon">&#127942;</div>
+        <div class="stat-card__num">${avgScore}%</div>
+        <div class="stat-card__label">Average Score</div>
+        ${avgScore >= 70 ? '<div class="stat-card__change up">Above average</div>' : ''}
+      </div>
+    `;
+  }
+
+  function applyFilters() {
+    const list = allExams.filter((exam) => {
+      const matchStatus = currentFilter === 'all' || exam.status === currentFilter;
+      const matchSearch = exam.title.toLowerCase().includes(searchQuery.toLowerCase())
+        || (exam.courseName || '').toLowerCase().includes(searchQuery.toLowerCase());
+      return matchStatus && matchSearch;
+    });
+    renderExams(list);
+  }
+
+  function renderExams(list) {
+    if (!list.length) {
+      showEmpty('exams-grid', 'No exams match your filter.', '&#128221;');
+      return;
+    }
+
+    if (isTeacher) {
+      document.getElementById('exams-grid').style.cssText = 'display:block';
+      document.getElementById('exams-grid').innerHTML = `
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Exam Title</th>
+                <th>Course</th>
+                <th>Duration</th>
+                <th>Questions</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Avg Score</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${list.map((exam) => `
+                <tr>
+                  <td><strong>${exam.title}</strong></td>
+                  <td style="color:var(--gray-400)">${exam.courseName}</td>
+                  <td>${exam.duration} min</td>
+                  <td>${exam.questionsCount}</td>
+                  <td>${exam.dueDate ? new Date(exam.dueDate).toLocaleDateString() : '-'}</td>
+                  <td><span class="badge ${
+                    exam.status === 'active' ? 'badge-green' :
+                    exam.status === 'draft' ? 'badge-gray' : 'badge-blue'
+                  }">${exam.status}</span></td>
+                  <td>${exam.avgScore != null ? `${exam.avgScore}%` : '-'}</td>
+                  <td>
+                    <div style="display:flex;gap:8px">
+                      <button class="btn-secondary" style="padding:6px 12px;font-size:12px" onclick="showToast('Edit exam UI can be the next step.', 'info')">Edit</button>
+                      <button class="btn-amber" style="padding:6px 12px;font-size:12px" onclick="window.location.href='take-exam.html?id=${exam.id}&preview=true'">Preview</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else {
+      document.getElementById('exams-grid').style.cssText = '';
+      document.getElementById('exams-grid').innerHTML = list.map(renderExamCard).join('');
+    }
+  }
+
+  document.querySelectorAll('.filter-pill').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach((item) => item.classList.remove('active'));
+      pill.classList.add('active');
+      currentFilter = pill.dataset.status;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('search-exams').addEventListener('input', (event) => {
+    searchQuery = event.target.value;
+    applyFilters();
+  });
+
+  document.getElementById('create-exam-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const titleIn = document.getElementById('exam-title');
+    const error = validateField(titleIn, 'required');
+    setFieldError(titleIn, error);
+    if (error) return;
+
+    const btn = document.getElementById('create-exam-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner" style="border-top-color:var(--navy)"></span>Creating...';
+
+    await api.post('/exams', {
+      title: titleIn.value.trim(),
+      courseId: document.getElementById('exam-course').value,
+      duration: parseInt(document.getElementById('exam-duration').value, 10) || 30,
+      questionsCount: parseInt(document.getElementById('exam-questions').value, 10) || 20,
+      dueDate: document.getElementById('exam-due').value,
+      instructions: document.getElementById('exam-instructions').value,
+    });
+
+    closeModal('create-exam-modal');
+    showToast('Exam created successfully.', 'success');
+    btn.disabled = false;
+    btn.textContent = 'Create Exam';
+    event.target.reset();
+    loadExams();
+  });
+
+  loadExams();
+</script>
+</body>
+</html>

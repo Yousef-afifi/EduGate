@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account - EduPlatform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="auth-root">
+  <div class="auth-brand">
+    <div class="auth-brand__logo">
+      <div class="auth-brand__logo-mark">&#127891;</div>
+      <span class="auth-brand__logo-name">EduPlatform</span>
+    </div>
+
+    <h1 class="auth-brand__headline">
+      Start Teaching<br><span>Online</span> Today.
+    </h1>
+    <p class="auth-brand__sub">
+      Choose your role, create your account, and step into a ready educational platform built for
+      lessons, recordings, student accounts, assignments, and online exams.
+    </p>
+
+    <div class="auth-brand__stats">
+      <div>
+        <div class="auth-brand__stat-num">1 Dashboard</div>
+        <div class="auth-brand__stat-lbl">For all teaching operations</div>
+      </div>
+      <div>
+        <div class="auth-brand__stat-num">3 Packages</div>
+        <div class="auth-brand__stat-lbl">Based on student capacity</div>
+      </div>
+      <div>
+        <div class="auth-brand__stat-num">Fast</div>
+        <div class="auth-brand__stat-lbl">Setup without custom build</div>
+      </div>
+    </div>
+
+    <div class="auth-brand__deco"></div>
+    <div class="auth-brand__deco2"></div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-form-box">
+      <h2>Create account</h2>
+      <p class="auth-sub">Already have an account? <a href="login.html">Sign in</a></p>
+
+      <div class="alert alert-error" id="reg-alert" role="alert">
+        <span>&#9888;</span><span class="alert-msg"></span>
+      </div>
+      <div class="alert alert-success" id="reg-success" role="alert">
+        <span>&#9989;</span><span class="alert-msg"></span>
+      </div>
+
+      <form id="register-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" placeholder="Sarah" />
+            <div class="field-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" placeholder="Ahmed" />
+            <div class="field-error"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="role">I am a</label>
+          <select id="role">
+            <option value="">Choose your role</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher / Instructor</option>
+          </select>
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="At least 8 characters" autocomplete="new-password" />
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="Repeat your password" autocomplete="new-password" />
+          <div class="field-error"></div>
+        </div>
+
+        <div style="margin-bottom:20px">
+          <div style="height:4px;background:var(--gray-100);border-radius:99px;overflow:hidden">
+            <div id="strength-bar" style="height:100%;width:0;border-radius:99px;transition:width 0.4s,background 0.4s"></div>
+          </div>
+          <p id="strength-label" style="font-size:11px;color:var(--gray-400);margin-top:5px"></p>
+        </div>
+
+        <div style="margin-bottom:22px">
+          <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--gray-600);cursor:pointer;line-height:1.5">
+            <input type="checkbox" id="terms" style="accent-color:var(--amber);width:14px;height:14px;margin-top:2px;flex-shrink:0" />
+            I agree to the platform terms and understand that package access controls the number of students I can manage.
+          </label>
+          <div class="field-error" id="terms-error"></div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="reg-btn">Create Account</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  redirectIfLoggedIn();
+
+  const firstName = document.getElementById('first-name');
+  const lastName = document.getElementById('last-name');
+  const email = document.getElementById('reg-email');
+  const roleSelect = document.getElementById('role');
+  const password = document.getElementById('reg-password');
+  const confirm = document.getElementById('confirm-password');
+  const termsBox = document.getElementById('terms');
+  const regBtn = document.getElementById('reg-btn');
+
+  password.addEventListener('input', () => {
+    const value = password.value;
+    let score = 0;
+    if (value.length >= 8) score++;
+    if (/[A-Z]/.test(value)) score++;
+    if (/[0-9]/.test(value)) score++;
+    if (/[^A-Za-z0-9]/.test(value)) score++;
+
+    const bar = document.getElementById('strength-bar');
+    const label = document.getElementById('strength-label');
+    const states = [
+      { width: '0%', color: 'transparent', text: '' },
+      { width: '25%', color: '#ef4444', text: 'Weak' },
+      { width: '50%', color: '#f59e0b', text: 'Fair' },
+      { width: '75%', color: '#3b82f6', text: 'Good' },
+      { width: '100%', color: '#22c55e', text: 'Strong' },
+    ];
+    const state = states[value.length === 0 ? 0 : score];
+    bar.style.width = state.width;
+    bar.style.background = state.color;
+    label.textContent = state.text;
+    label.style.color = state.color;
+  });
+
+  firstName.addEventListener('blur', () => setFieldError(firstName, validateField(firstName, 'required')));
+  lastName.addEventListener('blur', () => setFieldError(lastName, validateField(lastName, 'required')));
+  email.addEventListener('blur', () => setFieldError(email, validateField(email, 'required') || validateField(email, 'email')));
+  roleSelect.addEventListener('blur', () => setFieldError(roleSelect, validateField(roleSelect, 'required')));
+  password.addEventListener('blur', () => setFieldError(password, validateField(password, 'required') || validateField(password, 'min:8')));
+  confirm.addEventListener('blur', () => setFieldError(confirm, validateField(confirm, 'required') || validateField(confirm, 'match:reg-password')));
+
+  document.getElementById('register-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    hideAlert('reg-alert');
+    hideAlert('reg-success');
+
+    const validations = [
+      [firstName, validateField(firstName, 'required')],
+      [lastName, validateField(lastName, 'required')],
+      [email, validateField(email, 'required') || validateField(email, 'email')],
+      [roleSelect, validateField(roleSelect, 'required')],
+      [password, validateField(password, 'required') || validateField(password, 'min:8')],
+      [confirm, validateField(confirm, 'required') || validateField(confirm, 'match:reg-password')],
+    ];
+    validations.forEach(([input, message]) => setFieldError(input, message));
+    if (validations.some(([, message]) => message)) return;
+
+    if (!termsBox.checked) {
+      const termsErr = document.getElementById('terms-error');
+      termsErr.textContent = 'You must agree before continuing.';
+      termsErr.classList.add('visible');
+      return;
+    }
+
+    regBtn.disabled = true;
+    regBtn.innerHTML = '<span class="spinner"></span>Creating account...';
+
+    try {
+      await api.post('/auth/register', {
+        firstName: firstName.value.trim(),
+        lastName: lastName.value.trim(),
+        email: email.value.trim(),
+        role: roleSelect.value,
+        password: password.value,
+      });
+
+      showAlert('reg-success', 'Account created successfully. Redirecting to login...', 'success');
+      setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+    } catch (error) {
+      showAlert('reg-alert', error.message || 'Could not create account.');
+      regBtn.disabled = false;
+      regBtn.textContent = 'Create Account';
+    }
+  });
+</script>
+</body>
+</html>

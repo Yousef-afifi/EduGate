@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher & Student Login - EduPlatform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="auth-root">
+  <div class="auth-brand">
+    <div class="auth-brand__logo">
+      <div class="auth-brand__logo-mark">&#127891;</div>
+      <span class="auth-brand__logo-name">EduPlatform</span>
+    </div>
+
+    <h1 class="auth-brand__headline">
+      Launch Your Teaching<br>Platform <span>Faster.</span>
+    </h1>
+    <p class="auth-brand__sub">
+      One ready platform for online teachers. Upload lectures, create exams and assignments,
+      generate student accounts, and keep every class organized from one dashboard.
+    </p>
+
+    <div class="auth-brand__stats">
+      <div>
+        <div class="auth-brand__stat-num">200+</div>
+        <div class="auth-brand__stat-lbl">Starter seats</div>
+      </div>
+      <div>
+        <div class="auth-brand__stat-num">600</div>
+        <div class="auth-brand__stat-lbl">Growth package</div>
+      </div>
+      <div>
+        <div class="auth-brand__stat-num">1000</div>
+        <div class="auth-brand__stat-lbl">Scale package</div>
+      </div>
+    </div>
+
+    <div class="auth-brand__deco"></div>
+    <div class="auth-brand__deco2"></div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-form-box">
+      <h2>Welcome back</h2>
+      <p class="auth-sub">Don't have an account? <a href="register.html">Create one</a></p>
+
+      <div class="alert alert-error" id="login-alert" role="alert">
+        <span>&#9888;</span>
+        <span class="alert-msg"></span>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+          <div class="field-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Your password" autocomplete="current-password" />
+          <div class="field-error"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-600);cursor:pointer">
+            <input type="checkbox" id="remember-me" style="accent-color:var(--amber);width:14px;height:14px" />
+            Remember me
+          </label>
+          <a href="#" style="font-size:13px;color:var(--amber-dark);font-weight:500">Need help?</a>
+        </div>
+
+        <button type="submit" class="btn-primary" id="login-btn">Sign In</button>
+      </form>
+
+      <div style="margin-top:28px;padding:16px;background:var(--gray-50);border-radius:var(--radius-sm);border:1px solid var(--gray-200)">
+        <p style="font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px">Demo access</p>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button class="demo-fill" data-email="teacher@demo.com" data-pass="demo123"
+            style="text-align:left;padding:8px 12px;border-radius:6px;border:1px solid var(--gray-200);background:var(--white);font-size:13px;color:var(--gray-600);cursor:pointer;transition:background 0.2s">
+            &#128105;&#8205;&#127979; <strong>Teacher</strong> - teacher@demo.com
+          </button>
+          <button class="demo-fill" data-email="student@demo.com" data-pass="demo123"
+            style="text-align:left;padding:8px 12px;border-radius:6px;border:1px solid var(--gray-200);background:var(--white);font-size:13px;color:var(--gray-600);cursor:pointer;transition:background 0.2s">
+            &#127891; <strong>Student</strong> - student@demo.com
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  redirectIfLoggedIn();
+
+  const form = document.getElementById('login-form');
+  const emailIn = document.getElementById('email');
+  const passIn = document.getElementById('password');
+  const loginBtn = document.getElementById('login-btn');
+
+  emailIn.addEventListener('blur', () => {
+    setFieldError(emailIn, validateField(emailIn, 'required') || validateField(emailIn, 'email'));
+  });
+  passIn.addEventListener('blur', () => {
+    setFieldError(passIn, validateField(passIn, 'required'));
+  });
+
+  document.querySelectorAll('.demo-fill').forEach((btn) => {
+    btn.addEventListener('mouseenter', () => { btn.style.background = 'var(--gray-100)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.background = 'var(--white)'; });
+    btn.addEventListener('click', () => {
+      emailIn.value = btn.dataset.email;
+      passIn.value = btn.dataset.pass;
+    });
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    hideAlert('login-alert');
+
+    const emailErr = validateField(emailIn, 'required') || validateField(emailIn, 'email');
+    const passErr = validateField(passIn, 'required');
+    setFieldError(emailIn, emailErr);
+    setFieldError(passIn, passErr);
+    if (emailErr || passErr) return;
+
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<span class="spinner"></span>Signing in...';
+
+    try {
+      const data = await api.post('/auth/login', {
+        email: emailIn.value.trim(),
+        password: passIn.value,
+      });
+
+      saveSession(data.user, data.token);
+      showToast(`Welcome back, ${data.user.name}!`, 'success');
+      setTimeout(() => redirectToDashboard(), 600);
+    } catch (error) {
+      showAlert('login-alert', error.message || 'Invalid email or password.');
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Sign In';
+    }
+  });
+</script>
+</body>
+</html>

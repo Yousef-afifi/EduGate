@@ -1,1 +1,2 @@
-# EduGate
+# eduplatform-front
+eduplatform-front-end
