@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - EduPlatform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-mark">&#127891;</div>
+      <span class="sidebar__logo-name">EduPlatform</span>
+    </div>
+
+    <div class="sidebar__user">
+      <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+      <div>
+        <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
+        <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav" id="sidebar-nav"></nav>
+
+    <div class="sidebar__bottom">
+      <button class="sidebar__logout" id="logout-btn">
+        <span class="nav-icon">&#128682;</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+        <div>
+          <div class="topbar__title" id="page-title">Dashboard</div>
+          <div class="topbar__breadcrumb">Home &rsaquo; <span id="page-title-crumb">Overview</span></div>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="topbar-search">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" placeholder="Search lessons, students, exams..." id="global-search" />
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+      </div>
+    </header>
+
+    <main class="page-body" id="dashboard-content">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:60vh">
+        <div style="width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#f59e0b;border-radius:50%;animation:spin 0.7s linear infinite"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="create-course-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Create New Course</div>
+      <button class="modal-close" data-close-modal="create-course-modal">&times;</button>
+    </div>
+    <form id="create-course-form" novalidate>
+      <div class="form-group">
+        <label>Course Title</label>
+        <input type="text" id="course-title" placeholder="e.g. Advanced Biology" />
+        <div class="field-error"></div>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="course-category">
+          <option value="">Select category</option>
+          <option>Programming</option>
+          <option>Design</option>
+          <option>Mathematics</option>
+          <option>Science</option>
+          <option>Language</option>
+          <option>Business</option>
+        </select>
+        <div class="field-error"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Level</label>
+          <select id="course-level">
+            <option value="">Level</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <input type="text" id="course-duration" placeholder="e.g. 8 weeks" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="course-desc" rows="3" placeholder="What will students learn?" style="resize:vertical"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close-modal="create-course-modal">Cancel</button>
+        <button type="submit" class="btn-amber" id="create-course-btn">Create Course</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  requireAuth();
+  populateSidebarUser();
+
+  const user = getUser();
+  const isTeacher = user?.role === 'teacher';
+  let currentView = getParam('view') || 'overview';
+
+  if (!isTeacher) {
+    document.body.classList.add('student-shell');
+  }
+
+  const teacherNav = [
+    { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html', view: 'overview' },
+    { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
+    { icon: '&#128221;', label: 'Exams', page: 'exams.html' },
+    { icon: '&#128101;', label: 'Students', page: '#', view: 'students', badge: 'Seats' },
+    { icon: '&#128202;', label: 'Analytics', page: '#', view: 'analytics' },
+    { icon: '&#9881;', label: 'Settings', page: '#', view: 'settings' },
+  ];
+
+  const studentNav = [
+        { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html', view: 'overview' },
+        { icon: '&#128218;', label: 'My Courses', page: 'courses.html' },
+        { icon: '&#128221;', label: 'My Exams', page: 'exams.html', badge: '2' },
+        { icon: '&#127942;', label: 'Progress', page: '#', view: 'progress' },
+        { icon: '&#128197;', label: 'Schedule', page: '#', view: 'schedule' },
+        { icon: '&#9881;', label: 'Settings', page: '#', view: 'settings' },
+      ];
+
+  const navItems = isTeacher ? teacherNav : studentNav;
+
+  document.getElementById('sidebar-peek-toggle')?.addEventListener('click', () => {
+    if (isTeacher) return;
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const open = sidebar.classList.toggle('open');
+    overlay.style.display = open ? 'block' : 'none';
+  });
+
+  document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+    if (isTeacher) return;
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').style.display = 'none';
+  });
+
+  document.getElementById('sidebar-nav').innerHTML =
+    '<div class="sidebar__nav-section">Workspace</div>' +
+    navItems.map((item) => `
+      <a href="${item.page}" class="nav-item" data-page="${item.page}" ${item.view ? `data-view="${item.view}"` : ''}>
+        <span class="nav-icon">${item.icon}</span>
+        <span>${item.label}</span>
+        ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+      </a>
+    `).join('');
+
+  document.querySelectorAll('#sidebar-nav .nav-item[data-view]').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      event.preventDefault();
+      currentView = item.dataset.view;
+      window.history.replaceState({}, '', currentView === 'overview' ? 'dashboard.html' : `dashboard.html?view=${currentView}`);
+      loadCurrentView();
+      syncActiveNav();
+      if (!isTeacher) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebar-overlay').style.display = 'none';
+      }
+    });
+  });
+
+  function syncActiveNav() {
+    document.querySelectorAll('#sidebar-nav .nav-item').forEach((item) => item.classList.remove('active'));
+    const active = document.querySelector(`#sidebar-nav .nav-item[data-view="${currentView}"]`)
+      || document.querySelector('#sidebar-nav .nav-item[data-page="dashboard.html"]');
+    if (active) active.classList.add('active');
+  }
+
+  function setTitles(title, crumb) {
+    document.getElementById('page-title').textContent = title;
+    document.getElementById('page-title-crumb').textContent = crumb;
+  }
+
+  function infoCards(items) {
+    return `<div class="cards-grid">${items.map((item) => `
+      <div class="info-card">
+        <h3>${item.title}</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.8">${item.text}</p>
+      </div>
+    `).join('')}</div>`;
+  }
+
+  function scheduleEventCard(event) {
+    return `
+      <div class="info-card" style="padding:0;overflow:hidden">
+        <div style="display:flex;align-items:stretch">
+          <div style="width:88px;background:linear-gradient(180deg,var(--navy),var(--navy-light));color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px">
+            <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55)">${event.month}</div>
+            <div style="font-family:var(--font-head);font-size:30px;line-height:1;color:var(--amber)">${event.day}</div>
+          </div>
+          <div style="flex:1;padding:20px 22px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px">
+              <div>
+                <div style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:4px">${event.title}</div>
+                <div style="font-size:13px;color:var(--gray-400)">${event.course}</div>
+              </div>
+              <span class="badge ${event.badgeClass}">${event.badge}</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13px;color:var(--gray-600);margin-bottom:14px">
+              <span>${event.time}</span>
+              <span>${event.type}</span>
+              <span>${event.note}</span>
+            </div>
+            <div style="padding:12px 14px;background:var(--gray-50);border-top:1px solid var(--gray-100);border-radius:12px;font-size:13px;color:var(--gray-600)">
+              ${event.description}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function updateStoredUserProfile(fields) {
+    const current = getUser();
+    if (!current) return;
+    const updated = { ...current, ...fields };
+    saveSession(updated, getToken());
+
+    try {
+      const db = getDemoDb();
+      const dbUser = db.users.find((entry) => entry.id === current.id);
+      if (dbUser) Object.assign(dbUser, fields);
+      saveDemoDb(db);
+    } catch {}
+
+    populateSidebarUser();
+    return updated;
+  }
+
+  async function renderTeacherOverview() {
+    setTitles('Teacher Dashboard', 'Teaching Control Center');
+    const [stats, courses] = await Promise.all([
+      api.get('/teacher/stats'),
+      api.get('/teacher/courses?limit=6'),
+    ]);
+
+    document.getElementById('dashboard-content').innerHTML = `
+      <div style="background:var(--navy);border-radius:var(--radius);padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(245,158,11,0.15),transparent 60%)"></div>
+        <div style="position:relative;z-index:1;max-width:620px">
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:6px">Package driven teaching workspace</div>
+          <div style="font-family:var(--font-head);font-size:28px;color:var(--white)">Manage your students, lessons, assignments, and exams from one place.</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.58);margin-top:10px">Create accounts within your package limits, upload recorded lectures, and keep your classes organized online.</div>
+        </div>
+        <button class="btn-amber" style="position:relative;z-index:1;min-width:180px" onclick="openModal('create-course-modal')">+ Create Course</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card__icon">&#128101;</div>
+          <div class="stat-card__num">${stats.totalStudents}</div>
+          <div class="stat-card__label">Student Accounts In Use</div>
+          <div class="stat-card__change up">Seats currently active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">&#128218;</div>
+          <div class="stat-card__num">${stats.activeCourses}</div>
+          <div class="stat-card__label">Published Courses</div>
+          <div class="stat-card__change up">Ready for your students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">&#127909;</div>
+          <div class="stat-card__num">${stats.totalLessons}</div>
+          <div class="stat-card__label">Lessons & Uploads</div>
+          <div class="stat-card__change up">Across all course modules</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">&#11088;</div>
+          <div class="stat-card__num">${stats.avgRating}</div>
+          <div class="stat-card__label">Course Rating</div>
+          <div class="stat-card__change up">Student feedback snapshot</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <div class="section-title">Your Teaching Catalog</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Courses students can access through their generated accounts</div>
+        </div>
+        <a href="courses.html" class="section-link">Manage all courses</a>
+      </div>
+      <div class="cards-grid">${courses.map(renderCourseCard).join('')}</div>
+
+      <div class="section-header" style="margin-top:40px">
+        <div>
+          <div class="section-title">Teacher Checklist</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:6px">A clean workflow for launching your next class</div>
+        </div>
+      </div>
+      ${infoCards([
+        { title: '1. Generate Student Accounts', text: 'Create student logins based on your package capacity and send the credentials directly to your class.' },
+        { title: '2. Upload Lessons', text: 'Add lecture videos, recorded sessions, and structured course lessons so students can learn anytime.' },
+        { title: '3. Publish Exams & Assignments', text: 'Build assessments, assign deadlines, and review results from the same teaching dashboard.' },
+      ])}
+    `;
+  }
+
+  async function renderTeacherStudents() {
+    setTitles('Students', 'Student Accounts & Capacity');
+    const students = await api.get('/teacher/students?limit=6');
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="section-header">
+        <div>
+          <div class="section-title">Student Account Management</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Track the students using your package seats and their learning activity.</div>
+        </div>
+        <button class="btn-amber" onclick="showToast('Student account generator can be the next screen we build.', 'info')">Generate Accounts</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__num">${students.length}</div><div class="stat-card__label">Visible Students</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128274;</div><div class="stat-card__num">600</div><div class="stat-card__label">Package Capacity</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#9989;</div><div class="stat-card__num">${students.filter((s) => s.status === 'active').length}</div><div class="stat-card__label">Active Students</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128200;</div><div class="stat-card__num">${Math.round(students.reduce((sum, s) => sum + s.progress, 0) / students.length)}%</div><div class="stat-card__label">Average Progress</div></div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Student</th><th>Course</th><th>Progress</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            ${students.map((s) => `
+              <tr>
+                <td><strong>${s.name}</strong><div style="font-size:12px;color:var(--gray-400)">${s.email}</div></td>
+                <td>${s.course}</td>
+                <td>${s.progress}%</td>
+                <td><span class="badge ${s.status === 'active' ? 'badge-green' : 'badge-gray'}">${s.status}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  async function renderTeacherAnalytics() {
+    setTitles('Analytics', 'Teaching Performance');
+    const stats = await api.get('/teacher/stats');
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card__icon">&#128202;</div><div class="stat-card__num">${stats.totalStudents}</div><div class="stat-card__label">Reach Across Your Courses</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#127909;</div><div class="stat-card__num">${stats.totalLessons}</div><div class="stat-card__label">Uploaded Lessons</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#11088;</div><div class="stat-card__num">${stats.avgRating}</div><div class="stat-card__label">Average Rating</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128221;</div><div class="stat-card__num">8</div><div class="stat-card__label">Assessments Published</div></div>
+      </div>
+      ${infoCards([
+        { title: 'Course Completion Signal', text: 'Your most engaged students are moving through recorded lessons and exam checkpoints steadily.' },
+        { title: 'Content Opportunity', text: 'Courses with longer watch duration can benefit from follow-up assignments and recap quizzes.' },
+        { title: 'Package Utilization', text: 'You still have room to onboard more students before reaching your current package limit.' },
+      ])}
+    `;
+  }
+
+  function renderTeacherSettings() {
+    setTitles('Settings', 'Teacher Workspace Settings');
+    document.getElementById('dashboard-content').innerHTML = `
+      ${infoCards([
+        { title: 'Package Settings', text: 'Current workspace is configured around student-seat packages. Upgrade logic and billing screen can plug in here next.' },
+        { title: 'Branding', text: 'You can use this area for your teacher name, support contact, and classroom branding preferences.' },
+        { title: 'Notifications', text: 'Control alerts for new submissions, upcoming exams, and student activity summaries.' },
+      ])}
+    `;
+  }
+
+  async function renderStudentOverview() {
+    setTitles('Student Dashboard', 'My Learning Space');
+    const [stats, enrolled, upcomingExams] = await Promise.all([
+      api.get('/student/stats'),
+      api.get('/student/courses?limit=4'),
+      api.get('/student/exams/upcoming'),
+    ]);
+    document.getElementById('dashboard-content').innerHTML = `
+      <div style="background:var(--navy);border-radius:var(--radius);padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(245,158,11,0.15),transparent 60%)"></div>
+        <div style="position:relative;z-index:1">
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:6px">Your teacher has shared this workspace with you</div>
+          <div style="font-family:var(--font-head);font-size:26px;color:var(--white)">Watch lessons, solve assignments, and take your exams in one place.</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.58);margin-top:8px">Everything below belongs to your teacher's classroom and is ready for you to continue.</div>
+        </div>
+        <div style="position:relative;z-index:1;text-align:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:16px 24px">
+          <div style="font-family:var(--font-head);font-size:32px;color:var(--amber)">${stats.avgScore}%</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.08em">Average Score</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card__icon">&#9989;</div><div class="stat-card__num">${stats.completedCourses}</div><div class="stat-card__label">Completed Courses</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128214;</div><div class="stat-card__num">${stats.inProgressCourses}</div><div class="stat-card__label">Courses In Progress</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128221;</div><div class="stat-card__num">${stats.totalExams}</div><div class="stat-card__label">Exams Tracked</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#127942;</div><div class="stat-card__num">${stats.avgScore}%</div><div class="stat-card__label">Average Score</div></div>
+      </div>
+
+      <div class="section-header">
+        <div><div class="section-title">Continue Watching</div><div style="font-size:13px;color:var(--gray-400);margin-top:6px">Courses and recordings shared by your teacher</div></div>
+        <a href="courses.html" class="section-link">Open all courses</a>
+      </div>
+      <div class="cards-grid">${enrolled.map(renderCourseCard).join('')}</div>
+
+      <div class="section-header" style="margin-top:40px">
+        <div><div class="section-title">Upcoming Exams</div><div style="font-size:13px;color:var(--gray-400);margin-top:6px">Stay ready for the next exam window</div></div>
+        <a href="exams.html" class="section-link">See exam page</a>
+      </div>
+      <div class="exams-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">${upcomingExams.map(renderExamCard).join('')}</div>
+    `;
+  }
+
+  async function renderStudentProgress() {
+    setTitles('Progress', 'My Course Progress');
+    const courses = await api.get('/student/courses?limit=4');
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="section-header">
+        <div><div class="section-title">Progress Tracker</div><div style="font-size:13px;color:var(--gray-400);margin-top:6px">See how far you have moved inside each course.</div></div>
+      </div>
+      <div class="cards-grid">${courses.map((course) => `
+        <div class="info-card">
+          <h3>${course.title}</h3>
+          <div class="course-card__progress-bar" style="margin:16px 0 8px;height:8px">
+            <div class="course-card__progress-fill" style="width:${course.progress || 0}%"></div>
+          </div>
+          <p style="font-size:14px;color:var(--gray-600);line-height:1.8">${course.progress || 0}% completed. Continue from the course page to unlock the next lessons.</p>
+        </div>
+      `).join('')}</div>
+    `;
+  }
+
+  async function renderStudentSchedule() {
+    setTitles('Schedule', 'Upcoming Learning Schedule');
+    const exams = await api.get('/student/exams/upcoming');
+    const today = new Date();
+    const courseMap = await api.get('/student/courses?limit=4');
+    const learningEvents = [
+      ...exams.map((exam) => {
+        const date = exam.dueDate ? new Date(exam.dueDate) : today;
+        return {
+          month: date.toLocaleDateString(undefined, { month: 'short' }).toUpperCase(),
+          day: date.getDate(),
+          title: exam.title,
+          course: exam.courseName,
+          time: `Exam window · ${date.toLocaleDateString()}`,
+          type: 'Online exam',
+          note: `${exam.duration} min`,
+          description: 'Be ready before the timer starts and review the related lessons before opening the exam.',
+          badge: exam.status === 'pending' ? 'Upcoming' : exam.status,
+          badgeClass: 'badge-amber',
+        };
+      }),
+      ...courseMap.slice(0, 2).map((course, index) => ({
+        month: today.toLocaleDateString(undefined, { month: 'short' }).toUpperCase(),
+        day: today.getDate() + index + 1,
+        title: `${course.title} study block`,
+        course: course.title,
+        time: 'Suggested session · 7:00 PM',
+        type: 'Lesson review',
+        note: `${course.progress || 0}% complete`,
+        description: 'A suggested study session generated from your current progress so you can keep moving forward.',
+        badge: 'Recommended',
+        badgeClass: 'badge-blue',
+      })),
+    ].sort((a, b) => a.day - b.day);
+
+    document.getElementById('dashboard-content').innerHTML = `
+      <div style="background:var(--white);border:1px solid var(--gray-200);box-shadow:var(--shadow);border-radius:var(--radius);padding:24px 24px 10px;margin-bottom:24px">
+        <div class="section-header" style="margin-bottom:18px">
+          <div>
+            <div class="section-title">This Week</div>
+            <div style="font-size:13px;color:var(--gray-400);margin-top:6px">A cleaner view for exams, study blocks, and what needs your attention next.</div>
+          </div>
+          <span class="badge badge-blue">${learningEvents.length} items</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          ${learningEvents.map(scheduleEventCard).join('')}
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card__icon">&#128197;</div>
+          <div class="stat-card__num">${exams.length}</div>
+          <div class="stat-card__label">Upcoming Exams</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">&#9200;</div>
+          <div class="stat-card__num">2</div>
+          <div class="stat-card__label">Suggested Study Blocks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__icon">&#9989;</div>
+          <div class="stat-card__num">${courseMap.filter((course) => (course.progress || 0) > 0).length}</div>
+          <div class="stat-card__label">Active Courses</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderStudentSettings() {
+    setTitles('Settings', 'Student Preferences');
+    const profile = getUser() || {};
+    document.getElementById('dashboard-content').innerHTML = `
+      <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,0.75fr);gap:24px;align-items:start" id="student-settings-grid">
+        <div class="info-card">
+          <div class="section-header" style="margin-bottom:24px">
+            <div>
+              <div class="section-title">Edit Profile</div>
+              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Update your basic account information and how your teacher sees you inside the platform.</div>
+            </div>
+            <span class="badge badge-blue">Student Account</span>
+          </div>
+
+          <form id="student-settings-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="student-name">Full Name</label>
+                <input type="text" id="student-name" value="${profile.name || ''}" placeholder="Your full name" />
+                <div class="field-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="student-email">Email Address</label>
+                <input type="email" id="student-email" value="${profile.email || ''}" placeholder="your@email.com" />
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="student-phone">Phone Number</label>
+                <input type="text" id="student-phone" value="${profile.phone || ''}" placeholder="Optional contact number" />
+                <div class="field-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="student-grade">Grade / Level</label>
+                <input type="text" id="student-grade" value="${profile.grade || ''}" placeholder="e.g. Grade 11" />
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="student-bio">Short Bio</label>
+              <textarea id="student-bio" rows="4" placeholder="A short note about your learning goals">${profile.bio || ''}</textarea>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="section-header" style="margin:26px 0 14px">
+              <div class="section-title" style="font-size:18px">Preferences</div>
+            </div>
+
+            <div style="display:grid;gap:14px;margin-bottom:22px">
+              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
+                <input type="checkbox" id="pref-exam-reminders" ${profile.prefExamReminders === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
+                <span style="display:block">
+                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Exam reminders</strong>
+                  <span style="font-size:13px;color:var(--gray-600)">Get reminders before exam windows and deadlines.</span>
+                </span>
+              </label>
+              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
+                <input type="checkbox" id="pref-lesson-alerts" ${profile.prefLessonAlerts === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
+                <span style="display:block">
+                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Lesson release alerts</strong>
+                  <span style="font-size:13px;color:var(--gray-600)">Know when your teacher uploads new videos or materials.</span>
+                </span>
+              </label>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:12px">
+              <button type="button" class="btn-secondary" id="student-settings-reset">Reset</button>
+              <button type="submit" class="btn-primary" id="student-settings-save" style="width:auto;padding-inline:26px">Save Changes</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="display:grid;gap:16px">
+          <div class="info-card">
+            <h3>Profile Summary</h3>
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+              <div style="width:54px;height:54px;border-radius:50%;background:var(--navy);color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px" id="student-profile-initials">${(profile.name || 'S').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase()}</div>
+              <div>
+                <div style="font-weight:700;color:var(--navy);font-size:16px" id="student-profile-name">${profile.name || 'Student'}</div>
+                <div style="font-size:13px;color:var(--gray-400)" id="student-profile-email">${profile.email || ''}</div>
+              </div>
+            </div>
+            <div class="info-row"><span class="info-row-label">Role</span><span class="info-row-value">Student</span></div>
+            <div class="info-row"><span class="info-row-label">Grade</span><span class="info-row-value" id="student-profile-grade">${profile.grade || 'Not set'}</span></div>
+            <div class="info-row"><span class="info-row-label">Phone</span><span class="info-row-value" id="student-profile-phone">${profile.phone || 'Not set'}</span></div>
+          </div>
+
+          <div class="info-card">
+            <h3>Account Help</h3>
+            <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:12px">Use this area to keep your student profile accurate. Your teacher may use these details to organize groups and communication.</p>
+            <div style="display:grid;gap:10px">
+              <div class="badge badge-amber" style="width:max-content">Profile updates save locally in this demo</div>
+              <div class="badge badge-blue" style="width:max-content">Ready for backend connection later</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const form = document.getElementById('student-settings-form');
+    const saveBtn = document.getElementById('student-settings-save');
+    const resetBtn = document.getElementById('student-settings-reset');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const nameIn = document.getElementById('student-name');
+      const emailIn = document.getElementById('student-email');
+      const nameErr = validateField(nameIn, 'required');
+      const emailErr = validateField(emailIn, 'required') || validateField(emailIn, 'email');
+      setFieldError(nameIn, nameErr);
+      setFieldError(emailIn, emailErr);
+      if (nameErr || emailErr) return;
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
+      const updated = updateStoredUserProfile({
+        name: nameIn.value.trim(),
+        email: emailIn.value.trim(),
+        phone: document.getElementById('student-phone').value.trim(),
+        grade: document.getElementById('student-grade').value.trim(),
+        bio: document.getElementById('student-bio').value.trim(),
+        prefExamReminders: document.getElementById('pref-exam-reminders').checked,
+        prefLessonAlerts: document.getElementById('pref-lesson-alerts').checked,
+      });
+
+      if (updated) {
+        document.getElementById('student-profile-initials').textContent = (updated.name || 'S').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase();
+        document.getElementById('student-profile-name').textContent = updated.name || 'Student';
+        document.getElementById('student-profile-email').textContent = updated.email || '';
+        document.getElementById('student-profile-grade').textContent = updated.grade || 'Not set';
+        document.getElementById('student-profile-phone').textContent = updated.phone || 'Not set';
+      }
+
+      showToast('Profile updated successfully.', 'success');
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Changes';
+    });
+
+    resetBtn.addEventListener('click', () => {
+      renderStudentSettings();
+    });
+  }
+
+  async function loadCurrentView() {
+    if (isTeacher) {
+      if (currentView === 'students') return renderTeacherStudents();
+      if (currentView === 'analytics') return renderTeacherAnalytics();
+      if (currentView === 'settings') return renderTeacherSettings();
+      return renderTeacherOverview();
+    }
+
+    if (currentView === 'progress') return renderStudentProgress();
+    if (currentView === 'schedule') return renderStudentSchedule();
+    if (currentView === 'settings') return renderStudentSettings();
+    return renderStudentOverview();
+  }
+
+  document.getElementById('create-course-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const titleIn = document.getElementById('course-title');
+    const error = validateField(titleIn, 'required');
+    setFieldError(titleIn, error);
+    if (error) return;
+
+    const btn = document.getElementById('create-course-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner" style="border-top-color:var(--navy)"></span>Creating...';
+
+    await api.post('/courses', {
+      title: titleIn.value.trim(),
+      category: document.getElementById('course-category').value,
+      level: document.getElementById('course-level').value,
+      duration: document.getElementById('course-duration').value,
+      description: document.getElementById('course-desc').value,
+    });
+
+    closeModal('create-course-modal');
+    showToast('Course created successfully.', 'success');
+    btn.disabled = false;
+    btn.textContent = 'Create Course';
+    event.target.reset();
+    currentView = 'overview';
+    window.history.replaceState({}, '', 'dashboard.html');
+    syncActiveNav();
+    loadCurrentView();
+  });
+
+  syncActiveNav();
+  loadCurrentView();
+</script>
+</body>
+</html>
