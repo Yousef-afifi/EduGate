@@ -121,6 +121,7 @@
   const user = getUser();
   const isTeacher = user?.role === 'teacher';
   let currentView = getParam('view') || 'overview';
+  let lastGeneratedStudents = [];
   const teacherPackages = [
     {
       id: 'starter-200',
@@ -220,7 +221,8 @@
 
   function syncActiveNav() {
     document.querySelectorAll('#sidebar-nav .nav-item').forEach((item) => item.classList.remove('active'));
-    const active = document.querySelector(`#sidebar-nav .nav-item[data-view="${currentView}"]`)
+    const activeView = currentView === 'generate-students' ? 'students' : currentView;
+    const active = document.querySelector(`#sidebar-nav .nav-item[data-view="${activeView}"]`)
       || document.querySelector('#sidebar-nav .nav-item[data-page="dashboard.html"]');
     if (active) active.classList.add('active');
   }
@@ -369,7 +371,7 @@
           <div class="section-title">Student Account Management</div>
           <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Track the students using your package seats and their learning activity.</div>
         </div>
-        <button class="btn-amber" onclick="showToast('Student account generator can be the next screen we build.', 'info')">Generate Accounts</button>
+        <button class="btn-amber" onclick="openTeacherGenerateAccounts()">Generate Accounts</button>
       </div>
       <div class="stats-row">
         <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__num">${students.length}</div><div class="stat-card__label">Visible Students</div></div>
@@ -395,6 +397,205 @@
         </table>
       </div>
     `;
+  }
+
+  async function renderTeacherGenerateStudents() {
+    setTitles('Generate Accounts', 'Create Student Login Batch');
+    const [students, courses] = await Promise.all([
+      api.get('/teacher/students'),
+      api.get('/teacher/courses?limit=20'),
+    ]);
+    const activePackage = getTeacherPackageProfile();
+    const seatsUsed = students.length;
+    const remainingSeats = Math.max(activePackage.seats - seatsUsed, 0);
+    const generatedPreview = lastGeneratedStudents.length
+      ? `
+        <div class="info-card" style="margin-top:24px">
+          <div class="section-header" style="margin-bottom:18px">
+            <div>
+              <div class="section-title">Latest Generated Batch</div>
+              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Share these credentials with your students directly.</div>
+            </div>
+            <button type="button" class="btn-secondary" style="width:auto;padding-inline:18px" onclick="copyGeneratedCredentials()">Copy Credentials</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr><th>Student</th><th>Username</th><th>Password</th><th>Course</th></tr>
+              </thead>
+              <tbody>
+                ${lastGeneratedStudents.map((student) => `
+                  <tr>
+                    <td><strong>${student.name}</strong><div style="font-size:12px;color:var(--gray-400)">${student.email}</div></td>
+                    <td>${student.username}</td>
+                    <td>${student.password}</td>
+                    <td>${student.course}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `
+      : '';
+
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="section-header" style="margin-bottom:20px">
+        <div>
+          <div class="section-title">Student Account Generator</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Create a batch of ready-to-share accounts within your package seat limits.</div>
+        </div>
+        <button type="button" class="btn-secondary" style="width:auto;padding-inline:18px" onclick="backToTeacherStudents()">Back to Students</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card__icon">&#128274;</div><div class="stat-card__num">${activePackage.seats}</div><div class="stat-card__label">Package Capacity</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__num">${seatsUsed}</div><div class="stat-card__label">Accounts In Use</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#9203;</div><div class="stat-card__num">${remainingSeats}</div><div class="stat-card__label">Seats Remaining</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128218;</div><div class="stat-card__num">${courses.length}</div><div class="stat-card__label">Courses Available</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,0.8fr);gap:24px;align-items:start">
+        <div class="info-card">
+          <div class="section-header" style="margin-bottom:24px">
+            <div>
+              <div class="section-title">Create New Batch</div>
+              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Set the number of accounts, course assignment, and login pattern for this batch.</div>
+            </div>
+            <span class="badge badge-blue">${remainingSeats} seats left</span>
+          </div>
+
+          <form id="generate-students-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="student-batch-course">Assign Course</label>
+                <select id="student-batch-course">
+                  <option value="">Choose course</option>
+                  ${courses.map((course) => `<option value="${course.id}">${course.title}</option>`).join('')}
+                </select>
+                <div class="field-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="student-batch-count">Number of Accounts</label>
+                <input type="number" id="student-batch-count" min="1" max="${Math.max(remainingSeats, 1)}" value="${remainingSeats > 0 ? Math.min(remainingSeats, 10) : 0}" />
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="student-batch-prefix">Student Name Prefix</label>
+                <input type="text" id="student-batch-prefix" value="Student" placeholder="e.g. Batch A" />
+                <div class="field-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="student-password-mode">Password Mode</label>
+                <select id="student-password-mode">
+                  <option value="auto">Auto-generate password</option>
+                  <option value="fixed">Use one fixed password</option>
+                </select>
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="form-group" id="fixed-password-group" style="display:none">
+              <label for="student-fixed-password">Fixed Password</label>
+              <input type="text" id="student-fixed-password" placeholder="At least 6 characters" />
+              <div class="field-error"></div>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:12px">
+              <button type="button" class="btn-secondary" id="generate-students-reset">Reset</button>
+              <button type="submit" class="btn-amber" id="generate-students-submit" style="width:auto;padding-inline:26px" ${remainingSeats === 0 ? 'disabled' : ''}>Generate Accounts</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="display:grid;gap:16px">
+          <div class="info-card">
+            <h3>How It Works</h3>
+            <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:14px">Every batch creates ready student credentials tied to one course, so you can share them with your class immediately.</p>
+            <div style="display:grid;gap:10px">
+              <div class="info-row"><span class="info-row-label">Current Package</span><span class="info-row-value">${activePackage.name}</span></div>
+              <div class="info-row"><span class="info-row-label">Seat Limit</span><span class="info-row-value">${activePackage.seats}</span></div>
+              <div class="info-row"><span class="info-row-label">Available Now</span><span class="info-row-value">${remainingSeats}</span></div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3>Batch Tips</h3>
+            <div style="display:grid;gap:12px">
+              <div style="font-size:13px;color:var(--gray-600);line-height:1.7">Use a clear prefix like <strong>Grade 10</strong> or <strong>Physics A</strong> so the generated usernames stay organized.</div>
+              <div style="font-size:13px;color:var(--gray-600);line-height:1.7">Pick a fixed password only when you want to hand out one simple code to the whole batch.</div>
+              <div style="font-size:13px;color:var(--gray-600);line-height:1.7">After generation, copy the credentials table and send it directly to students.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      ${generatedPreview}
+    `;
+
+    const form = document.getElementById('generate-students-form');
+    const resetBtn = document.getElementById('generate-students-reset');
+    const submitBtn = document.getElementById('generate-students-submit');
+    const passwordMode = document.getElementById('student-password-mode');
+    const fixedPasswordGroup = document.getElementById('fixed-password-group');
+
+    const syncPasswordMode = () => {
+      fixedPasswordGroup.style.display = passwordMode.value === 'fixed' ? 'block' : 'none';
+    };
+    syncPasswordMode();
+    passwordMode.addEventListener('change', syncPasswordMode);
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const courseInput = document.getElementById('student-batch-course');
+      const countInput = document.getElementById('student-batch-count');
+      const prefixInput = document.getElementById('student-batch-prefix');
+      const fixedPasswordInput = document.getElementById('student-fixed-password');
+
+      const courseError = validateField(courseInput, 'required');
+      const prefixError = validateField(prefixInput, 'required');
+      const countValue = Number(countInput.value || 0);
+      let countError = null;
+      let fixedPasswordError = null;
+      if (!countValue || countValue < 1) countError = 'Enter a valid number of accounts.';
+      else if (countValue > remainingSeats) countError = 'This exceeds your remaining package seats.';
+      if (passwordMode.value === 'fixed' && fixedPasswordInput.value.trim().length < 6) {
+        fixedPasswordError = 'Password must be at least 6 characters.';
+      }
+
+      setFieldError(courseInput, courseError);
+      setFieldError(prefixInput, prefixError);
+      setFieldError(countInput, countError);
+      setFieldError(fixedPasswordInput, fixedPasswordError);
+      if (courseError || prefixError || countError || fixedPasswordError) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner" style="border-top-color:var(--navy)"></span>Generating...';
+
+      try {
+        const result = await api.post('/teacher/students/generate', {
+          courseId: Number(courseInput.value),
+          count: countValue,
+          prefix: prefixInput.value.trim(),
+          passwordMode: passwordMode.value,
+          fixedPassword: fixedPasswordInput.value.trim(),
+        });
+
+        lastGeneratedStudents = result.generated || [];
+        showToast(`${lastGeneratedStudents.length} student accounts generated successfully.`, 'success');
+        renderTeacherGenerateStudents();
+      } catch (error) {
+        showToast(error.message || 'Could not generate student accounts.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Generate Accounts';
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      renderTeacherGenerateStudents();
+    });
   }
 
   function renderTeacherSettings() {
@@ -882,6 +1083,7 @@
   async function loadCurrentView() {
     if (isTeacher) {
       if (currentView === 'students') return renderTeacherStudents();
+      if (currentView === 'generate-students') return renderTeacherGenerateStudents();
       if (currentView === 'upgrade') return renderTeacherUpgrade();
       if (currentView === 'settings') return renderTeacherSettings();
       return renderTeacherOverview();
@@ -929,6 +1131,34 @@
     updateStoredUserProfile({ packageId });
     showToast(`Package upgraded to ${selected.name}.`, 'success');
     renderTeacherUpgrade();
+  };
+
+  window.openTeacherGenerateAccounts = () => {
+    currentView = 'generate-students';
+    window.history.replaceState({}, '', 'dashboard.html?view=generate-students');
+    syncActiveNav();
+    renderTeacherGenerateStudents();
+  };
+
+  window.backToTeacherStudents = () => {
+    currentView = 'students';
+    window.history.replaceState({}, '', 'dashboard.html?view=students');
+    syncActiveNav();
+    renderTeacherStudents();
+  };
+
+  window.copyGeneratedCredentials = async () => {
+    if (!lastGeneratedStudents.length) return;
+    const text = lastGeneratedStudents
+      .map((student) => `${student.name} | ${student.username} | ${student.password} | ${student.course}`)
+      .join('\n');
+
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Credentials copied to clipboard.', 'success');
+    } catch {
+      showToast('Could not copy automatically. Please copy from the table.', 'error');
+    }
   };
 
   syncActiveNav();

@@ -179,14 +179,24 @@ function createDefaultDemoDb() {
   };
 
   const users = [
-    { id: 101, name: 'Ms. Sarah Ahmed', email: 'teacher@demo.com', role: 'teacher', password: 'demo123' },
+    { id: 101, name: 'Ms. Sarah Ahmed', email: 'teacher@demo.com', role: 'teacher', password: 'demo123', packageId: 'growth-600', phone: '', subject: 'Programming' },
     { id: 201, name: 'Ali Hassan', email: 'student@demo.com', role: 'student', password: 'demo123' },
+  ];
+
+  const studentAccounts = [
+    { id: 1, teacherId: 101, name: 'Ali Hassan', email: 'ali@demo.com', username: 'ali.hassan', password: 'demo123', courseId: 1, course: 'Python Fundamentals', progress: 75, status: 'active' },
+    { id: 2, teacherId: 101, name: 'Nour Salem', email: 'nour@demo.com', username: 'nour.salem', password: 'demo123', courseId: 3, course: 'UI/UX Design Fundamentals', progress: 40, status: 'active' },
+    { id: 3, teacherId: 101, name: 'Omar Khaled', email: 'omar@demo.com', username: 'omar.khaled', password: 'demo123', courseId: 2, course: 'Data Structures & Algorithms', progress: 90, status: 'active' },
+    { id: 4, teacherId: 101, name: 'Layla Ibrahim', email: 'layla@demo.com', username: 'layla.ibrahim', password: 'demo123', courseId: 4, course: 'Statistics & Probability', progress: 20, status: 'inactive' },
+    { id: 5, teacherId: 101, name: 'Yusuf Mansour', email: 'yusuf@demo.com', username: 'yusuf.mansour', password: 'demo123', courseId: 1, course: 'Python Fundamentals', progress: 55, status: 'active' },
   ];
 
   return {
     lastCourseId: 4,
     lastExamId: 4,
+    lastStudentAccountId: 5,
     users,
+    studentAccounts,
     courses,
     lessonsByCourse,
     lessonContent,
@@ -308,6 +318,7 @@ function buildStudentStats(db) {
 
 function buildTeacherStats(db, user) {
   const teacherCourses = db.courses.filter((course) => course.instructorId === user.id || user.role === 'teacher');
+  const teacherStudents = getTeacherStudentAccounts(db, user);
   const totalLessons = teacherCourses.reduce((sum, course) => sum + (db.lessonsByCourse[course.id] || []).length, 0);
   const ratedCourses = teacherCourses.filter((course) => Number(course.rating));
   const avgRating = ratedCourses.length
@@ -315,7 +326,7 @@ function buildTeacherStats(db, user) {
     : '0.0';
 
   return {
-    totalStudents: teacherCourses.reduce((sum, course) => sum + (course.studentsCount || 0), 0),
+    totalStudents: teacherStudents.length,
     activeCourses: teacherCourses.length,
     totalLessons,
     avgRating,
@@ -328,6 +339,10 @@ function getCourseById(db, courseId) {
 
 function getLessons(db, courseId) {
   return clone(db.lessonsByCourse[courseId] || []);
+}
+
+function getTeacherStudentAccounts(db, user) {
+  return clone((db.studentAccounts || []).filter((account) => account.teacherId === user.id));
 }
 
 function handleDemoRequest(path, method, body) {
@@ -457,14 +472,83 @@ function handleDemoRequest(path, method, body) {
     return { success: true };
   }
 
-  if (path === '/teacher/students?limit=6' && method === 'GET') {
-    return [
-      { name: 'Ali Hassan', email: 'ali@demo.com', course: 'Python Fundamentals', progress: 75, status: 'active' },
-      { name: 'Nour Salem', email: 'nour@demo.com', course: 'UI/UX Design Fundamentals', progress: 40, status: 'active' },
-      { name: 'Omar Khaled', email: 'omar@demo.com', course: 'Data Structures & Algorithms', progress: 90, status: 'active' },
-      { name: 'Layla Ibrahim', email: 'layla@demo.com', course: 'Statistics & Probability', progress: 20, status: 'inactive' },
-      { name: 'Yusuf Mansour', email: 'yusuf@demo.com', course: 'Python Fundamentals', progress: 55, status: 'active' },
-    ];
+  if (path.startsWith('/teacher/students') && method === 'GET') {
+    const limitMatch = path.match(/limit=(\d+)/);
+    const limit = limitMatch ? Number(limitMatch[1]) : null;
+    const accounts = getTeacherStudentAccounts(db, user);
+    return clone(limit ? accounts.slice(0, limit) : accounts);
+  }
+
+  if (path === '/teacher/students/generate' && method === 'POST') {
+    const packageSeatsMap = {
+      'starter-200': 200,
+      'growth-600': 600,
+      'scale-1000': 1000,
+    };
+    const count = Number(body.count || 0);
+    const prefix = (body.prefix || 'Student').trim();
+    const fixedPassword = (body.fixedPassword || '').trim();
+    if (!count || count < 1) throw new Error('Choose a valid number of accounts to generate.');
+    if (!body.courseId) throw new Error('Choose a course for these student accounts.');
+    if (body.passwordMode === 'fixed' && fixedPassword.length < 6) {
+      throw new Error('Fixed password must be at least 6 characters.');
+    }
+
+    const teacherAccounts = getTeacherStudentAccounts(db, user);
+    const packageSeats = packageSeatsMap[user.packageId] || 600;
+    if (teacherAccounts.length + count > packageSeats) {
+      throw new Error('This batch exceeds the remaining seats in your current package.');
+    }
+
+    const course = getCourseById(db, body.courseId);
+    if (!course) throw new Error('Selected course was not found.');
+
+    const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/(^\.|\.$)/g, '');
+    const generated = [];
+    for (let index = 0; index < count; index += 1) {
+      const sequence = teacherAccounts.length + index + 1;
+      const name = `${prefix} ${sequence}`;
+      const username = `${slugify(prefix) || 'student'}.${String(sequence).padStart(3, '0')}`;
+      const email = `${username}@student.edugate.local`;
+      const password = body.passwordMode === 'fixed'
+        ? fixedPassword
+        : `edu${String(Math.floor(1000 + Math.random() * 9000))}`;
+
+      const account = {
+        id: ++db.lastStudentAccountId,
+        teacherId: user.id,
+        name,
+        email,
+        username,
+        password,
+        courseId: course.id,
+        course: course.title,
+        progress: 0,
+        status: 'inactive',
+      };
+      db.studentAccounts.push(account);
+      db.users.push({
+        id: Date.now() + index,
+        name,
+        email,
+        role: 'student',
+        password,
+      });
+      generated.push(account);
+    }
+
+    const courseRef = db.courses.find((entry) => entry.id === course.id);
+    if (courseRef) {
+      courseRef.studentsCount = (courseRef.studentsCount || 0) + generated.length;
+    }
+
+    saveDemoDb(db);
+    return {
+      success: true,
+      generated: clone(generated),
+      totalStudents: db.studentAccounts.filter((account) => account.teacherId === user.id).length,
+      remainingSeats: packageSeats - db.studentAccounts.filter((account) => account.teacherId === user.id).length,
+    };
   }
 
   if (path === '/teacher/exams' && method === 'GET') return clone(db.exams);
