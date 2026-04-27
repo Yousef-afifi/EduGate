@@ -348,7 +348,7 @@ function handleDemoRequest(path, method, body) {
       id: Date.now(),
       name: `${body.firstName} ${body.lastName}`.trim(),
       email: body.email.trim(),
-      role: body.role,
+      role: 'teacher',
       password: body.password,
     };
     db.users.push(newUser);

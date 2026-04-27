@@ -19,7 +19,7 @@
       Start Teaching<br><span>Online</span> Today.
     </h1>
     <p class="auth-brand__sub">
-      Choose your role, create your account, and step into a ready educational platform built for
+      Create your teacher account and step into a ready educational platform built for
       lessons, recordings, student accounts, assignments, and online exams.
     </p>
 
@@ -75,16 +75,6 @@
         </div>
 
         <div class="form-group">
-          <label for="role">I am a</label>
-          <select id="role">
-            <option value="">Choose your role</option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher / Instructor</option>
-          </select>
-          <div class="field-error"></div>
-        </div>
-
-        <div class="form-group">
           <label for="reg-password">Password</label>
           <input type="password" id="reg-password" placeholder="At least 8 characters" autocomplete="new-password" />
           <div class="field-error"></div>
@@ -124,7 +114,6 @@
   const firstName = document.getElementById('first-name');
   const lastName = document.getElementById('last-name');
   const email = document.getElementById('reg-email');
-  const roleSelect = document.getElementById('role');
   const password = document.getElementById('reg-password');
   const confirm = document.getElementById('confirm-password');
   const termsBox = document.getElementById('terms');
@@ -157,7 +146,6 @@
   firstName.addEventListener('blur', () => setFieldError(firstName, validateField(firstName, 'required')));
   lastName.addEventListener('blur', () => setFieldError(lastName, validateField(lastName, 'required')));
   email.addEventListener('blur', () => setFieldError(email, validateField(email, 'required') || validateField(email, 'email')));
-  roleSelect.addEventListener('blur', () => setFieldError(roleSelect, validateField(roleSelect, 'required')));
   password.addEventListener('blur', () => setFieldError(password, validateField(password, 'required') || validateField(password, 'min:8')));
   confirm.addEventListener('blur', () => setFieldError(confirm, validateField(confirm, 'required') || validateField(confirm, 'match:reg-password')));
 
@@ -170,7 +158,6 @@
       [firstName, validateField(firstName, 'required')],
       [lastName, validateField(lastName, 'required')],
       [email, validateField(email, 'required') || validateField(email, 'email')],
-      [roleSelect, validateField(roleSelect, 'required')],
       [password, validateField(password, 'required') || validateField(password, 'min:8')],
       [confirm, validateField(confirm, 'required') || validateField(confirm, 'match:reg-password')],
     ];
@@ -192,7 +179,7 @@
         firstName: firstName.value.trim(),
         lastName: lastName.value.trim(),
         email: email.value.trim(),
-        role: roleSelect.value,
+        role: 'teacher',
         password: password.value,
       });
 
