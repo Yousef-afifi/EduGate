@@ -121,9 +121,43 @@
   const user = getUser();
   const isTeacher = user?.role === 'teacher';
   let currentView = getParam('view') || 'overview';
+  const teacherPackages = [
+    {
+      id: 'starter-200',
+      name: 'Starter',
+      seats: 200,
+      price: '$29',
+      billing: '/ month',
+      note: 'Best for individual teachers starting with one or two groups.',
+      features: ['Up to 200 student accounts', 'Courses, recordings, and exams', 'Basic account generation'],
+    },
+    {
+      id: 'growth-600',
+      name: 'Growth',
+      seats: 600,
+      price: '$59',
+      billing: '/ month',
+      note: 'Balanced package for active teachers managing several classes.',
+      features: ['Up to 600 student accounts', 'Priority support', 'Better room for multiple courses'],
+    },
+    {
+      id: 'scale-1000',
+      name: 'Scale',
+      seats: 1000,
+      price: '$99',
+      billing: '/ month',
+      note: 'For teachers and teams with larger student volume across many batches.',
+      features: ['Up to 1000 student accounts', 'Fast growth headroom', 'Advanced workspace support'],
+    },
+  ];
 
   if (!isTeacher) {
     document.body.classList.add('student-shell');
+  }
+
+  if (isTeacher && currentView === 'analytics') {
+    currentView = 'overview';
+    window.history.replaceState({}, '', 'dashboard.html');
   }
 
   const teacherNav = [
@@ -131,7 +165,7 @@
     { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
     { icon: '&#128221;', label: 'Exams', page: 'exams.html' },
     { icon: '&#128101;', label: 'Students', page: '#', view: 'students', badge: 'Seats' },
-    { icon: '&#128202;', label: 'Analytics', page: '#', view: 'analytics' },
+    { icon: '&#11014;', label: 'Upgrade', page: '#', view: 'upgrade' },
     { icon: '&#9881;', label: 'Settings', page: '#', view: 'settings' },
   ];
 
@@ -203,6 +237,11 @@
         <p style="font-size:14px;color:var(--gray-600);line-height:1.8">${item.text}</p>
       </div>
     `).join('')}</div>`;
+  }
+
+  function getTeacherPackageProfile() {
+    const profile = getUser() || {};
+    return teacherPackages.find((pkg) => pkg.id === profile.packageId) || teacherPackages[1];
   }
 
   function scheduleEventCard(event) {
@@ -323,6 +362,7 @@
   async function renderTeacherStudents() {
     setTitles('Students', 'Student Accounts & Capacity');
     const students = await api.get('/teacher/students?limit=6');
+    const activePackage = getTeacherPackageProfile();
     document.getElementById('dashboard-content').innerHTML = `
       <div class="section-header">
         <div>
@@ -333,7 +373,7 @@
       </div>
       <div class="stats-row">
         <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__num">${students.length}</div><div class="stat-card__label">Visible Students</div></div>
-        <div class="stat-card"><div class="stat-card__icon">&#128274;</div><div class="stat-card__num">600</div><div class="stat-card__label">Package Capacity</div></div>
+        <div class="stat-card"><div class="stat-card__icon">&#128274;</div><div class="stat-card__num">${activePackage.seats}</div><div class="stat-card__label">Package Capacity</div></div>
         <div class="stat-card"><div class="stat-card__icon">&#9989;</div><div class="stat-card__num">${students.filter((s) => s.status === 'active').length}</div><div class="stat-card__label">Active Students</div></div>
         <div class="stat-card"><div class="stat-card__icon">&#128200;</div><div class="stat-card__num">${Math.round(students.reduce((sum, s) => sum + s.progress, 0) / students.length)}%</div><div class="stat-card__label">Average Progress</div></div>
       </div>
@@ -357,32 +397,209 @@
     `;
   }
 
-  async function renderTeacherAnalytics() {
-    setTitles('Analytics', 'Teaching Performance');
-    const stats = await api.get('/teacher/stats');
+  function renderTeacherSettings() {
+    setTitles('Settings', 'Teacher Profile Settings');
+    const profile = getUser() || {};
+    const activePackage = getTeacherPackageProfile();
     document.getElementById('dashboard-content').innerHTML = `
-      <div class="stats-row">
-        <div class="stat-card"><div class="stat-card__icon">&#128202;</div><div class="stat-card__num">${stats.totalStudents}</div><div class="stat-card__label">Reach Across Your Courses</div></div>
-        <div class="stat-card"><div class="stat-card__icon">&#127909;</div><div class="stat-card__num">${stats.totalLessons}</div><div class="stat-card__label">Uploaded Lessons</div></div>
-        <div class="stat-card"><div class="stat-card__icon">&#11088;</div><div class="stat-card__num">${stats.avgRating}</div><div class="stat-card__label">Average Rating</div></div>
-        <div class="stat-card"><div class="stat-card__icon">&#128221;</div><div class="stat-card__num">8</div><div class="stat-card__label">Assessments Published</div></div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,0.75fr);gap:24px;align-items:start" id="teacher-settings-grid">
+        <div class="info-card">
+          <div class="section-header" style="margin-bottom:24px">
+            <div>
+              <div class="section-title">Edit Teacher Profile</div>
+              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Update the account details your students and workspace will use.</div>
+            </div>
+            <span class="badge badge-amber">Teacher Account</span>
+          </div>
+
+          <form id="teacher-settings-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="teacher-name">Full Name</label>
+                <input type="text" id="teacher-name" value="${profile.name || ''}" placeholder="Your full name" />
+                <div class="field-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="teacher-email">Email Address</label>
+                <input type="email" id="teacher-email" value="${profile.email || ''}" placeholder="teacher@email.com" />
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="teacher-phone">Phone Number</label>
+                <input type="text" id="teacher-phone" value="${profile.phone || ''}" placeholder="For student or parent contact" />
+                <div class="field-error"></div>
+              </div>
+              <div class="form-group">
+                <label for="teacher-subject">Teaching Specialty</label>
+                <input type="text" id="teacher-subject" value="${profile.subject || ''}" placeholder="e.g. Mathematics" />
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="teacher-bio">About You</label>
+              <textarea id="teacher-bio" rows="4" placeholder="A short teacher bio for your workspace">${profile.bio || ''}</textarea>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="section-header" style="margin:26px 0 14px">
+              <div class="section-title" style="font-size:18px">Preferences</div>
+            </div>
+
+            <div style="display:grid;gap:14px;margin-bottom:22px">
+              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
+                <input type="checkbox" id="teacher-pref-signups" ${profile.prefSignupAlerts === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
+                <span style="display:block">
+                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Student account activity</strong>
+                  <span style="font-size:13px;color:var(--gray-600)">Get alerts when new student accounts are generated or activated.</span>
+                </span>
+              </label>
+              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
+                <input type="checkbox" id="teacher-pref-exams" ${profile.prefExamAlerts === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
+                <span style="display:block">
+                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Exam and submission alerts</strong>
+                  <span style="font-size:13px;color:var(--gray-600)">Receive summaries for student submissions and upcoming exam activity.</span>
+                </span>
+              </label>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:12px">
+              <button type="button" class="btn-secondary" id="teacher-settings-reset">Reset</button>
+              <button type="submit" class="btn-primary" id="teacher-settings-save" style="width:auto;padding-inline:26px">Save Changes</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="display:grid;gap:16px">
+          <div class="info-card">
+            <h3>Profile Summary</h3>
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+              <div style="width:54px;height:54px;border-radius:50%;background:var(--navy);color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px" id="teacher-profile-initials">${(profile.name || 'T').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase()}</div>
+              <div>
+                <div style="font-weight:700;color:var(--navy);font-size:16px" id="teacher-profile-name">${profile.name || 'Teacher'}</div>
+                <div style="font-size:13px;color:var(--gray-400)" id="teacher-profile-email">${profile.email || ''}</div>
+              </div>
+            </div>
+            <div class="info-row"><span class="info-row-label">Role</span><span class="info-row-value">Teacher</span></div>
+            <div class="info-row"><span class="info-row-label">Specialty</span><span class="info-row-value" id="teacher-profile-subject">${profile.subject || 'Not set'}</span></div>
+            <div class="info-row"><span class="info-row-label">Phone</span><span class="info-row-value" id="teacher-profile-phone">${profile.phone || 'Not set'}</span></div>
+          </div>
+
+          <div class="info-card">
+            <h3>Current Package</h3>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px">
+              <div>
+                <div style="font-family:var(--font-head);font-size:22px;color:var(--navy)">${activePackage.name}</div>
+                <div style="font-size:13px;color:var(--gray-400)">${activePackage.seats} student seats</div>
+              </div>
+              <span class="badge badge-blue">${activePackage.price}${activePackage.billing}</span>
+            </div>
+            <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin:0">${activePackage.note}</p>
+          </div>
+        </div>
       </div>
-      ${infoCards([
-        { title: 'Course Completion Signal', text: 'Your most engaged students are moving through recorded lessons and exam checkpoints steadily.' },
-        { title: 'Content Opportunity', text: 'Courses with longer watch duration can benefit from follow-up assignments and recap quizzes.' },
-        { title: 'Package Utilization', text: 'You still have room to onboard more students before reaching your current package limit.' },
-      ])}
     `;
+
+    const form = document.getElementById('teacher-settings-form');
+    const saveBtn = document.getElementById('teacher-settings-save');
+    const resetBtn = document.getElementById('teacher-settings-reset');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const nameIn = document.getElementById('teacher-name');
+      const emailIn = document.getElementById('teacher-email');
+      const nameErr = validateField(nameIn, 'required');
+      const emailErr = validateField(emailIn, 'required') || validateField(emailIn, 'email');
+      setFieldError(nameIn, nameErr);
+      setFieldError(emailIn, emailErr);
+      if (nameErr || emailErr) return;
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+
+      const updated = updateStoredUserProfile({
+        name: nameIn.value.trim(),
+        email: emailIn.value.trim(),
+        phone: document.getElementById('teacher-phone').value.trim(),
+        subject: document.getElementById('teacher-subject').value.trim(),
+        bio: document.getElementById('teacher-bio').value.trim(),
+        prefSignupAlerts: document.getElementById('teacher-pref-signups').checked,
+        prefExamAlerts: document.getElementById('teacher-pref-exams').checked,
+      });
+
+      if (updated) {
+        document.getElementById('teacher-profile-initials').textContent = (updated.name || 'T').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase();
+        document.getElementById('teacher-profile-name').textContent = updated.name || 'Teacher';
+        document.getElementById('teacher-profile-email').textContent = updated.email || '';
+        document.getElementById('teacher-profile-subject').textContent = updated.subject || 'Not set';
+        document.getElementById('teacher-profile-phone').textContent = updated.phone || 'Not set';
+      }
+
+      showToast('Teacher profile updated successfully.', 'success');
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Changes';
+    });
+
+    resetBtn.addEventListener('click', () => {
+      renderTeacherSettings();
+    });
   }
 
-  function renderTeacherSettings() {
-    setTitles('Settings', 'Teacher Workspace Settings');
+  function renderTeacherUpgrade() {
+    setTitles('Upgrade', 'Packages & Capacity');
+    const activePackage = getTeacherPackageProfile();
+    const studentsInUse = 5;
     document.getElementById('dashboard-content').innerHTML = `
-      ${infoCards([
-        { title: 'Package Settings', text: 'Current workspace is configured around student-seat packages. Upgrade logic and billing screen can plug in here next.' },
-        { title: 'Branding', text: 'You can use this area for your teacher name, support contact, and classroom branding preferences.' },
-        { title: 'Notifications', text: 'Control alerts for new submissions, upcoming exams, and student activity summaries.' },
-      ])}
+      <div style="background:var(--white);border:1px solid var(--gray-200);box-shadow:var(--shadow);border-radius:var(--radius);padding:24px;margin-bottom:24px">
+        <div class="section-header" style="margin-bottom:18px">
+          <div>
+            <div class="section-title">Your Current Package</div>
+            <div style="font-size:13px;color:var(--gray-400);margin-top:6px">See your current student capacity and compare it with the available upgrades.</div>
+          </div>
+          <span class="badge badge-amber">Active Now</span>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-card__icon">&#128274;</div><div class="stat-card__num">${activePackage.seats}</div><div class="stat-card__label">Student Capacity</div></div>
+          <div class="stat-card"><div class="stat-card__icon">&#128101;</div><div class="stat-card__num">${studentsInUse}</div><div class="stat-card__label">Accounts In Use</div></div>
+          <div class="stat-card"><div class="stat-card__icon">&#9203;</div><div class="stat-card__num">${activePackage.seats - studentsInUse}</div><div class="stat-card__label">Seats Remaining</div></div>
+          <div class="stat-card"><div class="stat-card__icon">&#11088;</div><div class="stat-card__num">${activePackage.price}</div><div class="stat-card__label">Current Price${activePackage.billing}</div></div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <div class="section-title">Available Packages</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Choose the package that matches your student volume.</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        ${teacherPackages.map((pkg) => {
+          const isCurrent = pkg.id === activePackage.id;
+          return `
+            <div class="info-card" style="border:${isCurrent ? '2px solid var(--amber)' : '1px solid var(--gray-200)'};position:relative">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px">
+                <div>
+                  <h3 style="margin-bottom:6px">${pkg.name}</h3>
+                  <div style="font-size:13px;color:var(--gray-400)">${pkg.seats} student seats</div>
+                </div>
+                <span class="badge ${isCurrent ? 'badge-amber' : 'badge-blue'}">${isCurrent ? 'Current' : 'Available'}</span>
+              </div>
+              <div style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:2px">${pkg.price}</div>
+              <div style="font-size:13px;color:var(--gray-400);margin-bottom:14px">${pkg.billing}</div>
+              <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:16px">${pkg.note}</p>
+              <div style="display:grid;gap:10px;margin-bottom:18px">
+                ${pkg.features.map((feature) => `<div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">&#10003;</span><span>${feature}</span></div>`).join('')}
+              </div>
+              <button type="button" class="${isCurrent ? 'btn-secondary' : 'btn-amber'}" style="width:auto;padding-inline:22px" ${isCurrent ? 'disabled' : ''} onclick="upgradeTeacherPackage('${pkg.id}')">${isCurrent ? 'Current Package' : 'Upgrade Package'}</button>
+            </div>
+          `;
+        }).join('')}
+      </div>
     `;
   }
 
@@ -665,7 +882,7 @@
   async function loadCurrentView() {
     if (isTeacher) {
       if (currentView === 'students') return renderTeacherStudents();
-      if (currentView === 'analytics') return renderTeacherAnalytics();
+      if (currentView === 'upgrade') return renderTeacherUpgrade();
       if (currentView === 'settings') return renderTeacherSettings();
       return renderTeacherOverview();
     }
@@ -705,6 +922,14 @@
     syncActiveNav();
     loadCurrentView();
   });
+
+  window.upgradeTeacherPackage = (packageId) => {
+    const selected = teacherPackages.find((pkg) => pkg.id === packageId);
+    if (!selected) return;
+    updateStoredUserProfile({ packageId });
+    showToast(`Package upgraded to ${selected.name}.`, 'success');
+    renderTeacherUpgrade();
+  };
 
   syncActiveNav();
   loadCurrentView();
