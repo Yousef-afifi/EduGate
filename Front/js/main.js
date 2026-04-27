@@ -488,8 +488,11 @@ function handleDemoRequest(path, method, body) {
     const count = Number(body.count || 0);
     const prefix = (body.prefix || 'Student').trim();
     const fixedPassword = (body.fixedPassword || '').trim();
+    const selectedCourseIds = Array.isArray(body.courseIds) ? body.courseIds.map(Number).filter(Boolean) : [];
     if (!count || count < 1) throw new Error('Choose a valid number of accounts to generate.');
-    if (!body.courseId) throw new Error('Choose a course for these student accounts.');
+    if (!body.assignAllCourses && !selectedCourseIds.length) {
+      throw new Error('Choose at least one course for these student accounts.');
+    }
     if (body.passwordMode === 'fixed' && fixedPassword.length < 6) {
       throw new Error('Fixed password must be at least 6 characters.');
     }
@@ -500,8 +503,10 @@ function handleDemoRequest(path, method, body) {
       throw new Error('This batch exceeds the remaining seats in your current package.');
     }
 
-    const course = getCourseById(db, body.courseId);
-    if (!course) throw new Error('Selected course was not found.');
+    const selectedCourses = body.assignAllCourses
+      ? db.courses.filter((course) => course.instructorId === user.id || user.role === 'teacher')
+      : selectedCourseIds.map((courseId) => getCourseById(db, courseId)).filter(Boolean);
+    if (!selectedCourses.length) throw new Error('Selected courses were not found.');
 
     const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/(^\.|\.$)/g, '');
     const generated = [];
@@ -521,8 +526,10 @@ function handleDemoRequest(path, method, body) {
         email,
         username,
         password,
-        courseId: course.id,
-        course: course.title,
+        courseId: selectedCourses[0].id,
+        courseIds: selectedCourses.map((course) => course.id),
+        courses: selectedCourses.map((course) => course.title),
+        course: selectedCourses.map((course) => course.title).join(', '),
         progress: 0,
         status: 'inactive',
       };
@@ -537,10 +544,12 @@ function handleDemoRequest(path, method, body) {
       generated.push(account);
     }
 
-    const courseRef = db.courses.find((entry) => entry.id === course.id);
-    if (courseRef) {
-      courseRef.studentsCount = (courseRef.studentsCount || 0) + generated.length;
-    }
+    selectedCourses.forEach((course) => {
+      const courseRef = db.courses.find((entry) => entry.id === course.id);
+      if (courseRef) {
+        courseRef.studentsCount = (courseRef.studentsCount || 0) + generated.length;
+      }
+    });
 
     saveDemoDb(db);
     return {

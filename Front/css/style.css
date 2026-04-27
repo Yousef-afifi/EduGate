@@ -992,6 +992,280 @@ body.student-shell .nav-item.active .nav-icon {
 .info-row-label { color: var(--gray-400); }
 .info-row-value { font-weight: 600; color: var(--navy); }
 
+.course-assign-box {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  background: var(--gray-50);
+}
+.all-courses-toggle {
+  position: relative;
+  display: block;
+  padding: 18px 18px;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  background: var(--gray-50);
+  cursor: pointer;
+  min-height: 132px;
+}
+.all-courses-toggle__body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 94px;
+}
+.all-courses-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.all-courses-toggle__control {
+  width: 44px;
+  height: 26px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  position: relative;
+  transition: background var(--transition);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.all-courses-toggle__control::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+  transition: transform var(--transition);
+}
+.all-courses-toggle input:checked + .all-courses-toggle__body .all-courses-toggle__control {
+  background: var(--amber);
+}
+.all-courses-toggle input:checked + .all-courses-toggle__body .all-courses-toggle__control::after {
+  transform: translateX(18px);
+}
+.all-courses-toggle__content {
+  display: block;
+  max-width: 420px;
+  padding-top: 2px;
+}
+.all-courses-toggle__content strong {
+  display: block;
+  color: var(--navy);
+  font-size: 20px;
+  margin-bottom: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-head);
+}
+.all-courses-toggle__content span {
+  display: block;
+  color: var(--gray-500);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.generate-batch-layout {
+  display: grid;
+  gap: 22px;
+}
+.generate-batch-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px;
+  gap: 20px;
+  align-items: start;
+}
+.generate-batch-toggle {
+  margin-bottom: 0;
+}
+.generate-batch-count {
+  margin-bottom: 0;
+}
+.generate-form-row {
+  gap: 20px;
+  align-items: start;
+}
+.generate-form-row--details {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.95fr);
+}
+.count-stepper {
+  width: 100%;
+  max-width: 124px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--white);
+}
+.count-stepper:focus-within {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+.count-stepper input {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  text-align: center;
+  padding: 12px 8px;
+  font-weight: 700;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.count-stepper input::-webkit-outer-spin-button,
+.count-stepper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.count-stepper__buttons {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  border-left: 1px solid var(--gray-200);
+}
+.count-stepper__btn {
+  border: none;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  font-size: 10px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.count-stepper__btn:hover {
+  background: #fff7ed;
+  color: var(--amber-dark);
+}
+.count-stepper__btn + .count-stepper__btn {
+  border-top: 1px solid var(--gray-200);
+}
+.course-dropdown {
+  position: relative;
+}
+.course-dropdown.disabled {
+  opacity: 0.65;
+}
+.course-dropdown__trigger {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--navy);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.course-dropdown__trigger:hover {
+  border-color: #cbd5e1;
+}
+.course-dropdown__trigger:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+}
+.course-dropdown__trigger:disabled {
+  cursor: not-allowed;
+  background: var(--gray-100);
+}
+.course-dropdown__arrow {
+  color: var(--gray-400);
+  font-size: 12px;
+  transition: transform var(--transition);
+}
+.course-dropdown.open .course-dropdown__arrow {
+  transform: rotate(180deg);
+}
+.course-dropdown__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.course-dropdown__list {
+  max-height: 220px;
+  overflow: auto;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+}
+.course-dropdown__option {
+  width: 100%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--gray-700);
+  cursor: pointer;
+  text-align: left;
+}
+.course-dropdown__option:hover {
+  background: var(--gray-50);
+}
+.course-dropdown__option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.course-dropdown__option.selected {
+  background: #fff7ed;
+  color: #9a3412;
+  font-weight: 600;
+}
+.course-dropdown__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 20px;
+}
+.course-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 12px;
+  font-weight: 600;
+}
+.course-chip--all {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.course-dropdown__hint {
+  font-size: 12px;
+  color: var(--gray-400);
+  line-height: 1.6;
+}
+
+@media (max-width: 1200px) {
+  .generate-batch-top,
+  .generate-form-row--details {
+    grid-template-columns: 1fr;
+  }
+  .generate-batch-count .count-stepper {
+    max-width: 140px;
+  }
+}
+
 /* ============================================================
    VIDEO LESSON PAGE
    ============================================================ */
