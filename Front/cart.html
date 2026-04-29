@@ -41,7 +41,7 @@
         <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
         <div>
           <div class="topbar__title">My Cart</div>
-          <div class="topbar__breadcrumb">Home &rsaquo; <span>Book Orders</span></div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
         </div>
       </div>
       <div class="topbar__right">
@@ -61,6 +61,11 @@
 <script>
   requireAuth();
   populateSidebarUser();
+  setBreadcrumbTrail('page-breadcrumb', [
+    { label: 'Home', href: 'dashboard.html' },
+    { label: 'Study Materials & Bundles', href: 'dashboard.html?view=progress' },
+    { label: 'Book Orders' },
+  ]);
 
   const navItems = [
     { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html' },

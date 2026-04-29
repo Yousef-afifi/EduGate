@@ -38,11 +38,7 @@
         <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
         <div>
           <div class="topbar__title" id="page-title">Course Details</div>
-          <div class="topbar__breadcrumb">
-            <a href="dashboard.html">Home</a> &rsaquo;
-            <a href="courses.html">Courses</a> &rsaquo;
-            <span id="course-title-crumb">Loading...</span>
-          </div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
         </div>
       </div>
       <div class="topbar__right">
@@ -165,7 +161,11 @@
       api.get(`/courses/${courseId}/lessons`),
     ]);
 
-    document.getElementById('course-title-crumb').textContent = course.title;
+    setBreadcrumbTrail('page-breadcrumb', [
+      { label: 'Home', href: 'dashboard.html' },
+      { label: 'Courses', href: 'courses.html' },
+      { label: course.title },
+    ]);
     document.title = `${course.title} - EduPlatform`;
 
     const completedCount = lessons.filter((lesson) => lesson.completed).length;

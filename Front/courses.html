@@ -38,7 +38,7 @@
         <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
         <div>
           <div class="topbar__title">Courses</div>
-          <div class="topbar__breadcrumb"><a href="dashboard.html">Home</a> &rsaquo; Courses</div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
         </div>
       </div>
       <div class="topbar__right">
@@ -134,6 +134,10 @@
 <script>
   requireAuth();
   populateSidebarUser();
+  setBreadcrumbTrail('page-breadcrumb', [
+    { label: 'Home', href: 'dashboard.html' },
+    { label: 'Courses' },
+  ]);
 
   const user = getUser();
   const isTeacher = user?.role === 'teacher';

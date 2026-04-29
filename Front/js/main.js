@@ -723,6 +723,18 @@ function populateSidebarUser() {
   if (topNameEl) topNameEl.textContent = user.name || user.email;
 }
 
+function setBreadcrumbTrail(targetId, items) {
+  const el = document.getElementById(targetId);
+  if (!el || !Array.isArray(items)) return;
+  el.innerHTML = items.map((item, index) => {
+    const isLast = index === items.length - 1;
+    const content = item.href && !isLast
+      ? `<a href="${item.href}">${item.label}</a>`
+      : `<span>${item.label}</span>`;
+    return `${index > 0 ? ' <span>&rsaquo;</span> ' : ''}${content}`;
+  }).join('');
+}
+
 function setActiveNav() {
   const page = window.location.pathname.split('/').pop();
   document.querySelectorAll('.nav-item').forEach((item) => {

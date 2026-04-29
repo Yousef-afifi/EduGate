@@ -38,12 +38,7 @@
         <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
         <div>
           <div class="topbar__title" id="lesson-title-bar">Video Lesson</div>
-          <div class="topbar__breadcrumb">
-            <a href="dashboard.html">Home</a> &rsaquo;
-            <a href="courses.html">Courses</a> &rsaquo;
-            <a href="#" id="course-link-crumb">Course</a> &rsaquo;
-            <span id="lesson-crumb">Lesson</span>
-          </div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
         </div>
       </div>
       <div class="topbar__right">
@@ -110,14 +105,19 @@
   });
 
   async function loadLesson() {
-    const [lessons, lesson] = await Promise.all([
+    const [course, lessons, lesson] = await Promise.all([
+      api.get(`/courses/${courseId}`),
       api.get(`/courses/${courseId}/lessons`),
       api.get(`/courses/${courseId}/lessons/${lessonId}`),
     ]);
 
     document.getElementById('lesson-title-bar').textContent = lesson.title;
-    document.getElementById('lesson-crumb').textContent = lesson.title;
-    document.getElementById('course-link-crumb').href = `course-details.html?id=${courseId}`;
+    setBreadcrumbTrail('page-breadcrumb', [
+      { label: 'Home', href: 'dashboard.html' },
+      { label: 'Courses', href: 'courses.html' },
+      { label: course.title, href: `course-details.html?id=${courseId}` },
+      { label: lesson.title },
+    ]);
     document.title = `${lesson.title} - EduPlatform`;
 
     const index = lessons.findIndex((item) => item.id === lessonId);

@@ -41,7 +41,7 @@
         <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
         <div>
           <div class="topbar__title" id="page-title">Dashboard</div>
-          <div class="topbar__breadcrumb">Home &rsaquo; <span id="page-title-crumb">Overview</span></div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
         </div>
       </div>
       <div class="topbar__right">
@@ -230,7 +230,10 @@
 
   function setTitles(title, crumb) {
     document.getElementById('page-title').textContent = title;
-    document.getElementById('page-title-crumb').textContent = crumb;
+    setBreadcrumbTrail('page-breadcrumb', [
+      { label: 'Home', href: 'dashboard.html' },
+      { label: crumb },
+    ]);
   }
 
   function infoCards(items) {

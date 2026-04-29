@@ -38,11 +38,7 @@
         <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
         <div>
           <div class="topbar__title" id="exam-title-bar">Take Exam</div>
-          <div class="topbar__breadcrumb">
-            <a href="dashboard.html">Home</a> &rsaquo;
-            <a href="exams.html">Exams</a> &rsaquo;
-            <span id="exam-crumb">Exam</span>
-          </div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
         </div>
       </div>
       <div class="topbar__right">
@@ -127,7 +123,11 @@
     exam = await api.get(`/exams/${examId}`);
     timerSecs = exam.duration * 60;
     document.getElementById('exam-title-bar').textContent = exam.title;
-    document.getElementById('exam-crumb').textContent = exam.title;
+    setBreadcrumbTrail('page-breadcrumb', [
+      { label: 'Home', href: 'dashboard.html' },
+      { label: 'Exams', href: 'exams.html' },
+      { label: exam.title },
+    ]);
     document.title = `${exam.title} - EduPlatform`;
     renderExamStart();
   }
