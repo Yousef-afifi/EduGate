@@ -1271,6 +1271,147 @@ body.student-shell .nav-item.active .nav-icon {
 .info-row-label { color: var(--gray-400); }
 .info-row-value { font-weight: 600; color: var(--navy); }
 
+.student-settings-shell {
+  display: grid;
+  gap: 24px;
+}
+.student-settings-hero {
+  background:
+    radial-gradient(circle at top right, rgba(245,158,11,0.12), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid var(--gray-200);
+  border-radius: 24px;
+  padding: 28px 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.student-settings-hero__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber-dark);
+  margin-bottom: 8px;
+}
+.student-settings-hero__title {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 4vw, 38px);
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.student-settings-hero__text {
+  max-width: 620px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--gray-600);
+}
+.student-settings-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.student-settings-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 24px;
+  align-items: start;
+}
+.student-settings-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.student-settings-section-head {
+  margin-bottom: 24px;
+}
+.student-settings-section-subtitle {
+  font-size: 13px;
+  color: var(--gray-400);
+  line-height: 1.8;
+  margin-top: 6px;
+  max-width: 760px;
+}
+.student-settings-panel {
+  border: 1px solid var(--gray-200);
+  border-radius: 20px;
+  padding: 22px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  margin-bottom: 18px;
+}
+.student-settings-panel__title {
+  font-family: var(--font-head);
+  font-size: 21px;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.student-settings-panel__subtitle {
+  font-size: 13px;
+  color: var(--gray-400);
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+.student-settings-readonly {
+  background: var(--gray-100) !important;
+  color: var(--gray-600) !important;
+  cursor: not-allowed;
+}
+.student-settings-hint {
+  font-size: 12px;
+  color: var(--gray-400);
+  margin-top: 7px;
+  line-height: 1.6;
+}
+.student-settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 6px;
+}
+.student-settings-side {
+  display: grid;
+  gap: 16px;
+}
+.student-settings-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.student-settings-summary__avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+.student-settings-summary__name {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 16px;
+}
+.student-settings-summary__email {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 2px;
+}
+
 .course-assign-box {
   display: grid;
   gap: 10px;
@@ -2335,7 +2476,13 @@ body.student-shell .nav-item.active .nav-icon {
   .cart-layout { grid-template-columns: 1fr; }
   .cart-item { grid-template-columns: 1fr; }
   .cart-item__actions { align-items: flex-start; }
+  .student-settings-hero {
+    padding: 24px;
+    flex-direction: column;
+  }
+  .student-settings-layout,
   #student-settings-grid { grid-template-columns: 1fr !important; }
+  .student-settings-card { padding: 22px; }
 }
 
 
@@ -2345,6 +2492,12 @@ body.student-shell .nav-item.active .nav-icon {
   .student-book-card { padding: 16px; border-radius: 20px; }
   .student-book-card__media { min-height: 210px; padding: 18px; }
   .student-book-card__art { font-size: 88px; inset-inline-start: 20px; }
+  .student-settings-card,
+  .student-settings-hero { padding: 18px; border-radius: 20px; }
+  .student-settings-panel { padding: 18px; border-radius: 16px; }
+  .student-settings-actions { flex-direction: column-reverse; }
+  .student-settings-actions .btn-secondary,
+  .student-settings-actions .btn-primary { width: 100% !important; }
 }
 
 /* ============================================================

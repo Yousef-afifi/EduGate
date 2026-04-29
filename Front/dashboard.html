@@ -280,7 +280,8 @@
   function updateStoredUserProfile(fields) {
     const current = getUser();
     if (!current) return;
-    const updated = { ...current, ...fields };
+    const { password, ...safeFields } = fields;
+    const updated = { ...current, ...safeFields };
     saveSession(updated, getToken());
 
     try {
@@ -1110,113 +1111,130 @@
   }
 
   function renderStudentSettings() {
-    setTitles('Settings', 'Student Preferences');
+    setTitles('Settings', 'Student Account Settings');
     const profile = getUser() || {};
     document.getElementById('dashboard-content').innerHTML = `
-      <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,0.75fr);gap:24px;align-items:start" id="student-settings-grid">
-        <div class="info-card">
-          <div class="section-header" style="margin-bottom:24px">
-            <div>
-              <div class="section-title">Edit Profile</div>
-              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Update your basic account information. Your teacher controls the email used for your account.</div>
-            </div>
-            <span class="badge badge-blue">Student Account</span>
+      <div class="student-settings-shell">
+        <div class="student-settings-hero">
+          <div>
+            <div class="student-settings-hero__eyebrow">Student Settings</div>
+            <div class="student-settings-hero__title">Profile & Security</div>
+            <div class="student-settings-hero__text">Keep your basic details updated and manage your password from one clean place.</div>
           </div>
-
-          <form id="student-settings-form" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="student-name">Full Name</label>
-                <input type="text" id="student-name" value="${profile.name || ''}" placeholder="Your full name" />
-                <div class="field-error"></div>
-              </div>
-              <div class="form-group">
-                <label for="student-email">Email Address</label>
-                <input type="email" id="student-email" value="${profile.email || ''}" placeholder="your@email.com" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed" />
-                <div style="font-size:12px;color:var(--gray-400);margin-top:7px">This email is assigned by your teacher and cannot be changed here.</div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="student-phone">Phone Number</label>
-              <input type="text" id="student-phone" value="${profile.phone || ''}" placeholder="Optional contact number" />
-              <div class="field-error"></div>
-            </div>
-
-            <div class="section-header" style="margin:26px 0 14px">
-              <div class="section-title" style="font-size:18px">Preferences</div>
-            </div>
-
-            <div style="display:grid;gap:14px;margin-bottom:22px">
-              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
-                <input type="checkbox" id="pref-exam-reminders" ${profile.prefExamReminders === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
-                <span style="display:block">
-                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Exam reminders</strong>
-                  <span style="font-size:13px;color:var(--gray-600)">Get reminders before exam windows and deadlines.</span>
-                </span>
-              </label>
-              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
-                <input type="checkbox" id="pref-lesson-alerts" ${profile.prefLessonAlerts === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
-                <span style="display:block">
-                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Lesson release alerts</strong>
-                  <span style="font-size:13px;color:var(--gray-600)">Know when your teacher uploads new videos or materials.</span>
-                </span>
-              </label>
-            </div>
-
-            <div style="display:flex;justify-content:flex-end;gap:12px">
-              <button type="button" class="btn-secondary" id="student-settings-reset">Reset</button>
-              <button type="submit" class="btn-primary" id="student-settings-save" style="width:auto;padding-inline:26px">Save Changes</button>
-            </div>
-          </form>
+          <span class="student-settings-hero__badge">Student Account</span>
         </div>
 
-        <div style="display:grid;gap:16px">
-          <div class="info-card">
-            <h3>Profile Summary</h3>
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
-              <div style="width:54px;height:54px;border-radius:50%;background:var(--navy);color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px" id="student-profile-initials">${(profile.name || 'S').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase()}</div>
+        <div class="student-settings-layout" id="student-settings-grid">
+          <div class="student-settings-card">
+            <div class="student-settings-section-head">
               <div>
-                <div style="font-weight:700;color:var(--navy);font-size:16px" id="student-profile-name">${profile.name || 'Student'}</div>
-                <div style="font-size:13px;color:var(--gray-400)" id="student-profile-email">${profile.email || ''}</div>
+                <div class="section-title">Edit Profile</div>
+                <div class="student-settings-section-subtitle">Your teacher controls the email used for your account, so only your personal details can be edited here.</div>
               </div>
             </div>
-            <div class="info-row"><span class="info-row-label">Role</span><span class="info-row-value">Student</span></div>
-            <div class="info-row"><span class="info-row-label">Email</span><span class="info-row-value">${profile.email || 'Not set'}</span></div>
-            <div class="info-row"><span class="info-row-label">Phone</span><span class="info-row-value" id="student-profile-phone">${profile.phone || 'Not set'}</span></div>
+
+            <form id="student-basic-form" novalidate>
+              <div class="student-settings-panel">
+                <div class="student-settings-panel__title">Basic Information</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="student-name">Full Name</label>
+                    <input type="text" id="student-name" value="${profile.name || ''}" placeholder="Your full name" />
+                    <div class="field-error"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="student-email">Email Address</label>
+                    <input type="email" id="student-email" value="${profile.email || ''}" placeholder="your@email.com" readonly class="student-settings-readonly" />
+                    <div class="student-settings-hint">This email is assigned by your teacher and cannot be changed here.</div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0">
+                  <label for="student-phone">Phone Number</label>
+                  <input type="text" id="student-phone" value="${profile.phone || ''}" placeholder="Optional contact number" />
+                  <div class="field-error"></div>
+                </div>
+                <div class="student-settings-actions">
+                  <button type="button" class="btn-secondary" id="student-basic-reset">Reset</button>
+                  <button type="submit" class="btn-primary" id="student-basic-save" style="width:auto;padding-inline:26px">Save Changes</button>
+                </div>
+              </div>
+            </form>
+
+            <form id="student-password-form" novalidate>
+              <div class="student-settings-panel">
+                <div class="student-settings-panel__title">Change Password</div>
+                <div class="student-settings-panel__subtitle">Leave these fields empty if you do not want to update your password right now.</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="student-current-password">Current Password</label>
+                    <input type="password" id="student-current-password" placeholder="Enter current password" autocomplete="current-password" />
+                    <div class="field-error"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="student-new-password">New Password</label>
+                    <input type="password" id="student-new-password" placeholder="At least 6 characters" autocomplete="new-password" />
+                    <div class="field-error"></div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0">
+                  <label for="student-confirm-password">Confirm New Password</label>
+                  <input type="password" id="student-confirm-password" placeholder="Repeat the new password" autocomplete="new-password" />
+                  <div class="field-error"></div>
+                </div>
+                <div class="student-settings-actions">
+                  <button type="button" class="btn-secondary" id="student-password-reset">Reset</button>
+                  <button type="submit" class="btn-primary" id="student-password-save" style="width:auto;padding-inline:26px">Save Password</button>
+                </div>
+              </div>
+            </form>
           </div>
 
-          <div class="info-card">
-            <h3>Account Help</h3>
-            <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:12px">Use this area to keep your student profile accurate. Your teacher may use these details to organize groups and communication.</p>
-            <div style="display:grid;gap:10px">
-              <div class="badge badge-amber" style="width:max-content">Profile updates save locally in this demo</div>
-              <div class="badge badge-blue" style="width:max-content">Ready for backend connection later</div>
+          <div class="student-settings-side">
+            <div class="student-settings-card">
+              <h3>Profile Summary</h3>
+              <div class="student-settings-summary">
+                <div class="student-settings-summary__avatar" id="student-profile-initials">${(profile.name || 'S').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase()}</div>
+                <div>
+                  <div class="student-settings-summary__name" id="student-profile-name">${profile.name || 'Student'}</div>
+                  <div class="student-settings-summary__email" id="student-profile-email">${profile.email || ''}</div>
+                </div>
+              </div>
+              <div class="info-row"><span class="info-row-label">Role</span><span class="info-row-value">Student</span></div>
+              <div class="info-row"><span class="info-row-label">Email</span><span class="info-row-value">${profile.email || 'Not set'}</span></div>
+              <div class="info-row"><span class="info-row-label">Phone</span><span class="info-row-value" id="student-profile-phone">${profile.phone || 'Not set'}</span></div>
             </div>
+
           </div>
         </div>
       </div>
     `;
 
-    const form = document.getElementById('student-settings-form');
-    const saveBtn = document.getElementById('student-settings-save');
-    const resetBtn = document.getElementById('student-settings-reset');
+    const basicForm = document.getElementById('student-basic-form');
+    const basicSaveBtn = document.getElementById('student-basic-save');
+    const basicResetBtn = document.getElementById('student-basic-reset');
+    const passwordForm = document.getElementById('student-password-form');
+    const passwordSaveBtn = document.getElementById('student-password-save');
+    const passwordResetBtn = document.getElementById('student-password-reset');
 
-    form.addEventListener('submit', (event) => {
+    basicForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const nameIn = document.getElementById('student-name');
       const nameErr = validateField(nameIn, 'required');
+
       setFieldError(nameIn, nameErr);
       if (nameErr) return;
 
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving...';
+      const confirmed = window.confirm('Are you sure you want to save these changes?');
+      if (!confirmed) return;
+
+      basicSaveBtn.disabled = true;
+      basicSaveBtn.textContent = 'Saving...';
 
       const updated = updateStoredUserProfile({
         name: nameIn.value.trim(),
         phone: document.getElementById('student-phone').value.trim(),
-        prefExamReminders: document.getElementById('pref-exam-reminders').checked,
-        prefLessonAlerts: document.getElementById('pref-lesson-alerts').checked,
       });
 
       if (updated) {
@@ -1227,12 +1245,56 @@
       }
 
       showToast('Profile updated successfully.', 'success');
-      saveBtn.disabled = false;
-      saveBtn.textContent = 'Save Changes';
+      basicSaveBtn.disabled = false;
+      basicSaveBtn.textContent = 'Save Changes';
     });
 
-    resetBtn.addEventListener('click', () => {
+    passwordForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const currentPasswordIn = document.getElementById('student-current-password');
+      const newPasswordIn = document.getElementById('student-new-password');
+      const confirmPasswordIn = document.getElementById('student-confirm-password');
+      const db = getDemoDb();
+      const dbUser = db.users.find((entry) => entry.id === profile.id);
+      const currentPasswordErr = validateField(currentPasswordIn, 'required') || (dbUser?.password !== currentPasswordIn.value.trim() ? 'Current password is incorrect.' : null);
+      const newPasswordErr = validateField(newPasswordIn, 'required') || validateField(newPasswordIn, 'min:6');
+      const confirmPasswordErr = validateField(confirmPasswordIn, 'required') || validateField(confirmPasswordIn, 'match:student-new-password');
+
+      setFieldError(currentPasswordIn, currentPasswordErr);
+      setFieldError(newPasswordIn, newPasswordErr);
+      setFieldError(confirmPasswordIn, confirmPasswordErr);
+      if (currentPasswordErr || newPasswordErr || confirmPasswordErr) return;
+
+      const confirmed = window.confirm('Are you sure you want to save these changes?');
+      if (!confirmed) return;
+
+      passwordSaveBtn.disabled = true;
+      passwordSaveBtn.textContent = 'Saving...';
+
+      updateStoredUserProfile({ password: newPasswordIn.value.trim() });
+
+      showToast('Password updated successfully.', 'success');
+      passwordSaveBtn.disabled = false;
+      passwordSaveBtn.textContent = 'Save Password';
+      currentPasswordIn.value = '';
+      newPasswordIn.value = '';
+      confirmPasswordIn.value = '';
+    });
+
+    basicResetBtn.addEventListener('click', () => {
       renderStudentSettings();
+    });
+
+    passwordResetBtn.addEventListener('click', () => {
+      const currentPasswordIn = document.getElementById('student-current-password');
+      const newPasswordIn = document.getElementById('student-new-password');
+      const confirmPasswordIn = document.getElementById('student-confirm-password');
+      currentPasswordIn.value = '';
+      newPasswordIn.value = '';
+      confirmPasswordIn.value = '';
+      setFieldError(currentPasswordIn, null);
+      setFieldError(newPasswordIn, null);
+      setFieldError(confirmPasswordIn, null);
     });
   }
 
