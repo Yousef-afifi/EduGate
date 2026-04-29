@@ -224,6 +224,23 @@ function clone(data) {
   return JSON.parse(JSON.stringify(data));
 }
 
+function buildFallbackExamQuestions(examSummary) {
+  const totalQuestions = Math.max(Number(examSummary?.questionsCount) || 0, 1);
+  return {
+    id: examSummary.id,
+    title: examSummary.title || 'Exam',
+    courseName: examSummary.courseName || 'General',
+    duration: Number(examSummary.duration) || 30,
+    instructions: examSummary.instructions || 'Read each question carefully before choosing your answer.',
+    questions: Array.from({ length: totalQuestions }, (_, index) => ({
+      id: index + 1,
+      text: `Question ${index + 1} for ${examSummary.title || 'this exam'}`,
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      correct: 0,
+    })),
+  };
+}
+
 /* ---------- Auth helpers ---------- */
 function getUser() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.user)); }
@@ -637,7 +654,22 @@ function handleDemoRequest(path, method, body) {
   const examMatch = path.match(/^\/exams\/(\d+)$/);
   if (examMatch && method === 'GET') {
     const examId = examMatch[1];
-    return clone(db.examQuestions[examId] || db.exams.find((exam) => String(exam.id) === examId));
+    const examSummary = db.exams.find((exam) => String(exam.id) === examId);
+    const examDetails = db.examQuestions[examId];
+    if (examDetails?.questions?.length) {
+      return clone({
+        ...examDetails,
+        ...(examSummary || {}),
+        questions: examDetails.questions,
+      });
+    }
+
+    if (!examSummary) throw new Error('Exam not found');
+
+    const fallbackExam = buildFallbackExamQuestions(examSummary);
+    db.examQuestions[examId] = fallbackExam;
+    saveDemoDb(db);
+    return clone(fallbackExam);
   }
 
   const submitMatch = path.match(/^\/exams\/(\d+)\/submit$/);
@@ -659,18 +691,21 @@ function handleDemoRequest(path, method, body) {
     });
     const score = Math.round((correct / exam.questions.length) * 100);
     const examSummary = db.exams.find((item) => String(item.id) === examId);
-    if (examSummary) {
-      examSummary.status = 'completed';
-      examSummary.score = score;
-    }
-    saveDemoDb(db);
-    return {
+    const resultSummary = {
       score,
       correct,
       total: exam.questions.length,
       passed: score >= 70,
       answers,
+      submittedAt: new Date().toISOString(),
     };
+    if (examSummary) {
+      examSummary.status = 'completed';
+      examSummary.score = score;
+      examSummary.lastResult = resultSummary;
+    }
+    saveDemoDb(db);
+    return resultSummary;
   }
 
   throw new Error('Demo handler does not support this request yet.');
@@ -914,7 +949,7 @@ function renderExamCard(exam) {
         <span class="badge ${statusClass}">${exam.status || 'pending'}</span>
         ${exam.status !== 'completed'
           ? `<button class="btn-amber" onclick="window.location.href='take-exam.html?id=${exam.id}'">Start</button>`
-          : '<button class="btn-secondary">Review</button>'}
+          : `<button class="btn-secondary" onclick="window.location.href='take-exam.html?id=${exam.id}&review=true'">Review</button>`}
       </div>
     </div>`;
 }
