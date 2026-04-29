@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   user: 'edu_user',
   token: 'edu_token',
   db: 'edu_demo_db',
+  cart: 'edu_book_cart',
 };
 
 const ICONS = {
@@ -263,6 +264,43 @@ function redirectToDashboard() {
     return;
   }
   window.location.href = 'dashboard.html';
+}
+
+function getBookCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.cart));
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveBookCart(items) {
+  localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(items));
+}
+
+function addBookToCart(book) {
+  const items = getBookCart();
+  const existing = items.find((item) => item.id === book.id);
+  if (existing) {
+    existing.quantity = (existing.quantity || 1) + 1;
+    existing.lastUpdated = new Date().toISOString();
+  } else {
+    items.push({
+      ...book,
+      quantity: 1,
+      orderedAt: new Date().toISOString(),
+      status: book.status || 'Preparing',
+    });
+  }
+  saveBookCart(items);
+  return items;
+}
+
+function removeBookFromCart(bookId) {
+  const items = getBookCart().filter((item) => item.id !== bookId);
+  saveBookCart(items);
+  return items;
 }
 
 /* ---------- API layer with demo fallback ---------- */

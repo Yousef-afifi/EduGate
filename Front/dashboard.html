@@ -174,7 +174,8 @@
         { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html', view: 'overview' },
         { icon: '&#128218;', label: 'My Courses', page: 'courses.html' },
         { icon: '&#128221;', label: 'My Exams', page: 'exams.html', badge: '2' },
-        { icon: '&#127942;', label: 'Progress', page: '#', view: 'progress' },
+        { icon: '&#128214;', label: 'Book Store', page: '#', view: 'progress' },
+        { icon: '&#128722;', label: 'My Cart', page: 'cart.html' },
         { icon: '&#128197;', label: 'Schedule', page: '#', view: 'schedule' },
         { icon: '&#9881;', label: 'Settings', page: '#', view: 'settings' },
       ];
@@ -291,6 +292,14 @@
 
     populateSidebarUser();
     return updated;
+  }
+
+  function addStoreBook(book) {
+    addBookToCart(book);
+    showToast('Book added to cart successfully.', 'success');
+    setTimeout(() => {
+      window.location.href = 'cart.html';
+    }, 350);
   }
 
   async function renderTeacherOverview() {
@@ -975,19 +984,58 @@
   }
 
   async function renderStudentProgress() {
-    setTitles('Progress', 'My Course Progress');
-    const courses = await api.get('/student/courses?limit=4');
+    setTitles('Book Store', 'Study Materials & Bundles');
+    const books = [
+      {
+        id: 'book-1',
+        title: 'Final Revision Bundle - Grade 3',
+        subtitle: 'Comprehensive prep pack for final review',
+        price: 280,
+        grade: 'Senior 3',
+        accentClass: 'student-book-card__media--1',
+        emoji: '&#128218;',
+        status: 'Preparing'
+      },
+      {
+        id: 'book-2',
+        title: 'Term 2 Review Package - Grade 2',
+        subtitle: 'Targeted revision with solved examples',
+        price: 120,
+        grade: 'Senior 2',
+        accentClass: 'student-book-card__media--2',
+        emoji: '&#128209;',
+        status: 'Ready for Pickup'
+      },
+      {
+        id: 'book-3',
+        title: 'Term 2 Review Package - Grade 1',
+        subtitle: 'Practice sheets and guided summaries',
+        price: 120,
+        grade: 'Senior 1',
+        accentClass: 'student-book-card__media--3',
+        emoji: '&#128210;',
+        status: 'Delivered'
+      }
+    ];
     document.getElementById('dashboard-content').innerHTML = `
       <div class="section-header">
-        <div><div class="section-title">Progress Tracker</div><div style="font-size:13px;color:var(--gray-400);margin-top:6px">See how far you have moved inside each course.</div></div>
+        <div><div class="section-title">Book Store</div><div style="font-size:13px;color:var(--gray-400);margin-top:6px">Browse available study bundles and order the material you need for this term.</div></div>
       </div>
-      <div class="cards-grid">${courses.map((course) => `
-        <div class="info-card">
-          <h3>${course.title}</h3>
-          <div class="course-card__progress-bar" style="margin:16px 0 8px;height:8px">
-            <div class="course-card__progress-fill" style="width:${course.progress || 0}%"></div>
+      <div class="student-book-grid">${books.map((book) => `
+        <div class="student-book-card">
+          <div class="student-book-card__media ${book.accentClass}">
+            <div class="student-book-card__label">${book.grade}</div>
+            <div class="student-book-card__art">${book.emoji}</div>
+            <div class="student-book-card__shine"></div>
           </div>
-          <p style="font-size:14px;color:var(--gray-600);line-height:1.8">${course.progress || 0}% completed. Continue from the course page to unlock the next lessons.</p>
+          <div class="student-book-card__body">
+            <h3>${book.title}</h3>
+            <p class="student-book-card__subtitle">${book.subtitle}</p>
+            <div class="student-book-card__price">${book.price} EGP</div>
+            <div class="student-book-card__actions">
+              <button class="student-book-card__action" onclick='event.stopPropagation(); addStoreBook(${JSON.stringify(book)})'>Add to Cart</button>
+            </div>
+          </div>
         </div>
       `).join('')}</div>
     `;
@@ -1070,7 +1118,7 @@
           <div class="section-header" style="margin-bottom:24px">
             <div>
               <div class="section-title">Edit Profile</div>
-              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Update your basic account information and how your teacher sees you inside the platform.</div>
+              <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Update your basic account information. Your teacher controls the email used for your account.</div>
             </div>
             <span class="badge badge-blue">Student Account</span>
           </div>
@@ -1084,27 +1132,14 @@
               </div>
               <div class="form-group">
                 <label for="student-email">Email Address</label>
-                <input type="email" id="student-email" value="${profile.email || ''}" placeholder="your@email.com" />
-                <div class="field-error"></div>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="student-phone">Phone Number</label>
-                <input type="text" id="student-phone" value="${profile.phone || ''}" placeholder="Optional contact number" />
-                <div class="field-error"></div>
-              </div>
-              <div class="form-group">
-                <label for="student-grade">Grade / Level</label>
-                <input type="text" id="student-grade" value="${profile.grade || ''}" placeholder="e.g. Grade 11" />
-                <div class="field-error"></div>
+                <input type="email" id="student-email" value="${profile.email || ''}" placeholder="your@email.com" readonly style="background:var(--gray-100);color:var(--gray-600);cursor:not-allowed" />
+                <div style="font-size:12px;color:var(--gray-400);margin-top:7px">This email is assigned by your teacher and cannot be changed here.</div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="student-bio">Short Bio</label>
-              <textarea id="student-bio" rows="4" placeholder="A short note about your learning goals">${profile.bio || ''}</textarea>
+              <label for="student-phone">Phone Number</label>
+              <input type="text" id="student-phone" value="${profile.phone || ''}" placeholder="Optional contact number" />
               <div class="field-error"></div>
             </div>
 
@@ -1147,7 +1182,7 @@
               </div>
             </div>
             <div class="info-row"><span class="info-row-label">Role</span><span class="info-row-value">Student</span></div>
-            <div class="info-row"><span class="info-row-label">Grade</span><span class="info-row-value" id="student-profile-grade">${profile.grade || 'Not set'}</span></div>
+            <div class="info-row"><span class="info-row-label">Email</span><span class="info-row-value">${profile.email || 'Not set'}</span></div>
             <div class="info-row"><span class="info-row-label">Phone</span><span class="info-row-value" id="student-profile-phone">${profile.phone || 'Not set'}</span></div>
           </div>
 
@@ -1170,22 +1205,16 @@
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const nameIn = document.getElementById('student-name');
-      const emailIn = document.getElementById('student-email');
       const nameErr = validateField(nameIn, 'required');
-      const emailErr = validateField(emailIn, 'required') || validateField(emailIn, 'email');
       setFieldError(nameIn, nameErr);
-      setFieldError(emailIn, emailErr);
-      if (nameErr || emailErr) return;
+      if (nameErr) return;
 
       saveBtn.disabled = true;
       saveBtn.textContent = 'Saving...';
 
       const updated = updateStoredUserProfile({
         name: nameIn.value.trim(),
-        email: emailIn.value.trim(),
         phone: document.getElementById('student-phone').value.trim(),
-        grade: document.getElementById('student-grade').value.trim(),
-        bio: document.getElementById('student-bio').value.trim(),
         prefExamReminders: document.getElementById('pref-exam-reminders').checked,
         prefLessonAlerts: document.getElementById('pref-lesson-alerts').checked,
       });
@@ -1194,7 +1223,6 @@
         document.getElementById('student-profile-initials').textContent = (updated.name || 'S').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase();
         document.getElementById('student-profile-name').textContent = updated.name || 'Student';
         document.getElementById('student-profile-email').textContent = updated.email || '';
-        document.getElementById('student-profile-grade').textContent = updated.grade || 'Not set';
         document.getElementById('student-profile-phone').textContent = updated.phone || 'Not set';
       }
 
