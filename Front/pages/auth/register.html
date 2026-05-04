@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Account - EduPlatform</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../../css/auth-register.css" />
 </head>
 <body>
-
-<div class="auth-root">
+  <header class="auth-header" aria-label="Authentication"></header>
+  <main class="auth-main">
+    <div class="auth-root">
   <div class="auth-brand">
     <div class="auth-brand__logo">
       <div class="auth-brand__logo-mark">&#127891;</div>
@@ -105,92 +106,9 @@
       </form>
     </div>
   </div>
-</div>
+    </div>
+  </main>
 
-<script src="js/main.js"></script>
-<script>
-  redirectIfLoggedIn();
-
-  const firstName = document.getElementById('first-name');
-  const lastName = document.getElementById('last-name');
-  const email = document.getElementById('reg-email');
-  const password = document.getElementById('reg-password');
-  const confirm = document.getElementById('confirm-password');
-  const termsBox = document.getElementById('terms');
-  const regBtn = document.getElementById('reg-btn');
-
-  password.addEventListener('input', () => {
-    const value = password.value;
-    let score = 0;
-    if (value.length >= 8) score++;
-    if (/[A-Z]/.test(value)) score++;
-    if (/[0-9]/.test(value)) score++;
-    if (/[^A-Za-z0-9]/.test(value)) score++;
-
-    const bar = document.getElementById('strength-bar');
-    const label = document.getElementById('strength-label');
-    const states = [
-      { width: '0%', color: 'transparent', text: '' },
-      { width: '25%', color: '#ef4444', text: 'Weak' },
-      { width: '50%', color: '#f59e0b', text: 'Fair' },
-      { width: '75%', color: '#3b82f6', text: 'Good' },
-      { width: '100%', color: '#22c55e', text: 'Strong' },
-    ];
-    const state = states[value.length === 0 ? 0 : score];
-    bar.style.width = state.width;
-    bar.style.background = state.color;
-    label.textContent = state.text;
-    label.style.color = state.color;
-  });
-
-  firstName.addEventListener('blur', () => setFieldError(firstName, validateField(firstName, 'required')));
-  lastName.addEventListener('blur', () => setFieldError(lastName, validateField(lastName, 'required')));
-  email.addEventListener('blur', () => setFieldError(email, validateField(email, 'required') || validateField(email, 'email')));
-  password.addEventListener('blur', () => setFieldError(password, validateField(password, 'required') || validateField(password, 'min:8')));
-  confirm.addEventListener('blur', () => setFieldError(confirm, validateField(confirm, 'required') || validateField(confirm, 'match:reg-password')));
-
-  document.getElementById('register-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    hideAlert('reg-alert');
-    hideAlert('reg-success');
-
-    const validations = [
-      [firstName, validateField(firstName, 'required')],
-      [lastName, validateField(lastName, 'required')],
-      [email, validateField(email, 'required') || validateField(email, 'email')],
-      [password, validateField(password, 'required') || validateField(password, 'min:8')],
-      [confirm, validateField(confirm, 'required') || validateField(confirm, 'match:reg-password')],
-    ];
-    validations.forEach(([input, message]) => setFieldError(input, message));
-    if (validations.some(([, message]) => message)) return;
-
-    if (!termsBox.checked) {
-      const termsErr = document.getElementById('terms-error');
-      termsErr.textContent = 'You must agree before continuing.';
-      termsErr.classList.add('visible');
-      return;
-    }
-
-    regBtn.disabled = true;
-    regBtn.innerHTML = '<span class="spinner"></span>Creating account...';
-
-    try {
-      await api.post('/auth/register', {
-        firstName: firstName.value.trim(),
-        lastName: lastName.value.trim(),
-        email: email.value.trim(),
-        role: 'teacher',
-        password: password.value,
-      });
-
-      showAlert('reg-success', 'Account created successfully. Redirecting to login...', 'success');
-      setTimeout(() => { window.location.href = 'login.html'; }, 1200);
-    } catch (error) {
-      showAlert('reg-alert', error.message || 'Could not create account.');
-      regBtn.disabled = false;
-      regBtn.textContent = 'Create Account';
-    }
-  });
-</script>
+  <script src="../../js/auth-register.js"></script>
 </body>
 </html>

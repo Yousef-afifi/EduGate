@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Details - EduPlatform</title>
+  <link rel="stylesheet" href="../../css/teacher-course-details.css" />
+</head>
+<body>
+
+<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-mark">&#127891;</div>
+      <span class="sidebar__logo-name">EduPlatform</span>
+    </div>
+    <div class="sidebar__user">
+      <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+      <div>
+        <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
+        <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+      </div>
+    </div>
+    <nav class="sidebar__nav" id="sidebar-nav"></nav>
+    <div class="sidebar__bottom">
+      <button class="sidebar__logout" id="logout-btn">
+        <span class="nav-icon">&#128682;</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+        <div>
+          <div class="topbar__title" id="page-title">Course Details</div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="topbar-search">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" placeholder="Search..." />
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+      </div>
+    </header>
+
+    <main class="page-body" id="course-content">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:50vh">
+        <div style="width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#f59e0b;border-radius:50%;animation:spin 0.7s linear infinite"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" id="add-lesson-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add New Lesson</div>
+      <button class="modal-close" data-close-modal="add-lesson-modal">&times;</button>
+    </div>
+    <form id="add-lesson-form" novalidate>
+      <div class="form-group">
+        <label>Lesson Title</label>
+        <input type="text" id="lesson-title" placeholder="e.g. Variables and Data Types" />
+        <div class="field-error"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="lesson-type">
+            <option value="video">Video</option>
+            <option value="article">Article</option>
+            <option value="quiz">Quiz</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <input type="text" id="lesson-duration" placeholder="e.g. 14 min" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Video URL (optional)</label>
+        <input type="url" id="lesson-url" placeholder="https://..." />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="lesson-desc" rows="3" placeholder="Brief description..." style="resize:vertical"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close-modal="add-lesson-modal">Cancel</button>
+        <button type="submit" class="btn-amber" id="add-lesson-btn">Add Lesson</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script src="../../js/teacher-course-details.js"></script>
+</body>
+</html>

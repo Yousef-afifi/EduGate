@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson - EduPlatform</title>
+  <link rel="stylesheet" href="../../css/teacher-video-lesson.css" />
+</head>
+<body>
+
+<div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-mark">&#127891;</div>
+      <span class="sidebar__logo-name">EduPlatform</span>
+    </div>
+    <div class="sidebar__user">
+      <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+      <div>
+        <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
+        <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+      </div>
+    </div>
+    <nav class="sidebar__nav" id="sidebar-nav"></nav>
+    <div class="sidebar__bottom">
+      <button class="sidebar__logout" id="logout-btn">
+        <span class="nav-icon">&#128682;</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+        <div>
+          <div class="topbar__title" id="lesson-title-bar">Video Lesson</div>
+          <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+      </div>
+    </header>
+
+    <main class="page-body" id="lesson-content">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:50vh">
+        <div style="width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#f59e0b;border-radius:50%;animation:spin 0.7s linear infinite"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script src="../../js/teacher-video-lesson.js"></script>
+</body>
+</html>

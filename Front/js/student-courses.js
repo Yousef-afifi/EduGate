@@ -1,5 +1,6 @@
+/* Page script: pages/student/courses.html */
 /* ============================================================
-   EDU PLATFORM - main.js
+   EDU PLATFORM - page script utilities
    Shared utilities, auth helpers, local demo data, UI helpers
    ============================================================ */
 
@@ -259,12 +260,12 @@ function saveSession(user, token) {
 function logout() {
   localStorage.removeItem(STORAGE_KEYS.user);
   localStorage.removeItem(STORAGE_KEYS.token);
-  window.location.href = 'login.html';
+  window.location.href = '../auth/login.html';
 }
 
 function requireAuth() {
   if (!getToken()) {
-    window.location.href = 'login.html';
+    window.location.href = '../auth/login.html';
     return false;
   }
   return true;
@@ -960,3 +961,160 @@ document.addEventListener('DOMContentLoaded', () => {
   initModalCloseButtons();
   initMobileSidebar();
 });
+
+
+requireAuth();
+const __pageUser = getUser();
+if (__pageUser && __pageUser.role !== 'student') {
+  window.location.href = __pageUser.role === 'teacher' ? '../teacher/dashboard.html' : '../student/dashboard.html';
+}
+
+populateSidebarUser();
+  setBreadcrumbTrail('page-breadcrumb', [
+    { label: 'Home', href: 'dashboard.html' },
+    { label: 'Courses' },
+  ]);
+
+  const user = getUser();
+  const isTeacher = user?.role === 'teacher';
+  if (!isTeacher) document.body.classList.add('student-shell');
+
+  const teacherNav = [
+    { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html' },
+    { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
+    { icon: '&#128221;', label: 'Exams', page: 'exams.html' },
+    { icon: '&#128101;', label: 'Students', page: 'dashboard.html?view=students' },
+    { icon: '&#11014;', label: 'Upgrade', page: 'dashboard.html?view=upgrade' },
+    { icon: '&#9881;', label: 'Settings', page: 'dashboard.html?view=settings' },
+  ];
+  const studentNav = [
+    { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html' },
+    { icon: '&#128218;', label: 'My Courses', page: 'courses.html' },
+    { icon: '&#128221;', label: 'My Exams', page: 'exams.html', badge: '2' },
+    { icon: '&#128214;', label: 'Book Store', page: 'dashboard.html?view=progress' },
+    { icon: '&#128722;', label: 'My Cart', page: 'cart.html' },
+    { icon: '&#128197;', label: 'Schedule', page: 'dashboard.html?view=schedule' },
+    { icon: '&#9881;', label: 'Settings', page: 'dashboard.html?view=settings' },
+  ];
+
+  document.getElementById('sidebar-nav').innerHTML =
+    '<div class="sidebar__nav-section">Workspace</div>' +
+    (isTeacher ? teacherNav : studentNav).map((item) => `
+      <a href="${item.page}" class="nav-item" data-page="${item.page}">
+        <span class="nav-icon">${item.icon}</span>
+        <span>${item.label}</span>
+        ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+      </a>
+    `).join('');
+
+  document.querySelectorAll('#sidebar-nav .nav-item').forEach((item) => {
+    if (item.getAttribute('href') === 'courses.html') item.classList.add('active');
+  });
+
+  document.getElementById('sidebar-peek-toggle')?.addEventListener('click', () => {
+    if (isTeacher) return;
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const open = sidebar.classList.toggle('open');
+    overlay.style.display = open ? 'block' : 'none';
+  });
+  document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+    if (isTeacher) return;
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').style.display = 'none';
+  });
+
+  if (isTeacher) {
+    document.getElementById('courses-heading').textContent = 'My Courses';
+    document.getElementById('courses-subheading').textContent = 'Manage and create your course library';
+    document.getElementById('teacher-actions').style.display = 'flex';
+  } else {
+    document.getElementById('courses-heading').textContent = 'Browse Courses';
+    document.getElementById('courses-subheading').textContent = 'Discover courses and track your progress';
+  }
+
+  let allCourses = [];
+  let filteredCourses = [];
+  let currentFilter = 'all';
+  let searchQuery = '';
+  let displayCount = 6;
+
+  async function loadCourses() {
+    showSkeletons('courses-grid', 6, 'card');
+    allCourses = await api.get(isTeacher ? '/teacher/courses' : '/student/courses');
+    applyFilters();
+  }
+
+  function applyFilters() {
+    filteredCourses = allCourses.filter((course) => {
+      const matchCategory = currentFilter === 'all' || course.category === currentFilter;
+      const matchSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCategory && matchSearch;
+    });
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('courses-grid');
+    const loadMoreWrap = document.getElementById('load-more-wrap');
+    const visible = filteredCourses.slice(0, displayCount);
+
+    if (!visible.length) {
+      showEmpty('courses-grid', 'No courses match your search or filter.', '&#128269;');
+      loadMoreWrap.style.display = 'none';
+      return;
+    }
+
+    grid.innerHTML = visible.map(renderCourseCard).join('');
+    loadMoreWrap.style.display = filteredCourses.length > displayCount ? 'block' : 'none';
+  }
+
+  document.querySelectorAll('.filter-pill').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach((item) => item.classList.remove('active'));
+      pill.classList.add('active');
+      currentFilter = pill.dataset.filter;
+      displayCount = 6;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('search-courses').addEventListener('input', (event) => {
+    searchQuery = event.target.value;
+    displayCount = 6;
+    applyFilters();
+  });
+
+  document.getElementById('load-more-btn').addEventListener('click', () => {
+    displayCount += 6;
+    renderGrid();
+  });
+
+  document.getElementById('create-course-form')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const titleIn = document.getElementById('course-title');
+    const error = validateField(titleIn, 'required');
+    setFieldError(titleIn, error);
+    if (error) return;
+
+    const btn = document.getElementById('create-course-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner" style="border-top-color:var(--navy)"></span>Creating...';
+
+    await api.post('/courses', {
+      title: titleIn.value.trim(),
+      category: document.getElementById('course-category').value,
+      level: document.getElementById('course-level').value,
+      duration: document.getElementById('course-duration').value,
+      description: document.getElementById('course-desc').value,
+    });
+
+    closeModal('create-course-modal');
+    showToast('Course created successfully.', 'success');
+    btn.disabled = false;
+    btn.textContent = 'Create Course';
+    event.target.reset();
+    loadCourses();
+  });
+
+  loadCourses();

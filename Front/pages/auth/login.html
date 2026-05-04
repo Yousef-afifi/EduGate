@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher & Student Login - EduPlatform</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../../css/auth-login.css" />
 </head>
 <body>
-
-<div class="auth-root">
+  <header class="auth-header" aria-label="Authentication"></header>
+  <main class="auth-main">
+    <div class="auth-root">
   <div class="auth-brand">
     <div class="auth-brand__logo">
       <div class="auth-brand__logo-mark">&#127891;</div>
@@ -91,61 +92,9 @@
       </div>
     </div>
   </div>
-</div>
+    </div>
+  </main>
 
-<script src="js/main.js"></script>
-<script>
-  redirectIfLoggedIn();
-
-  const form = document.getElementById('login-form');
-  const emailIn = document.getElementById('email');
-  const passIn = document.getElementById('password');
-  const loginBtn = document.getElementById('login-btn');
-
-  emailIn.addEventListener('blur', () => {
-    setFieldError(emailIn, validateField(emailIn, 'required') || validateField(emailIn, 'email'));
-  });
-  passIn.addEventListener('blur', () => {
-    setFieldError(passIn, validateField(passIn, 'required'));
-  });
-
-  document.querySelectorAll('.demo-fill').forEach((btn) => {
-    btn.addEventListener('mouseenter', () => { btn.style.background = 'var(--gray-100)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.background = 'var(--white)'; });
-    btn.addEventListener('click', () => {
-      emailIn.value = btn.dataset.email;
-      passIn.value = btn.dataset.pass;
-    });
-  });
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    hideAlert('login-alert');
-
-    const emailErr = validateField(emailIn, 'required') || validateField(emailIn, 'email');
-    const passErr = validateField(passIn, 'required');
-    setFieldError(emailIn, emailErr);
-    setFieldError(passIn, passErr);
-    if (emailErr || passErr) return;
-
-    loginBtn.disabled = true;
-    loginBtn.innerHTML = '<span class="spinner"></span>Signing in...';
-
-    try {
-      const data = await api.post('/auth/login', {
-        email: emailIn.value.trim(),
-        password: passIn.value,
-      });
-
-      saveSession(data.user, data.token);
-      showToast(`Welcome back, ${data.user.name}!`, 'success');
-      setTimeout(() => redirectToDashboard(), 600);
-    } catch (error) {
-      showAlert('login-alert', error.message || 'Invalid email or password.');
-      loginBtn.disabled = false;
-      loginBtn.textContent = 'Sign In';
-    }
-  });
-</script>
+  <script src="../../js/auth-login.js"></script>
 </body>
 </html>
