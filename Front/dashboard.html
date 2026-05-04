@@ -788,24 +788,30 @@
             </div>
 
             <div class="section-header" style="margin:26px 0 14px">
-              <div class="section-title" style="font-size:18px">Preferences</div>
+              <div>
+                <div class="section-title" style="font-size:18px">Change Password</div>
+                <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Leave these fields empty if you want to keep your current password.</div>
+              </div>
             </div>
 
             <div style="display:grid;gap:14px;margin-bottom:22px">
-              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
-                <input type="checkbox" id="teacher-pref-signups" ${profile.prefSignupAlerts === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
-                <span style="display:block">
-                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Student account activity</strong>
-                  <span style="font-size:13px;color:var(--gray-600)">Get alerts when new student accounts are generated or activated.</span>
-                </span>
-              </label>
-              <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:14px;background:var(--gray-50)">
-                <input type="checkbox" id="teacher-pref-exams" ${profile.prefExamAlerts === false ? '' : 'checked'} style="accent-color:var(--amber);margin-top:2px" />
-                <span style="display:block">
-                  <strong style="display:block;color:var(--navy);font-size:14px;margin-bottom:4px">Exam and submission alerts</strong>
-                  <span style="font-size:13px;color:var(--gray-600)">Receive summaries for student submissions and upcoming exam activity.</span>
-                </span>
-              </label>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="teacher-current-password">Current Password</label>
+                  <input type="password" id="teacher-current-password" placeholder="Enter current password" autocomplete="current-password" />
+                  <div class="field-error"></div>
+                </div>
+                <div class="form-group">
+                  <label for="teacher-new-password">New Password</label>
+                  <input type="password" id="teacher-new-password" placeholder="At least 6 characters" autocomplete="new-password" />
+                  <div class="field-error"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="teacher-confirm-password">Confirm New Password</label>
+                <input type="password" id="teacher-confirm-password" placeholder="Repeat the new password" autocomplete="new-password" />
+                <div class="field-error"></div>
+              </div>
             </div>
 
             <div style="display:flex;justify-content:flex-end;gap:12px">
@@ -853,24 +859,48 @@
       event.preventDefault();
       const nameIn = document.getElementById('teacher-name');
       const emailIn = document.getElementById('teacher-email');
+      const currentPasswordIn = document.getElementById('teacher-current-password');
+      const newPasswordIn = document.getElementById('teacher-new-password');
+      const confirmPasswordIn = document.getElementById('teacher-confirm-password');
+      const wantsPasswordChange = Boolean(
+        currentPasswordIn.value.trim() ||
+        newPasswordIn.value.trim() ||
+        confirmPasswordIn.value.trim()
+      );
       const nameErr = validateField(nameIn, 'required');
       const emailErr = validateField(emailIn, 'required') || validateField(emailIn, 'email');
+      let currentPasswordErr = null;
+      let newPasswordErr = null;
+      let confirmPasswordErr = null;
+
+      if (wantsPasswordChange) {
+        const db = getDemoDb();
+        const dbUser = db.users.find((entry) => entry.id === profile.id);
+        currentPasswordErr = validateField(currentPasswordIn, 'required') || (dbUser?.password !== currentPasswordIn.value.trim() ? 'Current password is incorrect.' : null);
+        newPasswordErr = validateField(newPasswordIn, 'required') || validateField(newPasswordIn, 'min:6');
+        confirmPasswordErr = validateField(confirmPasswordIn, 'required') || validateField(confirmPasswordIn, 'match:teacher-new-password');
+      }
+
       setFieldError(nameIn, nameErr);
       setFieldError(emailIn, emailErr);
-      if (nameErr || emailErr) return;
+      setFieldError(currentPasswordIn, currentPasswordErr);
+      setFieldError(newPasswordIn, newPasswordErr);
+      setFieldError(confirmPasswordIn, confirmPasswordErr);
+      if (nameErr || emailErr || currentPasswordErr || newPasswordErr || confirmPasswordErr) return;
 
       saveBtn.disabled = true;
       saveBtn.textContent = 'Saving...';
 
-      const updated = updateStoredUserProfile({
+      const updatedFields = {
         name: nameIn.value.trim(),
         email: emailIn.value.trim(),
         phone: document.getElementById('teacher-phone').value.trim(),
         subject: document.getElementById('teacher-subject').value.trim(),
         bio: document.getElementById('teacher-bio').value.trim(),
-        prefSignupAlerts: document.getElementById('teacher-pref-signups').checked,
-        prefExamAlerts: document.getElementById('teacher-pref-exams').checked,
-      });
+      };
+      if (wantsPasswordChange) updatedFields.password = newPasswordIn.value.trim();
+
+      const updated = updateStoredUserProfile(updatedFields);
 
       if (updated) {
         document.getElementById('teacher-profile-initials').textContent = (updated.name || 'T').split(' ').map((word) => word[0]).join('').slice(0,2).toUpperCase();
@@ -880,7 +910,13 @@
         document.getElementById('teacher-profile-phone').textContent = updated.phone || 'Not set';
       }
 
-      showToast('Teacher profile updated successfully.', 'success');
+      if (wantsPasswordChange) {
+        currentPasswordIn.value = '';
+        newPasswordIn.value = '';
+        confirmPasswordIn.value = '';
+      }
+
+      showToast(wantsPasswordChange ? 'Teacher profile and password updated successfully.' : 'Teacher profile updated successfully.', 'success');
       saveBtn.disabled = false;
       saveBtn.textContent = 'Save Changes';
     });
