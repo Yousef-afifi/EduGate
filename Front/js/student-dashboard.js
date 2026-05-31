@@ -750,6 +750,38 @@ function initMobileSidebar() {
   }
 }
 
+function initSidebarScrollClose() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar) return;
+
+  const closeSidebar = () => {
+    sidebar.classList.remove('open');
+    if (overlay) overlay.style.display = 'none';
+  };
+
+  window.addEventListener('wheel', (event) => {
+    if (!sidebar.classList.contains('open')) return;
+    closeSidebar();
+    event.preventDefault();
+    window.scrollBy({ top: event.deltaY, left: event.deltaX, behavior: 'auto' });
+  }, { passive: false, capture: true });
+
+  let touchY = null;
+  window.addEventListener('touchstart', (event) => {
+    if (sidebar.classList.contains('open')) touchY = event.touches[0]?.clientY ?? null;
+  }, { passive: true, capture: true });
+
+  window.addEventListener('touchmove', (event) => {
+    if (!sidebar.classList.contains('open') || touchY == null) return;
+    const nextY = event.touches[0]?.clientY ?? touchY;
+    closeSidebar();
+    event.preventDefault();
+    window.scrollBy({ top: touchY - nextY, behavior: 'auto' });
+    touchY = null;
+  }, { passive: false, capture: true });
+}
+
 function showSkeletons(containerId, count = 3, type = 'card') {
   const el = document.getElementById(containerId);
   if (!el) return;
@@ -912,6 +944,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLogoutBtn();
   initModalCloseButtons();
   initMobileSidebar();
+  initSidebarScrollClose();
 });
 
 
@@ -1012,14 +1045,31 @@ populateSidebarUser();
   document.querySelectorAll('#sidebar-nav .nav-item[data-view]').forEach((item) => {
     item.addEventListener('click', (event) => {
       event.preventDefault();
+      if (currentView === item.dataset.view) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebar-overlay').style.display = 'none';
+        return;
+      }
       currentView = item.dataset.view;
       window.history.replaceState({}, '', currentView === 'overview' ? 'dashboard.html' : `dashboard.html?view=${currentView}`);
       loadCurrentView();
       syncActiveNav();
-      if (!isTeacher) {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebar-overlay').style.display = 'none';
-      }
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').style.display = 'none';
+    });
+  });
+
+  document.querySelectorAll('#sidebar-nav .nav-item:not([data-view])').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      const href = item.getAttribute('href');
+      if (!href || href === '#') return;
+      event.preventDefault();
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').style.display = 'none';
+      showDashboardViewLoader();
+      setTimeout(() => {
+        window.location.href = href;
+      }, VIEW_TRANSITION_DELAY);
     });
   });
 
@@ -1037,6 +1087,47 @@ populateSidebarUser();
       { label: 'Home', href: 'dashboard.html' },
       { label: crumb },
     ]);
+  }
+
+  let viewLoadToken = 0;
+  const VIEW_TRANSITION_DELAY = 180;
+
+  function waitForViewTransition() {
+    return new Promise((resolve) => setTimeout(resolve, VIEW_TRANSITION_DELAY));
+  }
+
+  function showDashboardViewLoader() {
+    const content = document.getElementById('dashboard-content');
+    if (!content) return;
+    content.classList.remove('dashboard-view-ready');
+    content.innerHTML = `
+      <div class="dashboard-view-loader">
+        <div class="dashboard-view-loader__spinner"></div>
+      </div>
+    `;
+  }
+
+  async function renderCurrentDashboardView() {
+    if (isTeacher) {
+      if (currentView === 'students') return renderTeacherStudents();
+      if (currentView === 'generate-students') return renderTeacherGenerateStudents();
+      if (currentView === 'upgrade') return renderTeacherUpgrade();
+      if (currentView === 'settings') return renderTeacherSettings();
+      return renderTeacherOverview();
+    }
+    if (currentView === 'schedule') return renderStudentSchedule();
+    if (currentView === 'settings') return renderStudentSettings();
+    return renderStudentOverview();
+  }
+
+  async function loadCurrentView() {
+    const token = ++viewLoadToken;
+    showDashboardViewLoader();
+    await waitForViewTransition();
+    if (token !== viewLoadToken) return;
+    await renderCurrentDashboardView();
+    if (token !== viewLoadToken) return;
+    document.getElementById('dashboard-content')?.classList.add('dashboard-view-ready');
   }
 
   function infoCards(items) {
@@ -2077,19 +2168,6 @@ populateSidebarUser();
       setFieldError(newPasswordIn, null);
       setFieldError(confirmPasswordIn, null);
     });
-  }
-
-  async function loadCurrentView() {
-    if (isTeacher) {
-      if (currentView === 'students') return renderTeacherStudents();
-      if (currentView === 'generate-students') return renderTeacherGenerateStudents();
-      if (currentView === 'upgrade') return renderTeacherUpgrade();
-      if (currentView === 'settings') return renderTeacherSettings();
-      return renderTeacherOverview();
-    }
-    if (currentView === 'schedule') return renderStudentSchedule();
-    if (currentView === 'settings') return renderStudentSettings();
-    return renderStudentOverview();
   }
 
   document.getElementById('create-course-form')?.addEventListener('submit', async (event) => {

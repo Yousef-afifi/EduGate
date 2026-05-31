@@ -266,7 +266,7 @@ function requireAuth() {
 }
 
 function redirectIfLoggedIn() {
-  if (getToken()) redirectToDashboard();
+  return false;
 }
 
 function redirectToDashboard() {

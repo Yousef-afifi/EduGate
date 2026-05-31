@@ -183,21 +183,24 @@ input, textarea, select { font-family: var(--font-body); }
 
 .sidebar {
   width: var(--sidebar-w);
+  height: 100vh;
+  max-height: 100vh;
   background: var(--navy);
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0; left: 0; bottom: 0;
   z-index: 100;
-  transition: transform var(--transition);
-  overflow-y: auto;
+  transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .sidebar__logo {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 28px 24px 20px;
+  padding: 20px 22px 14px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -220,7 +223,7 @@ input, textarea, select { font-family: var(--font-body); }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 20px 24px;
+  padding: 14px 22px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -254,7 +257,7 @@ input, textarea, select { font-family: var(--font-body); }
 
 /* Nav */
 
-.sidebar__nav { padding: 16px 12px; flex: 1; }
+.sidebar__nav { padding: 10px 12px 8px; flex: 0 0 auto; overflow: visible; }
 
 .sidebar__nav-section {
   font-size: 10px;
@@ -270,12 +273,12 @@ input, textarea, select { font-family: var(--font-body); }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
+  padding: 9px 12px;
   border-radius: var(--radius-sm);
   color: rgba(255,255,255,0.55);
   font-size: 14px;
   font-weight: 500;
-  transition: background var(--transition), color var(--transition);
+  transition: background 0.2s ease, color 0.2s ease;
   margin-bottom: 2px;
   cursor: pointer;
 }
@@ -301,8 +304,11 @@ input, textarea, select { font-family: var(--font-body); }
 }
 
 .sidebar__bottom {
-  padding: 12px 12px 20px;
+  padding: 10px 12px 14px;
   border-top: 1px solid rgba(255,255,255,0.06);
+  background: var(--navy);
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 .sidebar__logout {
@@ -1015,7 +1021,14 @@ body.student-shell .nav-item.active .nav-icon {
    PAGE FADE-IN
    ============================================================ */
 
-.page-fade { animation: pageFade 0.4s ease; }
+.page-fade { animation: none; }
+
+.page-fade .main-content { animation: contentPopOut 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes contentPopOut {
+  from { opacity: 0; transform: scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
 
 @keyframes pageFade {
   from { opacity: 0; transform: translateY(6px); }

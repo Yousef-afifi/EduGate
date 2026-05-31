@@ -750,6 +750,38 @@ function initMobileSidebar() {
   }
 }
 
+function initSidebarScrollClose() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar) return;
+
+  const closeSidebar = () => {
+    sidebar.classList.remove('open');
+    if (overlay) overlay.style.display = 'none';
+  };
+
+  window.addEventListener('wheel', (event) => {
+    if (!sidebar.classList.contains('open')) return;
+    closeSidebar();
+    event.preventDefault();
+    window.scrollBy({ top: event.deltaY, left: event.deltaX, behavior: 'auto' });
+  }, { passive: false, capture: true });
+
+  let touchY = null;
+  window.addEventListener('touchstart', (event) => {
+    if (sidebar.classList.contains('open')) touchY = event.touches[0]?.clientY ?? null;
+  }, { passive: true, capture: true });
+
+  window.addEventListener('touchmove', (event) => {
+    if (!sidebar.classList.contains('open') || touchY == null) return;
+    const nextY = event.touches[0]?.clientY ?? touchY;
+    closeSidebar();
+    event.preventDefault();
+    window.scrollBy({ top: touchY - nextY, behavior: 'auto' });
+    touchY = null;
+  }, { passive: false, capture: true });
+}
+
 function showSkeletons(containerId, count = 3, type = 'card') {
   const el = document.getElementById(containerId);
   if (!el) return;
@@ -912,6 +944,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLogoutBtn();
   initModalCloseButtons();
   initMobileSidebar();
+  initSidebarScrollClose();
 });
 
 
@@ -942,8 +975,8 @@ populateSidebarUser();
       ]
     : [
         { icon: '&#127968;', label: 'Dashboard', page: 'dashboard.html' },
-        { icon: '&#128218;', label: 'Courses', page: 'courses.html' },
-        { icon: '&#128221;', label: 'Exams', page: 'exams.html', badge: '2' },
+        { icon: '&#128218;', label: 'My Courses', page: 'courses.html' },
+        { icon: '&#128221;', label: 'My Exams', page: 'exams.html', badge: '2' },
         { icon: '&#128197;', label: 'Schedule', page: 'dashboard.html?view=schedule' },
         { icon: '&#9881;', label: 'Settings', page: 'dashboard.html?view=settings' },
       ];
@@ -961,6 +994,31 @@ populateSidebarUser();
   document.querySelectorAll('#sidebar-nav .nav-item').forEach((item) => {
     const href = item.getAttribute('href');
     if (href === 'exams.html') item.classList.add('active');
+  });
+
+  const showNavTransition = () => {
+    const pageBody = document.querySelector('.page-body');
+    if (!pageBody) return;
+    pageBody.innerHTML = `
+      <div style="min-height:60vh;display:flex;align-items:center;justify-content:center">
+        <div style="width:40px;height:40px;border:3px solid var(--gray-200);border-top-color:var(--amber);border-radius:50%;animation:spin 0.7s linear infinite"></div>
+      </div>
+    `;
+  };
+
+  document.querySelectorAll('#sidebar-nav .nav-item').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      const href = item.getAttribute('href');
+      if (!href || href === '#') return;
+      event.preventDefault();
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').style.display = 'none';
+      if (href === 'exams.html') return;
+      showNavTransition();
+      setTimeout(() => {
+        window.location.href = href;
+      }, 180);
+    });
   });
 
   document.getElementById('sidebar-peek-toggle')?.addEventListener('click', () => {
