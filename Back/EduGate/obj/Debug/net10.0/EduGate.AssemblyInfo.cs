@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EduGate")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99620614ab7948501e70237089ef773a66e56a5d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8ef7984bef9727ea5b152d0a50bc20af28c4ca9")]
 [assembly: System.Reflection.AssemblyProductAttribute("EduGate")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EduGate")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
