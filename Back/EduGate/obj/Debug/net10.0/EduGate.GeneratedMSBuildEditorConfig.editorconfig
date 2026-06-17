@@ -22,16 +22,64 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBdXRoXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBdXRoXFJlZ2lzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Student/Student_Courses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50XFN0dWRlbnRfQ291cnNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Student/Student_Course_Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50XFN0dWRlbnRfQ291cnNlX0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Student/Student_Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50XFN0dWRlbnRfRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Student/Student_Exams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50XFN0dWRlbnRfRXhhbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Student/Student_Take_Exam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50XFN0dWRlbnRfVGFrZV9FeGFtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Student/Student_Video_Lesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdHVkZW50XFN0dWRlbnRfVmlkZW9fTGVzc29uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Teacher/Teacher_Courses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFjaGVyXFRlYWNoZXJfQ291cnNlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Teacher/Teacher_Course_Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFjaGVyXFRlYWNoZXJfQ291cnNlX0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Teacher/Teacher_Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFjaGVyXFRlYWNoZXJfRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Teacher/Teacher_Exams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFjaGVyXFRlYWNoZXJfRXhhbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Teacher/Teacher_Take_Exam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFjaGVyXFRlYWNoZXJfVGFrZV9FeGFtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Teacher/Teacher_Video_Lesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFjaGVyXFRlYWNoZXJfVmlkZW9fTGVzc29uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Shared/_ValidationScriptsPartial.cshtml]
