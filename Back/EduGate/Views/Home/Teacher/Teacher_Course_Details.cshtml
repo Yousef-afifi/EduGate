@@ -1,102 +1,307 @@
 ﻿<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course Details - EduPlatform</title>
-    <link rel="stylesheet" href="~/css/teacher-course-details.css" />
+    <title>
+        Course Details - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/teacher-course-details.css" />
 </head>
-<body>
-
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
-
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+    @*
+    Required ViewModel Data:
+    * Course Id
+    * Course Name
+    * Course Category
+    * Course Description
+    * Teacher Name
+    * Lesson List
+    * Lesson Completion State
+    * Student Count
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar__logo">
-                <div class="sidebar__logo-mark">&#127891;</div>
-                <span class="sidebar__logo-name">EduPlatform</span>
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
             </div>
             <div class="sidebar__user">
-                <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
                 <div>
-                    <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
-                    <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Teacher
+                    </div>
                 </div>
             </div>
-            <nav class="sidebar__nav" id="sidebar-nav"></nav>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a href="/Teacher/Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a href="/Teacher/Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        Courses
+                    </span>
+                </a>
+                <a href="/Teacher/Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        Exams
+                    </span>
+                </a>
+                <a href="/Teacher/Dashboard?view=students" class="nav-item">
+                    <span class="nav-icon">
+                        &#128101;
+                    </span>
+                    <span>
+                        Students
+                    </span>
+                </a>
+                <a href="/Teacher/Dashboard?view=upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a href="/Teacher/Dashboard?view=settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
             <div class="sidebar__bottom">
                 <button class="sidebar__logout" id="logout-btn">
-                    <span class="nav-icon">&#128682;</span> Sign Out
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
                 </button>
             </div>
         </aside>
-
         <div class="main-content">
             <header class="topbar">
                 <div class="topbar__left">
-                    <button class="menu-toggle" id="menu-toggle">&#9776;</button>
-                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
                     <div>
-                        <div class="topbar__title" id="page-title">Course Details</div>
-                        <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
+                        <div class="topbar__title" id="page-title">
+                            Course Details
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
                     </div>
                 </div>
                 <div class="topbar__right">
                     <div class="topbar-search">
-                        <span class="search-icon">&#128269;</span>
-                        <input type="text" placeholder="Search..." />
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
+                        <input type="text" placeholder="Search..." id="global-search" />
                     </div>
-                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
                 </div>
             </header>
-
             <main class="page-body" id="course-content">
-                <div style="display:flex;align-items:center;justify-content:center;min-height:50vh">
-                    <div style="width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#f59e0b;border-radius:50%;animation:spin 0.7s linear infinite"></div>
+                <div class="course-hero">
+                    @* TODO: Backend
+            Required Data:
+            * Course Name
+            * Course Description
+            * Teacher Name
+            * Course Level
+            * Duration
+            * Lesson Count
+            *@
+                    <div>
+                        <div class="course-card__category">
+                            Course Category
+                        </div>
+                        <h1>
+                            Course Name
+                        </h1>
+                        <p>
+                            Course description placeholder. Razor will bind the real course summary here.
+                        </p>
+                    </div>
+                    <button class="btn-amber" onclick="openModal('add-lesson-modal')">
+                        + Add Lesson
+                    </button>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#128196;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Lessons
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#9201;
+                        </div>
+                        <div class="stat-card__num">
+                            0h
+                        </div>
+                        <div class="stat-card__label">
+                            Duration
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#128101;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Students
+                        </div>
+                    </div>
+                </div>
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">
+                            Lessons
+                        </div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-top:6px">
+                            Razor should loop over course lessons.
+                        </div>
+                    </div>
+                </div>
+                @* TODO: Backend
+          Required Data:
+          * Lesson Id
+          * Lesson Title
+          * Lesson Type
+          * Lesson Duration
+          * Completion/Lock Status
+          * Video Url
+          *@
+                <div class="lessons-list">
+                    <a class="lesson-row" href="/Teacher/VideoLesson?courseId=@Model?.CourseId&lessonId=@Model?.LessonId">
+                        <span class="lesson-row__icon">
+                            &#127909;
+                        </span>
+                        <div>
+                            <strong>
+                                Lesson Title
+                            </strong>
+                            <p>
+                                Lesson type and duration
+                            </p>
+                        </div>
+                        <span class="badge badge-blue">
+                            Status
+                        </span>
+                    </a>
                 </div>
             </main>
         </div>
     </div>
-
     <div class="modal-overlay" id="add-lesson-modal">
         <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">Add New Lesson</div>
-                <button class="modal-close" data-close-modal="add-lesson-modal">&times;</button>
+                <div class="modal-title">
+                    Add New Lesson
+                </div>
+                <button class="modal-close" data-close-modal="add-lesson-modal">
+                    &times;
+                </button>
             </div>
             <form id="add-lesson-form" action="/Teacher/Lessons/Create" method="post" novalidate>
                 <div class="form-group">
-                    <label>Lesson Title</label>
-                    <input type="text" id="lesson-title" name="Title" placeholder="e.g. Variables and Data Types" />
-                    <div class="field-error"></div>
+                    <label>
+                        Lesson Title
+                    </label>
+                    <input type="text" id="lesson-title" name="Title" placeholder="Lesson title" data-validate="required" />
+                    <div class="field-error">
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Type</label>
+                        <label>
+                            Type
+                        </label>
                         <select id="lesson-type" name="Type">
-                            <option value="video">Video</option>
-                            <option value="article">Article</option>
-                            <option value="quiz">Quiz</option>
+                            <option value="video">
+                                Video
+                            </option>
+                            <option value="article">
+                                Article
+                            </option>
+                            <option value="quiz">
+                                Quiz
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Duration</label>
-                        <input type="text" id="lesson-duration" name="Duration" placeholder="e.g. 14 min" />
+                        <label>
+                            Duration
+                        </label>
+                        <input type="text" id="lesson-duration" name="Duration" placeholder="Duration" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Video URL (optional)</label>
+                    <label>
+                        Video URL (optional)
+                    </label>
                     <input type="url" id="lesson-url" name="Url" placeholder="https://..." />
                 </div>
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="lesson-desc" name="Description" rows="3" placeholder="Brief description..." style="resize:vertical"></textarea>
+                    <label>
+                        Description
+                    </label>
+                    <textarea id="lesson-desc" name="Description" rows="3" placeholder="Brief description..." style="resize:vertical">
+            </textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-secondary" data-close-modal="add-lesson-modal">Cancel</button>
-                    <button type="submit" class="btn-amber" id="add-lesson-btn">Add Lesson</button>
+                    <button type="button" class="btn-secondary" data-close-modal="add-lesson-modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-amber" id="add-lesson-btn">
+                        Add Lesson
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
-    <script src="~/js/teacher-course-details.js"></script>
+    <script src="../../js/app.js">
+    </script>
 </body>

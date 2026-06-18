@@ -1,72 +1,200 @@
 ﻿<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Take Exam - EduPlatform</title>
-    <link rel="stylesheet" href="~/css/student-take-exam.css" />
+    <title>
+        Take Exam - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/student-take-exam.css" />
 </head>
-<body>
-
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
-
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
+    @*
+    Required ViewModel Data:
+    * Exam Id
+    * Exam Title
+    * Course Name
+    * Duration Minutes
+    * Instructions
+    * Question List
+    * Question Options
+    * Existing Student Answers For Review
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar__logo">
-                <div class="sidebar__logo-mark">&#127891;</div>
-                <span class="sidebar__logo-name">EduPlatform</span>
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
             </div>
             <div class="sidebar__user">
-                <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
                 <div>
-                    <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
-                    <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Student
+                    </div>
                 </div>
             </div>
-            <nav class="sidebar__nav" id="sidebar-nav"></nav>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a href="/Student/Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a href="/Student/Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        My Courses
+                    </span>
+                </a>
+                <a href="/Student/Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        My Exams
+                    </span>
+                </a>
+                <a href="/Student/Dashboard?view=schedule" class="nav-item">
+                    <span class="nav-icon">
+                        &#128197;
+                    </span>
+                    <span>
+                        Schedule
+                    </span>
+                </a>
+                <a href="/Student/Dashboard?view=settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
             <div class="sidebar__bottom">
                 <button class="sidebar__logout" id="logout-btn">
-                    <span class="nav-icon">&#128682;</span> Sign Out
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
                 </button>
             </div>
         </aside>
-
         <div class="main-content">
             <header class="topbar">
                 <div class="topbar__left">
-                    <button class="menu-toggle" id="menu-toggle">&#9776;</button>
-                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
                     <div>
-                        <div class="topbar__title" id="exam-title-bar">Take Exam</div>
-                        <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
+                        <div class="topbar__title" id="page-title">
+                            Take Exam
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
                     </div>
                 </div>
                 <div class="topbar__right">
-                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
                 </div>
             </header>
-
             <main class="page-body" id="exam-content">
-                <div style="display:flex;align-items:center;justify-content:center;min-height:50vh">
-                    <div style="width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#f59e0b;border-radius:50%;animation:spin 0.7s linear infinite"></div>
-                </div>
+                <form id="exam-form" action="/Student/Exams/Submit" method="post">
+                    <input type="hidden" name="ExamId" value="@Model?.ExamId" />
+                    <div class="exam-header">
+                        <div>
+                            @* TODO: Backend
+                Required Data:
+                * Exam Title
+                * Course Name
+                * Duration Minutes
+                *@
+                            <h1>
+                                Exam Title
+                            </h1>
+                            <p>
+                                Course Name
+                            </p>
+                        </div>
+                        <div class="badge badge-amber" id="answered-count">
+                            0/1
+                        </div>
+                    </div>
+                    @* TODO: Backend
+            Required Data:
+            * Question Id
+            * Question Text
+            * Options
+            * Option Id
+            * Option Text
+            *@
+                    <div class="question-card">
+                        <div class="question-title">
+                            Question text placeholder
+                        </div>
+                        <label>
+                            <input type="radio" name="Answers[0].SelectedOption" value="A" />
+                            Option A
+                        </label>
+                        <label>
+                            <input type="radio" name="Answers[0].SelectedOption" value="B" />
+                            Option B
+                        </label>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;margin-top:24px">
+                        <button type="button" class="btn-primary" id="submit-exam-btn">
+                            Submit Exam
+                        </button>
+                    </div>
+                </form>
             </main>
         </div>
     </div>
-
     <div class="modal-overlay" id="submit-confirm-modal">
         <div class="modal" style="max-width:400px">
             <div class="modal-header">
-                <div class="modal-title">Submit Exam?</div>
-                <button class="modal-close" data-close-modal="submit-confirm-modal">&times;</button>
+                <div class="modal-title">
+                    Submit Exam?
+                </div>
+                <button class="modal-close" data-close-modal="submit-confirm-modal">
+                    &times;
+                </button>
             </div>
             <p style="font-size:14.5px;color:var(--gray-600);line-height:1.6" id="submit-confirm-msg">
                 Are you sure you want to submit? You cannot change your answers after submitting.
             </p>
             <div class="modal-footer">
-                <button type="button" class="btn-secondary" data-close-modal="submit-confirm-modal">Go Back</button>
-                <button type="button" class="btn-primary" id="confirm-submit-btn">Submit Now</button>
+                <button type="button" class="btn-secondary" data-close-modal="submit-confirm-modal">
+                    Go Back
+                </button>
+                <button type="button" class="btn-primary" id="confirm-submit-btn">
+                    Submit Now
+                </button>
             </div>
         </div>
     </div>
-
-    <script src="~/js/student-take-exam.js"></script>
+    <script src="../../js/app.js">
+    </script>
 </body>

@@ -1,0 +1,14 @@
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\auth-login.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\auth-register.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\student-course-details.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\student-courses.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\student-dashboard.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\student-exams.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\student-take-exam.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\student-video-lesson.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\teacher-course-details.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\teacher-courses.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\teacher-dashboard.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\teacher-exams.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\teacher-take-exam.js
+D:\4.Work\GitHub\EduGate\Back\EduGate\wwwroot\js\teacher-video-lesson.js

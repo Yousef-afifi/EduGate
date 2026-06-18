@@ -1,77 +1,229 @@
 ﻿<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses - EduPlatform</title>
-    <link rel="stylesheet" href="~/css/student-courses.css" />
+    <title>
+        Courses - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/student-courses.css" />
 </head>
-<body>
-
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
-
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
+    @*
+    Required ViewModel Data:
+    * Enrolled Courses
+    * Course Categories
+    * Course Progress
+    * Assigned Teacher Name
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar__logo">
-                <div class="sidebar__logo-mark">&#127891;</div>
-                <span class="sidebar__logo-name">EduPlatform</span>
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
             </div>
             <div class="sidebar__user">
-                <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
                 <div>
-                    <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
-                    <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Student
+                    </div>
                 </div>
             </div>
-            <nav class="sidebar__nav" id="sidebar-nav"></nav>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a href="/Student/Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a href="/Student/Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        My Courses
+                    </span>
+                </a>
+                <a href="/Student/Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        My Exams
+                    </span>
+                </a>
+                <a href="/Student/Dashboard?view=schedule" class="nav-item">
+                    <span class="nav-icon">
+                        &#128197;
+                    </span>
+                    <span>
+                        Schedule
+                    </span>
+                </a>
+                <a href="/Student/Dashboard?view=settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
             <div class="sidebar__bottom">
                 <button class="sidebar__logout" id="logout-btn">
-                    <span class="nav-icon">&#128682;</span> Sign Out
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
                 </button>
             </div>
         </aside>
-
         <div class="main-content">
             <header class="topbar">
                 <div class="topbar__left">
-                    <button class="menu-toggle" id="menu-toggle">&#9776;</button>
-                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
                     <div>
-                        <div class="topbar__title">Courses</div>
-                        <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
+                        <div class="topbar__title" id="page-title">
+                            Courses
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
                     </div>
                 </div>
                 <div class="topbar__right">
                     <div class="topbar-search">
-                        <span class="search-icon">&#128269;</span>
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
                         <input type="text" placeholder="Search courses..." id="global-search" />
                     </div>
-                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
                 </div>
             </header>
-
             <main class="page-body">
                 <div class="page-header">
-                    <h1 id="courses-heading">All Courses</h1>
-                    <p id="courses-subheading">Explore and manage courses</p>
+                    <h1 id="courses-heading">
+                        Browse Courses
+                    </h1>
+                    <p id="courses-subheading">
+                        Discover courses and track your progress
+                    </p>
                 </div>
-
                 <div class="filter-bar">
                     <input type="text" id="search-courses" placeholder="Search courses by title..." />
-                    <button class="filter-pill active" data-filter="all">All</button>
-                    <button class="filter-pill" data-filter="Programming">Programming</button>
-                    <button class="filter-pill" data-filter="Design">Design</button>
-                    <button class="filter-pill" data-filter="Mathematics">Mathematics</button>
-                    <button class="filter-pill" data-filter="Science">Science</button>
-                    <button class="filter-pill" data-filter="Language">Language</button>
+                    <button class="filter-pill active" data-filter="all">
+                        All
+                    </button>
+                    <button class="filter-pill" data-filter="Programming">
+                        Programming
+                    </button>
+                    <button class="filter-pill" data-filter="Design">
+                        Design
+                    </button>
+                    <button class="filter-pill" data-filter="Mathematics">
+                        Mathematics
+                    </button>
+                    <button class="filter-pill" data-filter="Science">
+                        Science
+                    </button>
+                    <button class="filter-pill" data-filter="Language">
+                        Language
+                    </button>
                 </div>
-
-                <div class="cards-grid" id="courses-grid"></div>
-
+                <div class="cards-grid" id="courses-grid">
+                    @* TODO: Backend
+            Required Data:
+            * Course Id
+            * Course Name
+            * Course Description
+            * Course Category
+            * Teacher Name
+            * Lesson Count
+            * Duration
+            * Level
+            * Progress Percentage
+            * Student Count
+            *@
+                    <div class="course-card" data-category="Programming" onclick="window.location.href='/Student/CourseDetails?id=@Model?.CourseId'">
+                        <div class="course-card__thumb">
+                            <span style="position:relative;z-index:1">
+                                &#128218;
+                            </span>
+                            <span class="course-card__thumb-label">
+                                Template
+                            </span>
+                        </div>
+                        <div class="course-card__body">
+                            <div class="course-card__category">
+                                Course Category
+                            </div>
+                            <div class="course-card__title">
+                                Course Name
+                            </div>
+                            <div class="course-card__meta">
+                                <span>
+                                    &#128196; Lesson count
+                                </span>
+                                <span>
+                                    &#127909; Duration
+                                </span>
+                            </div>
+                            <div class="course-card__progress-bar">
+                                <div class="course-card__progress-fill" style="width:0%">
+                                </div>
+                            </div>
+                            <div class="course-card__progress-label">
+                                <span>
+                                    Progress
+                                </span>
+                                <span>
+                                    0%
+                                </span>
+                            </div>
+                        </div>
+                        <div class="course-card__footer">
+                            <div class="course-card__author">
+                                <div class="course-card__avatar-sm">
+                                    T
+                                </div>
+                                Teacher Name
+                            </div>
+                            <span class="badge badge-amber">
+                                Level
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div style="text-align:center;margin-top:32px" id="load-more-wrap">
-                    <button class="btn-secondary" id="load-more-btn" style="padding:12px 32px;font-size:15px">Load more courses</button>
+                    <button class="btn-secondary" id="load-more-btn" style="padding:12px 32px;font-size:15px">
+                        Load more courses
+                    </button>
                 </div>
             </main>
         </div>
     </div>
-
-    <script src="~/js/student-courses.js"></script>
+    <script src="../../js/app.js">
+    </script>
 </body>

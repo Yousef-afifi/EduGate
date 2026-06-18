@@ -1,123 +1,318 @@
 ﻿<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exams - EduPlatform</title>
-    <link rel="stylesheet" href="~/css/teacher-exams.css" />
+    <title>
+        Exams - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/teacher-exams.css" />
 </head>
-<body>
-
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99"></div>
-
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+    @*
+    Required ViewModel Data:
+    * Teacher Exams
+    * Exam Statistics
+    * Teacher Courses For Exam Creation
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar__logo">
-                <div class="sidebar__logo-mark">&#127891;</div>
-                <span class="sidebar__logo-name">EduPlatform</span>
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
             </div>
             <div class="sidebar__user">
-                <div class="sidebar__avatar" id="sidebar-avatar">U</div>
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
                 <div>
-                    <div class="sidebar__user-name" id="sidebar-user-name">Loading...</div>
-                    <div class="sidebar__user-role" id="sidebar-user-role">-</div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Teacher
+                    </div>
                 </div>
             </div>
-            <nav class="sidebar__nav" id="sidebar-nav"></nav>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a href="/Teacher/Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a href="/Teacher/Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        Courses
+                    </span>
+                </a>
+                <a href="/Teacher/Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        Exams
+                    </span>
+                </a>
+                <a href="/Teacher/Dashboard?view=students" class="nav-item">
+                    <span class="nav-icon">
+                        &#128101;
+                    </span>
+                    <span>
+                        Students
+                    </span>
+                </a>
+                <a href="/Teacher/Dashboard?view=upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a href="/Teacher/Dashboard?view=settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
             <div class="sidebar__bottom">
                 <button class="sidebar__logout" id="logout-btn">
-                    <span class="nav-icon">&#128682;</span> Sign Out
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
                 </button>
             </div>
         </aside>
-
         <div class="main-content">
             <header class="topbar">
                 <div class="topbar__left">
-                    <button class="menu-toggle" id="menu-toggle">&#9776;</button>
-                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">&#9776;</button>
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
                     <div>
-                        <div class="topbar__title">Exams</div>
-                        <div class="topbar__breadcrumb" id="page-breadcrumb"></div>
+                        <div class="topbar__title" id="page-title">
+                            Exams
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
                     </div>
                 </div>
                 <div class="topbar__right">
-                    <div class="topbar-search">
-                        <span class="search-icon">&#128269;</span>
-                        <input type="text" placeholder="Search exams..." id="search-exams" />
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
                     </div>
-                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name"></div>
                 </div>
             </header>
-
             <main class="page-body">
                 <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between">
                     <div>
-                        <h1 id="exams-heading">Exams</h1>
-                        <p id="exams-subheading">Loading...</p>
+                        <h1 id="exams-heading">
+                            Exams
+                        </h1>
+                        <p id="exams-subheading">
+                            Create and manage exams for your courses
+                        </p>
                     </div>
-                    <div id="teacher-exam-actions" style="display:none;margin-top:4px">
-                        <button class="btn-amber" onclick="openModal('create-exam-modal')">+ Create Exam</button>
+                    <div id="teacher-exam-actions" style="display:block;margin-top:4px">
+                        <button class="btn-amber" onclick="openModal('create-exam-modal')">
+                            + Create Exam
+                        </button>
                     </div>
                 </div>
-
-                <div class="stats-row" id="exam-stats" style="display:none"></div>
-
+                @* TODO: Backend
+          Required Data:
+          * Total Exams
+          * Pending Exams
+          * Completed Exams
+          * Average Score or Submission Rate
+          *@
+                <div class="stats-row" id="exam-stats">
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#128221;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Total Exams
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#9203;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Pending
+                        </div>
+                    </div>
+                </div>
                 <div class="filter-bar" style="margin-bottom:24px">
-                    <button class="filter-pill active" data-status="all">All Exams</button>
-                    <button class="filter-pill" data-status="pending">Pending</button>
-                    <button class="filter-pill" data-status="completed">Completed</button>
-                    <button class="filter-pill" data-status="missed">Missed</button>
+                    <button class="filter-pill active" data-status="all">
+                        All Exams
+                    </button>
+                    <button class="filter-pill" data-status="pending">
+                        Pending
+                    </button>
+                    <button class="filter-pill" data-status="completed">
+                        Completed
+                    </button>
+                    <button class="filter-pill" data-status="missed">
+                        Missed
+                    </button>
                 </div>
-
-                <div class="exams-grid" id="exams-grid"></div>
+                <div class="exams-grid" id="exams-grid">
+                    @* TODO: Backend
+            Required Data:
+            * Exam Id
+            * Exam Title
+            * Course Name
+            * Duration Minutes
+            * Question Count
+            * Due Date
+            * Exam Status
+            * Student Score or Submission Count
+            *@
+                    <div class="exam-card" data-status="pending">
+                        <div class="exam-card__icon">
+                            &#128221;
+                        </div>
+                        <div class="exam-card__title">
+                            Exam Title
+                        </div>
+                        <div class="exam-card__course">
+                            Course Name
+                        </div>
+                        <div class="exam-card__details">
+                            <div class="exam-detail-row">
+                                &#127909; Duration:
+                                <strong>
+                                    Duration min
+                                </strong>
+                            </div>
+                            <div class="exam-detail-row">
+                                &#10067; Questions:
+                                <strong>
+                                    Question count
+                                </strong>
+                            </div>
+                            <div class="exam-detail-row">
+                                &#128197; Due:
+                                <strong>
+                                    Due date
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="exam-card__footer">
+                            <span class="badge badge-amber">
+                                Status
+                            </span>
+                            <a class="btn-amber" href="/Teacher/TakeExam?id=@Model?.ExamId">
+                                Open
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
-
     <div class="modal-overlay" id="create-exam-modal">
         <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">Create New Exam</div>
-                <button class="modal-close" data-close-modal="create-exam-modal">&times;</button>
+                <div class="modal-title">
+                    Create New Exam
+                </div>
+                <button class="modal-close" data-close-modal="create-exam-modal">
+                    &times;
+                </button>
             </div>
             <form id="create-exam-form" action="/Teacher/Exams/Create" method="post" novalidate>
                 <div class="form-group">
-                    <label>Exam Title</label>
-                    <input type="text" id="exam-title" name="Title" placeholder="e.g. Python Midterm Exam" />
-                    <div class="field-error"></div>
+                    <label>
+                        Exam Title
+                    </label>
+                    <input type="text" id="exam-title" name="Title" placeholder="Exam title" data-validate="required" />
+                    <div class="field-error">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Course</label>
-                    <select id="exam-course" name="CourseId">
-                        <!-- Backend required: populate teacher courses with <option value="{courseId}">{courseTitle}</option>. -->
-                        <option value="">Select a course</option>
+                    <label>
+                        Course
+                    </label>
+                    <select id="exam-course" name="CourseId" data-validate="required">
+                        @* TODO: Backend
+              Required Data:
+              * Teacher Course Id
+              * Teacher Course Title
+              *@
+                        <option value="">
+                            Select a course
+                        </option>
                     </select>
-                    <div class="field-error"></div>
+                    <div class="field-error">
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Duration (minutes)</label>
+                        <label>
+                            Duration (minutes)
+                        </label>
                         <input type="number" id="exam-duration" name="Duration" placeholder="30" min="5" max="180" />
                     </div>
                     <div class="form-group">
-                        <label>Total Questions</label>
+                        <label>
+                            Total Questions
+                        </label>
                         <input type="number" id="exam-questions" name="QuestionsCount" placeholder="20" min="1" max="100" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Due Date</label>
+                    <label>
+                        Due Date
+                    </label>
                     <input type="date" id="exam-due" name="DueDate" />
                 </div>
                 <div class="form-group">
-                    <label>Instructions (optional)</label>
-                    <textarea id="exam-instructions" name="Instructions" rows="3" placeholder="Exam instructions for students..." style="resize:vertical"></textarea>
+                    <label>
+                        Instructions (optional)
+                    </label>
+                    <textarea id="exam-instructions" name="Instructions" rows="3" placeholder="Exam instructions for students..." style="resize:vertical">
+            </textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-secondary" data-close-modal="create-exam-modal">Cancel</button>
-                    <button type="submit" class="btn-amber" id="create-exam-btn">Create Exam</button>
+                    <button type="button" class="btn-secondary" data-close-modal="create-exam-modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-amber" id="create-exam-btn">
+                        Create Exam
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
-    <script src="~/js/teacher-exams.js"></script>
+    <script src="../../js/app.js">
+    </script>
 </body>
