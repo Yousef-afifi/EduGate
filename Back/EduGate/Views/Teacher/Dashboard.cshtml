@@ -4,7 +4,7 @@
     <title>
         Dashboard - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/teacher-dashboard.css" />
+    <link rel="stylesheet" href="~/css/teacher-dashboard.css" />
 </head>
 <body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
     @*
@@ -47,7 +47,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Teacher/Dashboard" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -55,7 +55,7 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Teacher/Courses" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
@@ -63,7 +63,7 @@
                         Courses
                     </span>
                 </a>
-                <a href="/Teacher/Exams" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
@@ -71,7 +71,7 @@
                         Exams
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=students" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Students" class="nav-item">
                     <span class="nav-icon">
                         &#128101;
                     </span>
@@ -79,7 +79,7 @@
                         Students
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=upgrade" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Upgrade" class="nav-item">
                     <span class="nav-icon">
                         &#11014;
                     </span>
@@ -87,7 +87,7 @@
                         Upgrade
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>
@@ -435,6 +435,6 @@
             </form>
         </div>
     </div>
-    <script src="../../js/app.js">
+    <script src="~/js/app.js">
     </script>
 </body>

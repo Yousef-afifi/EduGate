@@ -4,9 +4,9 @@
     <title>
         Course Details - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/student-course-details.css" />
+    <link rel="stylesheet" href="../../css/teacher-course-details.css" />
 </head>
-<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
     @*
     Required ViewModel Data:
     * Course Id
@@ -16,7 +16,7 @@
     * Teacher Name
     * Lesson List
     * Lesson Completion State
-    * Student Progress
+    * Student Count
     *@
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
     </div>
@@ -39,7 +39,7 @@
                         @Model?.CurrentUserName
                     </div>
                     <div class="sidebar__user-role" id="sidebar-user-role">
-                        Student
+                        Teacher
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Student/Dashboard" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -55,31 +55,39 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Student/Courses" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
                     <span>
-                        My Courses
+                        Courses
                     </span>
                 </a>
-                <a href="/Student/Exams" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
                     <span>
-                        My Exams
+                        Exams
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=schedule" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Students" class="nav-item">
                     <span class="nav-icon">
-                        &#128197;
+                        &#128101;
                     </span>
                     <span>
-                        Schedule
+                        Students
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>
@@ -148,6 +156,9 @@
                             Course description placeholder. Razor will bind the real course summary here.
                         </p>
                     </div>
+                    <button class="btn-amber" onclick="openModal('add-lesson-modal')">
+                        + Add Lesson
+                    </button>
                 </div>
                 <div class="stats-row">
                     <div class="stat-card">
@@ -204,7 +215,7 @@
           * Video Url
           *@
                 <div class="lessons-list">
-                    <a class="lesson-row" href="/Student/VideoLesson?courseId=@Model?.CourseId&lessonId=@Model?.LessonId">
+                    <a class="lesson-row" href="/Teacher/VideoLesson?courseId=@Model?.CourseId&lessonId=@Model?.LessonId">
                         <span class="lesson-row__icon">
                             &#127909;
                         </span>
@@ -222,6 +233,73 @@
                     </a>
                 </div>
             </main>
+        </div>
+    </div>
+    <div class="modal-overlay" id="add-lesson-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    Add New Lesson
+                </div>
+                <button class="modal-close" data-close-modal="add-lesson-modal">
+                    &times;
+                </button>
+            </div>
+            <form id="add-lesson-form" action="/Teacher/Lessons/Create" method="post" novalidate>
+                <div class="form-group">
+                    <label>
+                        Lesson Title
+                    </label>
+                    <input type="text" id="lesson-title" name="Title" placeholder="Lesson title" data-validate="required" />
+                    <div class="field-error">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            Type
+                        </label>
+                        <select id="lesson-type" name="Type">
+                            <option value="video">
+                                Video
+                            </option>
+                            <option value="article">
+                                Article
+                            </option>
+                            <option value="quiz">
+                                Quiz
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Duration
+                        </label>
+                        <input type="text" id="lesson-duration" name="Duration" placeholder="Duration" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Video URL (optional)
+                    </label>
+                    <input type="url" id="lesson-url" name="Url" placeholder="https://..." />
+                </div>
+                <div class="form-group">
+                    <label>
+                        Description
+                    </label>
+                    <textarea id="lesson-desc" name="Description" rows="3" placeholder="Brief description..." style="resize:vertical">
+            </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="add-lesson-modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-amber" id="add-lesson-btn">
+                        Add Lesson
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     <script src="../../js/app.js">

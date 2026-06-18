@@ -4,15 +4,15 @@
     <title>
         Courses - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/teacher-courses.css" />
+    <link rel="stylesheet" href="../../css/student-courses.css" />
 </head>
-<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
     @*
     Required ViewModel Data:
-    * Teacher Courses
+    * Enrolled Courses
     * Course Categories
-    * Course Lesson Counts
-    * Course Student Counts
+    * Course Progress
+    * Assigned Teacher Name
     *@
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
     </div>
@@ -35,7 +35,7 @@
                         @Model?.CurrentUserName
                     </div>
                     <div class="sidebar__user-role" id="sidebar-user-role">
-                        Teacher
+                        Student
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Teacher/Dashboard" class="nav-item">
+                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -51,7 +51,7 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Teacher/Courses" class="nav-item">
+                <a asp-controller="Student" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
@@ -59,7 +59,7 @@
                         Courses
                     </span>
                 </a>
-                <a href="/Teacher/Exams" class="nav-item">
+                <a asp-controller="Student" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
@@ -67,23 +67,15 @@
                         Exams
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=students" class="nav-item">
+                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
                     <span class="nav-icon">
-                        &#128101;
+                        &#128197;
                     </span>
                     <span>
-                        Students
+                        Schedule
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=upgrade" class="nav-item">
-                    <span class="nav-icon">
-                        &#11014;
-                    </span>
-                    <span>
-                        Upgrade
-                    </span>
-                </a>
-                <a href="/Teacher/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Student" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>
@@ -133,10 +125,10 @@
             <main class="page-body">
                 <div class="page-header">
                     <h1 id="courses-heading">
-                        My Courses
+                        Browse Courses
                     </h1>
                     <p id="courses-subheading">
-                        Manage and create your course library
+                        Discover courses and track your progress
                     </p>
                 </div>
                 <div class="filter-bar">
@@ -159,11 +151,6 @@
                     <button class="filter-pill" data-filter="Language">
                         Language
                     </button>
-                    <div id="teacher-actions" style="margin-left:auto;display:flex">
-                        <button class="btn-amber" onclick="openModal('create-course-modal')">
-                            + New Course
-                        </button>
-                    </div>
                 </div>
                 <div class="cards-grid" id="courses-grid">
                     @* TODO: Backend
@@ -179,7 +166,7 @@
             * Progress Percentage
             * Student Count
             *@
-                    <div class="course-card" data-category="Programming" onclick="window.location.href='/Teacher/CourseDetails?id=@Model?.CourseId'">
+                    <div class="course-card" data-category="Programming" onclick="window.location.href='/Student/CourseDetails?id=@Model?.CourseId'">
                         <div class="course-card__thumb">
                             <span style="position:relative;z-index:1">
                                 &#128218;
@@ -235,100 +222,6 @@
                     </button>
                 </div>
             </main>
-        </div>
-    </div>
-    <div class="modal-overlay" id="create-course-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">
-                    Create New Course
-                </div>
-                <button class="modal-close" data-close-modal="create-course-modal">
-                    &times;
-                </button>
-            </div>
-            <form id="create-course-form" action="/Teacher/Courses/Create" method="post" novalidate>
-                <div class="form-group">
-                    <label>
-                        Course Title
-                    </label>
-                    <input type="text" id="course-title" name="Title" placeholder="Course title" data-validate="required" />
-                    <div class="field-error">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>
-                        Category
-                    </label>
-                    <select id="course-category" name="Category">
-                        <option value="">
-                            Select category
-                        </option>
-                        <option>
-                            Programming
-                        </option>
-                        <option>
-                            Design
-                        </option>
-                        <option>
-                            Mathematics
-                        </option>
-                        <option>
-                            Science
-                        </option>
-                        <option>
-                            Language
-                        </option>
-                        <option>
-                            Business
-                        </option>
-                    </select>
-                    <div class="field-error">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>
-                            Level
-                        </label>
-                        <select id="course-level" name="Level">
-                            <option value="">
-                                Level
-                            </option>
-                            <option>
-                                Beginner
-                            </option>
-                            <option>
-                                Intermediate
-                            </option>
-                            <option>
-                                Advanced
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            Duration
-                        </label>
-                        <input type="text" id="course-duration" name="Duration" placeholder="Duration" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>
-                        Description
-                    </label>
-                    <textarea id="course-desc" name="Description" rows="3" placeholder="Course description..." style="resize:vertical">
-            </textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" data-close-modal="create-course-modal">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn-amber" id="create-course-btn">
-                        Create Course
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
     <script src="../../js/app.js">

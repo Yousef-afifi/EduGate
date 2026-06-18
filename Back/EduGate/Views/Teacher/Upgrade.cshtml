@@ -1,0 +1,217 @@
+﻿<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Upgrade - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/teacher-dashboard.css" />
+</head>
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+    @*
+    Required ViewModel Data:
+    * Current Package
+    * Available Packages
+    * Student Limit
+    * Course Limit
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__logo">
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
+            </div>
+            <div class="sidebar__user">
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
+                <div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Teacher
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        Courses
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        Exams
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Students" class="nav-item">
+                    <span class="nav-icon">
+                        &#128101;
+                    </span>
+                    <span>
+                        Students
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
+            <div class="sidebar__bottom">
+                <button class="sidebar__logout" id="logout-btn">
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+        <div class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
+                    <div>
+                        <div class="topbar__title" id="page-title">
+                            Upgrade
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="topbar-search">
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
+                        <input type="text" placeholder="Search packages..." id="global-search" />
+                    </div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                </div>
+            </header>
+            <main class="page-body dashboard-view-ready" id="dashboard-content">
+                <div style="background:var(--white);border:1px solid var(--gray-200);box-shadow:var(--shadow);border-radius:var(--radius);padding:24px;margin-bottom:24px">
+                    <div class="section-header" style="margin-bottom:18px">
+                        <div>
+                            <div class="section-title">Your Current Package</div>
+                            <div style="font-size:13px;color:var(--gray-400);margin-top:6px">See your current student capacity and compare it with the available upgrades.</div>
+                        </div>
+                        <span class="badge badge-amber">Active Now</span>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat-card"><div class="stat-card__icon">🔒</div><div class="stat-card__num">600</div><div class="stat-card__label">Student Capacity</div></div>
+                        <div class="stat-card"><div class="stat-card__icon">👥</div><div class="stat-card__num">5</div><div class="stat-card__label">Accounts In Use</div></div>
+                        <div class="stat-card"><div class="stat-card__icon">⏳</div><div class="stat-card__num">595</div><div class="stat-card__label">Seats Remaining</div></div>
+                        <div class="stat-card"><div class="stat-card__icon">⭐</div><div class="stat-card__num">$59</div><div class="stat-card__label">Current Price/ month</div></div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">Available Packages</div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Choose the package that matches your student volume.</div>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+        
+                    <div class="info-card" style="border:1px solid var(--gray-200);position:relative">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px">
+                            <div>
+                                <h3 style="margin-bottom:6px">Starter</h3>
+                                <div style="font-size:13px;color:var(--gray-400)">200 student seats</div>
+                            </div>
+                            <span class="badge badge-blue">Available</span>
+                        </div>
+                        <div style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:2px">$29</div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-bottom:14px">/ month</div>
+                        <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:16px">Best for individual teachers starting with one or two groups.</p>
+                        <div style="display:grid;gap:10px;margin-bottom:18px">
+                            <div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Up to 200 student accounts</span></div><div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Courses, recordings, and exams</span></div><div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Basic account generation</span></div>
+                        </div>
+                        <button type="button" class="btn-amber" style="width:auto;padding-inline:22px" onclick="upgradeTeacherPackage('starter-200')">Upgrade Package</button>
+                    </div>
+          
+                    <div class="info-card" style="border:2px solid var(--amber);position:relative">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px">
+                            <div>
+                                <h3 style="margin-bottom:6px">Growth</h3>
+                                <div style="font-size:13px;color:var(--gray-400)">600 student seats</div>
+                            </div>
+                            <span class="badge badge-amber">Current</span>
+                        </div>
+                        <div style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:2px">$59</div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-bottom:14px">/ month</div>
+                        <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:16px">Balanced package for active teachers managing several classes.</p>
+                        <div style="display:grid;gap:10px;margin-bottom:18px">
+                            <div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Up to 600 student accounts</span></div><div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Priority support</span></div><div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Better room for multiple courses</span></div>
+                        </div>
+                        <button type="button" class="btn-secondary" style="width:auto;padding-inline:22px" disabled="" onclick="upgradeTeacherPackage('growth-600')">Current Package</button>
+                    </div>
+          
+                    <div class="info-card" style="border:1px solid var(--gray-200);position:relative">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px">
+                            <div>
+                                <h3 style="margin-bottom:6px">Scale</h3>
+                                <div style="font-size:13px;color:var(--gray-400)">1000 student seats</div>
+                            </div>
+                            <span class="badge badge-blue">Available</span>
+                        </div>
+                        <div style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:2px">$99</div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-bottom:14px">/ month</div>
+                        <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin-bottom:16px">For teachers and teams with larger student volume across many batches.</p>
+                        <div style="display:grid;gap:10px;margin-bottom:18px">
+                            <div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Up to 1000 student accounts</span></div><div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Fast growth headroom</span></div><div style="font-size:13px;color:var(--gray-700);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--amber)">✓</span><span>Advanced workspace support</span></div>
+                        </div>
+                        <button type="button" class="btn-amber" style="width:auto;padding-inline:22px" onclick="upgradeTeacherPackage('scale-1000')">Upgrade Package</button>
+                    </div>
+          
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../../js/app.js">
+    </script>
+</body>

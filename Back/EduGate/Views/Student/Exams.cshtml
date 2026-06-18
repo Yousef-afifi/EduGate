@@ -42,7 +42,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Student/Dashboard" class="nav-item">
+                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -50,23 +50,23 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Student/Courses" class="nav-item">
+                <a asp-controller="Student" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
                     <span>
-                        My Courses
+                        Courses
                     </span>
                 </a>
-                <a href="/Student/Exams" class="nav-item">
+                <a asp-controller="Student" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
                     <span>
-                        My Exams
+                        Exams
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=schedule" class="nav-item">
+                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
                     <span class="nav-icon">
                         &#128197;
                     </span>
@@ -74,7 +74,7 @@
                         Schedule
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Student" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>

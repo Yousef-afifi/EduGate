@@ -1,0 +1,263 @@
+﻿<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Schedule - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/student-dashboard.css" />
+</head>
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
+    @*
+    Required ViewModel Data:
+    * Upcoming Lessons
+    * Upcoming Exams
+    * Course Deadlines
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__logo">
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
+            </div>
+            <div class="sidebar__user">
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
+                <div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Student
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a asp-controller="Student" asp-action="Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        Courses
+                    </span>
+                </a>
+                <a asp-controller="Student" asp-action="Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        Exams
+                    </span>
+                </a>
+                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
+                    <span class="nav-icon">
+                        &#128197;
+                    </span>
+                    <span>
+                        Schedule
+                    </span>
+                </a>
+                <a asp-controller="Student" asp-action="Settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
+            <div class="sidebar__bottom">
+                <button class="sidebar__logout" id="logout-btn">
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+        <div class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
+                    <div>
+                        <div class="topbar__title" id="page-title">
+                            Schedule
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="topbar-search">
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
+                        <input type="text" placeholder="Search schedule..." id="global-search" />
+                    </div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                </div>
+            </header>
+            <main class="page-body dashboard-view-ready" id="dashboard-content">
+                <div style="background:var(--white);border:1px solid var(--gray-200);box-shadow:var(--shadow);border-radius:var(--radius);padding:24px 24px 10px;margin-bottom:24px">
+                    <div class="section-header" style="margin-bottom:18px">
+                        <div>
+                            <div class="section-title">This Week</div>
+                            <div style="font-size:13px;color:var(--gray-400);margin-top:6px">A cleaner view for exams, study blocks, and what needs your attention next.</div>
+                        </div>
+                        <span class="badge badge-blue">4 items</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:16px">
+          
+                        <div class="info-card" style="padding:0;overflow:hidden">
+                            <div style="display:flex;align-items:stretch">
+                                <div style="width:88px;background:linear-gradient(180deg,var(--navy),var(--navy-light));color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px">
+                                    <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55)">JUN</div>
+                                    <div style="font-family:var(--font-head);font-size:30px;line-height:1;color:var(--amber)">19</div>
+                                </div>
+                                <div style="flex:1;padding:20px 22px">
+                                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px">
+                                        <div>
+                                            <div style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:4px">Python Fundamentals study block</div>
+                                            <div style="font-size:13px;color:var(--gray-400)">Python Fundamentals</div>
+                                        </div>
+                                        <span class="badge badge-blue">Recommended</span>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13px;color:var(--gray-600);margin-bottom:14px">
+                                        <span>Suggested session · 7:00 PM</span>
+                                        <span>Lesson review</span>
+                                        <span>75% complete</span>
+                                    </div>
+                                    <div style="padding:12px 14px;background:var(--gray-50);border-top:1px solid var(--gray-100);border-radius:12px;font-size:13px;color:var(--gray-600)">
+                                        A suggested study session generated from your current progress so you can keep moving forward.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="info-card" style="padding:0;overflow:hidden">
+                            <div style="display:flex;align-items:stretch">
+                                <div style="width:88px;background:linear-gradient(180deg,var(--navy),var(--navy-light));color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px">
+                                    <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55)">JUN</div>
+                                    <div style="font-family:var(--font-head);font-size:30px;line-height:1;color:var(--amber)">20</div>
+                                </div>
+                                <div style="flex:1;padding:20px 22px">
+                                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px">
+                                        <div>
+                                            <div style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:4px">Data Structures &amp; Algorithms study block</div>
+                                            <div style="font-size:13px;color:var(--gray-400)">Data Structures &amp; Algorithms</div>
+                                        </div>
+                                        <span class="badge badge-blue">Recommended</span>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13px;color:var(--gray-600);margin-bottom:14px">
+                                        <span>Suggested session · 7:00 PM</span>
+                                        <span>Lesson review</span>
+                                        <span>20% complete</span>
+                                    </div>
+                                    <div style="padding:12px 14px;background:var(--gray-50);border-top:1px solid var(--gray-100);border-radius:12px;font-size:13px;color:var(--gray-600)">
+                                        A suggested study session generated from your current progress so you can keep moving forward.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="info-card" style="padding:0;overflow:hidden">
+                            <div style="display:flex;align-items:stretch">
+                                <div style="width:88px;background:linear-gradient(180deg,var(--navy),var(--navy-light));color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px">
+                                    <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55)">APR</div>
+                                    <div style="font-family:var(--font-head);font-size:30px;line-height:1;color:var(--amber)">21</div>
+                                </div>
+                                <div style="flex:1;padding:20px 22px">
+                                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px">
+                                        <div>
+                                            <div style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:4px">Python Midterm</div>
+                                            <div style="font-size:13px;color:var(--gray-400)">Python Fundamentals</div>
+                                        </div>
+                                        <span class="badge badge-amber">Upcoming</span>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13px;color:var(--gray-600);margin-bottom:14px">
+                                        <span>Exam window · 4/21/2026</span>
+                                        <span>Online exam</span>
+                                        <span>30 min</span>
+                                    </div>
+                                    <div style="padding:12px 14px;background:var(--gray-50);border-top:1px solid var(--gray-100);border-radius:12px;font-size:13px;color:var(--gray-600)">
+                                        Be ready before the timer starts and review the related lessons before opening the exam.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="info-card" style="padding:0;overflow:hidden">
+                            <div style="display:flex;align-items:stretch">
+                                <div style="width:88px;background:linear-gradient(180deg,var(--navy),var(--navy-light));color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px">
+                                    <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55)">APR</div>
+                                    <div style="font-family:var(--font-head);font-size:30px;line-height:1;color:var(--amber)">24</div>
+                                </div>
+                                <div style="flex:1;padding:20px 22px">
+                                    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px">
+                                        <div>
+                                            <div style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:4px">Design Principles Quiz</div>
+                                            <div style="font-size:13px;color:var(--gray-400)">UI/UX Design Fundamentals</div>
+                                        </div>
+                                        <span class="badge badge-amber">Upcoming</span>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:10px 18px;font-size:13px;color:var(--gray-600);margin-bottom:14px">
+                                        <span>Exam window · 4/24/2026</span>
+                                        <span>Online exam</span>
+                                        <span>20 min</span>
+                                    </div>
+                                    <div style="padding:12px 14px;background:var(--gray-50);border-top:1px solid var(--gray-100);border-radius:12px;font-size:13px;color:var(--gray-600)">
+                                        Be ready before the timer starts and review the related lessons before opening the exam.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card__icon">📅</div>
+                        <div class="stat-card__num">2</div>
+                        <div class="stat-card__label">Upcoming Exams</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">⏰</div>
+                        <div class="stat-card__num">2</div>
+                        <div class="stat-card__label">Suggested Study Blocks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">✅</div>
+                        <div class="stat-card__num">3</div>
+                        <div class="stat-card__label">Active Courses</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../../js/app.js">
+    </script>
+</body>

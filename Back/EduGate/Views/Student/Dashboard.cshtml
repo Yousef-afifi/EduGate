@@ -2,17 +2,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-        Courses - EduPlatform
+        Dashboard - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/student-courses.css" />
+    <link rel="stylesheet" href="../../css/student-dashboard.css" />
 </head>
 <body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
     @*
     Required ViewModel Data:
-    * Enrolled Courses
-    * Course Categories
-    * Course Progress
-    * Assigned Teacher Name
+    * Student Name
+    * Completed Courses
+    * In Progress Courses
+    * Total Exams
+    * Average Score
+    * Continue Watching Courses
+    * Upcoming Exams
     *@
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
     </div>
@@ -43,7 +46,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Student/Dashboard" class="nav-item">
+                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -51,23 +54,23 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Student/Courses" class="nav-item">
+                <a asp-controller="Student" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
                     <span>
-                        My Courses
+                        Courses
                     </span>
                 </a>
-                <a href="/Student/Exams" class="nav-item">
+                <a asp-controller="Student" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
                     <span>
-                        My Exams
+                        Exams
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=schedule" class="nav-item">
+                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
                     <span class="nav-icon">
                         &#128197;
                     </span>
@@ -75,7 +78,7 @@
                         Schedule
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Student" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>
@@ -104,7 +107,7 @@
                     </button>
                     <div>
                         <div class="topbar__title" id="page-title">
-                            Courses
+                            Dashboard
                         </div>
                         <div class="topbar__breadcrumb" id="page-breadcrumb">
                         </div>
@@ -115,44 +118,89 @@
                         <span class="search-icon">
                             &#128269;
                         </span>
-                        <input type="text" placeholder="Search courses..." id="global-search" />
+                        <input type="text" placeholder="Search lessons, students, exams..." id="global-search" />
                     </div>
                     <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
                         @Model?.CurrentUserName
                     </div>
                 </div>
             </header>
-            <main class="page-body">
+            <main class="page-body" id="dashboard-content">
                 <div class="page-header">
-                    <h1 id="courses-heading">
-                        Browse Courses
+                    <h1>
+                        Student Dashboard
                     </h1>
-                    <p id="courses-subheading">
-                        Discover courses and track your progress
+                    <p>
+                        My learning space
                     </p>
                 </div>
-                <div class="filter-bar">
-                    <input type="text" id="search-courses" placeholder="Search courses by title..." />
-                    <button class="filter-pill active" data-filter="all">
-                        All
-                    </button>
-                    <button class="filter-pill" data-filter="Programming">
-                        Programming
-                    </button>
-                    <button class="filter-pill" data-filter="Design">
-                        Design
-                    </button>
-                    <button class="filter-pill" data-filter="Mathematics">
-                        Mathematics
-                    </button>
-                    <button class="filter-pill" data-filter="Science">
-                        Science
-                    </button>
-                    <button class="filter-pill" data-filter="Language">
-                        Language
-                    </button>
+                @* TODO: Backend
+          Required Data:
+          * Completed Courses
+          * Courses In Progress
+          * Exams Tracked
+          * Average Score
+          *@
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#128101;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Completed Courses
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#128218;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Active Courses
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#128221;
+                        </div>
+                        <div class="stat-card__num">
+                            0
+                        </div>
+                        <div class="stat-card__label">
+                            Exams
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            &#127942;
+                        </div>
+                        <div class="stat-card__num">
+                            0%
+                        </div>
+                        <div class="stat-card__label">
+                            Average Score
+                        </div>
+                    </div>
                 </div>
-                <div class="cards-grid" id="courses-grid">
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">
+                            Continue Watching
+                        </div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-top:6px">
+                            Razor will render real records here.
+                        </div>
+                    </div>
+                    <a href="/Student/Courses" class="section-link">
+                        Open all courses
+                    </a>
+                </div>
+                <div class="cards-grid">
                     @* TODO: Backend
             Required Data:
             * Course Id
@@ -216,10 +264,70 @@
                         </div>
                     </div>
                 </div>
-                <div style="text-align:center;margin-top:32px" id="load-more-wrap">
-                    <button class="btn-secondary" id="load-more-btn" style="padding:12px 32px;font-size:15px">
-                        Load more courses
-                    </button>
+                <div class="section-header" style="margin-top:40px">
+                    <div>
+                        <div class="section-title">
+                            Upcoming Exams
+                        </div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-top:6px">
+                            Razor will render real exam records here.
+                        </div>
+                    </div>
+                    <a href="/Student/Exams" class="section-link">
+                        See exam page
+                    </a>
+                </div>
+                <div class="exams-grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+                    @* TODO: Backend
+            Required Data:
+            * Exam Id
+            * Exam Title
+            * Course Name
+            * Duration Minutes
+            * Question Count
+            * Due Date
+            * Exam Status
+            * Student Score or Submission Count
+            *@
+                    <div class="exam-card" data-status="pending">
+                        <div class="exam-card__icon">
+                            &#128221;
+                        </div>
+                        <div class="exam-card__title">
+                            Exam Title
+                        </div>
+                        <div class="exam-card__course">
+                            Course Name
+                        </div>
+                        <div class="exam-card__details">
+                            <div class="exam-detail-row">
+                                &#127909; Duration:
+                                <strong>
+                                    Duration min
+                                </strong>
+                            </div>
+                            <div class="exam-detail-row">
+                                &#10067; Questions:
+                                <strong>
+                                    Question count
+                                </strong>
+                            </div>
+                            <div class="exam-detail-row">
+                                &#128197; Due:
+                                <strong>
+                                    Due date
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="exam-card__footer">
+                            <span class="badge badge-amber">
+                                Status
+                            </span>
+                            <a class="btn-amber" href="/Student/TakeExam?id=@Model?.ExamId">
+                                Open
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>

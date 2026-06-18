@@ -4,7 +4,7 @@
     <title>
         EduPlatform - Launch Your Teaching Platform
     </title>
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="~/css/index.css" />
 </head>
 <body class="landing-body">
     @*
@@ -41,10 +41,10 @@
             </a>
         </nav>
         <div class="landing-actions">
-            <a href="/Auth/Login" class="btn-secondary">
+            <a asp-controller="Auth" asp-action="Login" class="btn-secondary">
                 Login
             </a>
-            <a href="/Auth/Register" class="btn-amber">
+            <a asp-controller="Auth" asp-action="Register" class="btn-amber">
                 Start Now
             </a>
         </div>
@@ -62,7 +62,7 @@
                     EduPlatform gives teachers a ready-made teaching platform with student accounts, video lessons, exams, assignments, and progress tracking. You choose the package by student capacity, and we handle the platform experience for you.
                 </p>
                 <div class="hero-actions">
-                    <a href="/Auth/Register" class="btn-amber">
+                    <a asp-controller="Auth" asp-action="Register" class="btn-amber">
                         Create Teacher Account
                     </a>
                     <a href="#packages" class="btn-secondary">
@@ -316,7 +316,7 @@
                             Assignments and exams
                         </li>
                     </ul>
-                    <a href="/Auth/Register" class="btn-primary">
+                    <a asp-controller="Auth" asp-action="Register" class="btn-primary">
                         Choose Starter
                     </a>
                 </article>
@@ -344,7 +344,7 @@
                             Exam management and performance tracking
                         </li>
                     </ul>
-                    <a href="/Auth/Register" class="btn-amber">
+                    <a asp-controller="Auth" asp-action="Register" class="btn-amber">
                         Choose Growth
                     </a>
                 </article>
@@ -372,7 +372,7 @@
                             Better control over active classes and assessments
                         </li>
                     </ul>
-                    <a href="/Auth/Register" class="btn-primary">
+                    <a asp-controller="Auth" asp-action="Register" class="btn-primary">
                         Choose Scale
                     </a>
                 </article>

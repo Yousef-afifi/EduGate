@@ -1,0 +1,336 @@
+﻿<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Courses - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/teacher-courses.css" />
+</head>
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+    @*
+    Required ViewModel Data:
+    * Teacher Courses
+    * Course Categories
+    * Course Lesson Counts
+    * Course Student Counts
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__logo">
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
+            </div>
+            <div class="sidebar__user">
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
+                <div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Teacher
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        Courses
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        Exams
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Students" class="nav-item">
+                    <span class="nav-icon">
+                        &#128101;
+                    </span>
+                    <span>
+                        Students
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
+            <div class="sidebar__bottom">
+                <button class="sidebar__logout" id="logout-btn">
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+        <div class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
+                    <div>
+                        <div class="topbar__title" id="page-title">
+                            Courses
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="topbar-search">
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
+                        <input type="text" placeholder="Search courses..." id="global-search" />
+                    </div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                </div>
+            </header>
+            <main class="page-body">
+                <div class="page-header">
+                    <h1 id="courses-heading">
+                        My Courses
+                    </h1>
+                    <p id="courses-subheading">
+                        Manage and create your course library
+                    </p>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="search-courses" placeholder="Search courses by title..." />
+                    <button class="filter-pill active" data-filter="all">
+                        All
+                    </button>
+                    <button class="filter-pill" data-filter="Programming">
+                        Programming
+                    </button>
+                    <button class="filter-pill" data-filter="Design">
+                        Design
+                    </button>
+                    <button class="filter-pill" data-filter="Mathematics">
+                        Mathematics
+                    </button>
+                    <button class="filter-pill" data-filter="Science">
+                        Science
+                    </button>
+                    <button class="filter-pill" data-filter="Language">
+                        Language
+                    </button>
+                    <div id="teacher-actions" style="margin-left:auto;display:flex">
+                        <button class="btn-amber" onclick="openModal('create-course-modal')">
+                            + New Course
+                        </button>
+                    </div>
+                </div>
+                <div class="cards-grid" id="courses-grid">
+                    @* TODO: Backend
+            Required Data:
+            * Course Id
+            * Course Name
+            * Course Description
+            * Course Category
+            * Teacher Name
+            * Lesson Count
+            * Duration
+            * Level
+            * Progress Percentage
+            * Student Count
+            *@
+                    <div class="course-card" data-category="Programming" onclick="window.location.href='/Teacher/CourseDetails?id=@Model?.CourseId'">
+                        <div class="course-card__thumb">
+                            <span style="position:relative;z-index:1">
+                                &#128218;
+                            </span>
+                            <span class="course-card__thumb-label">
+                                Template
+                            </span>
+                        </div>
+                        <div class="course-card__body">
+                            <div class="course-card__category">
+                                Course Category
+                            </div>
+                            <div class="course-card__title">
+                                Course Name
+                            </div>
+                            <div class="course-card__meta">
+                                <span>
+                                    &#128196; Lesson count
+                                </span>
+                                <span>
+                                    &#127909; Duration
+                                </span>
+                            </div>
+                            <div class="course-card__progress-bar">
+                                <div class="course-card__progress-fill" style="width:0%">
+                                </div>
+                            </div>
+                            <div class="course-card__progress-label">
+                                <span>
+                                    Progress
+                                </span>
+                                <span>
+                                    0%
+                                </span>
+                            </div>
+                        </div>
+                        <div class="course-card__footer">
+                            <div class="course-card__author">
+                                <div class="course-card__avatar-sm">
+                                    T
+                                </div>
+                                Teacher Name
+                            </div>
+                            <span class="badge badge-amber">
+                                Level
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:32px" id="load-more-wrap">
+                    <button class="btn-secondary" id="load-more-btn" style="padding:12px 32px;font-size:15px">
+                        Load more courses
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+    <div class="modal-overlay" id="create-course-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    Create New Course
+                </div>
+                <button class="modal-close" data-close-modal="create-course-modal">
+                    &times;
+                </button>
+            </div>
+            <form id="create-course-form" action="/Teacher/Courses/Create" method="post" novalidate>
+                <div class="form-group">
+                    <label>
+                        Course Title
+                    </label>
+                    <input type="text" id="course-title" name="Title" placeholder="Course title" data-validate="required" />
+                    <div class="field-error">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Category
+                    </label>
+                    <select id="course-category" name="Category">
+                        <option value="">
+                            Select category
+                        </option>
+                        <option>
+                            Programming
+                        </option>
+                        <option>
+                            Design
+                        </option>
+                        <option>
+                            Mathematics
+                        </option>
+                        <option>
+                            Science
+                        </option>
+                        <option>
+                            Language
+                        </option>
+                        <option>
+                            Business
+                        </option>
+                    </select>
+                    <div class="field-error">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            Level
+                        </label>
+                        <select id="course-level" name="Level">
+                            <option value="">
+                                Level
+                            </option>
+                            <option>
+                                Beginner
+                            </option>
+                            <option>
+                                Intermediate
+                            </option>
+                            <option>
+                                Advanced
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Duration
+                        </label>
+                        <input type="text" id="course-duration" name="Duration" placeholder="Duration" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Description
+                    </label>
+                    <textarea id="course-desc" name="Description" rows="3" placeholder="Course description..." style="resize:vertical">
+            </textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-modal="create-course-modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-amber" id="create-course-btn">
+                        Create Course
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../../js/app.js">
+    </script>
+</body>

@@ -4,7 +4,7 @@
     <title>
         Teacher & Student Login - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/auth-login.css" />
+    <link rel="stylesheet" href="~/css/auth-login.css" />
 </head>
 <body>
     @*
@@ -76,7 +76,7 @@
                     </h2>
                     <p class="auth-sub">
                         Don't have an account?
-                        <a href="/Auth/Register">
+                        <a asp-controller="Auth" asp-action="Register">
                             Create one
                         </a>
                     </p>
@@ -87,7 +87,7 @@
                         <span class="alert-msg">
                         </span>
                     </div>
-                    <form id="login-form" action="/Auth/Login" method="post" novalidate>
+                    <form id="login-form" asp-controller="Auth" asp-action="Login" method="post" novalidate>
                         <div class="form-group">
                             <label for="email">
                                 Email Address
@@ -121,6 +121,6 @@
             </div>
         </div>
     </main>
-    <script src="../../js/app.js">
+    <script src="~/js/app.js">
     </script>
 </body>

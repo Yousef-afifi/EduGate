@@ -2,23 +2,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-        Lesson - EduPlatform
+        Students - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/student-video-lesson.css" />
+    <link rel="stylesheet" href="../../css/teacher-dashboard.css" />
 </head>
-<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
     @*
     Required ViewModel Data:
-    * Course Id
-    * Course Name
-    * Lesson Id
-    * Lesson Title
-    * Lesson Type
-    * Lesson Duration
-    * Video Url
-    * Lesson Description
-    * Previous Lesson Id
-    * Next Lesson Id
+    * Teacher Students
+    * Student Assigned Courses
+    * Student Progress
+    * Student Status
     *@
     <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
     </div>
@@ -41,7 +35,7 @@
                         @Model?.CurrentUserName
                     </div>
                     <div class="sidebar__user-role" id="sidebar-user-role">
-                        Student
+                        Teacher
                     </div>
                 </div>
             </div>
@@ -49,7 +43,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Student/Dashboard" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -57,31 +51,39 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Student/Courses" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
                     <span>
-                        My Courses
+                        Courses
                     </span>
                 </a>
-                <a href="/Student/Exams" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
                     <span>
-                        My Exams
+                        Exams
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=schedule" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Students" class="nav-item">
                     <span class="nav-icon">
-                        &#128197;
+                        &#128101;
                     </span>
                     <span>
-                        Schedule
+                        Students
                     </span>
                 </a>
-                <a href="/Student/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Teacher" asp-action="Upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>
@@ -110,61 +112,46 @@
                     </button>
                     <div>
                         <div class="topbar__title" id="page-title">
-                            Video Lesson
+                            Students
                         </div>
                         <div class="topbar__breadcrumb" id="page-breadcrumb">
                         </div>
                     </div>
                 </div>
                 <div class="topbar__right">
+                    <div class="topbar-search">
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
+                        <input type="text" placeholder="Search students..." id="global-search" />
+                    </div>
                     <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
                         @Model?.CurrentUserName
                     </div>
                 </div>
             </header>
-            <main class="page-body" id="lesson-content">
-                <div class="lesson-layout">
-                    <section class="video-panel">
-                        @* TODO: Backend
-              Required Data:
-              * Lesson Video Url
-              * Lesson Title
-              * Course Name
-              *@
-                        <div id="video-player-wrap" style="background:var(--navy);border-radius:var(--radius);min-height:360px;display:flex;align-items:center;justify-content:center;color:var(--white)">
-                            Video player placeholder
-                        </div>
-                        <h1>
-                            Lesson Title
-                        </h1>
-                        <p>
-                            Lesson description placeholder rendered by Razor.
-                        </p>
-                        <form action="/Student/Lessons/Complete" method="post">
-                            <input type="hidden" name="LessonId" value="@Model?.LessonId" />
-                            <button class="btn-amber" id="mark-done-btn" type="submit">
-                                Mark Complete
-                            </button>
-                        </form>
-                    </section>
-                    <aside class="lessons-sidebar">
-                        <div class="lessons-sidebar-header">
-                            <strong>
-                                Course Lessons
-                            </strong>
-                        </div>
-                        @* TODO: Backend
-              Required Data:
-              * Lesson List
-              * Active Lesson Id
-              * Completed/Locked Status
-              *@
-                        <div class="lessons-sidebar-list">
-                            <a class="lesson-row active" href="#">
-                                Lesson Title
-                            </a>
-                        </div>
-                    </aside>
+            <main class="page-body dashboard-view-ready" id="dashboard-content">
+                <div class="section-header">
+                    <div>
+                        <div class="section-title">Student Account Management</div>
+                        <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Track the students using your package seats and their learning activity.</div>
+                    </div>
+                    <button class="btn-amber" onclick="openTeacherGenerateAccounts()">Generate Accounts</button>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-card"><div class="stat-card__icon">👥</div><div class="stat-card__num">0</div><div class="stat-card__label">Visible Students</div></div>
+                    <div class="stat-card"><div class="stat-card__icon">🔒</div><div class="stat-card__num">600</div><div class="stat-card__label">Package Capacity</div></div>
+                    <div class="stat-card"><div class="stat-card__icon">✅</div><div class="stat-card__num">0</div><div class="stat-card__label">Active Students</div></div>
+                    <div class="stat-card"><div class="stat-card__icon">📈</div><div class="stat-card__num">NaN%</div><div class="stat-card__label">Average Progress</div></div>
+                </div>
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Student</th><th>Course</th><th>Progress</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>

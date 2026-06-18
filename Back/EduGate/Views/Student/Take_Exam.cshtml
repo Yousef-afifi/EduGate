@@ -4,9 +4,9 @@
     <title>
         Take Exam - EduPlatform
     </title>
-    <link rel="stylesheet" href="../../css/teacher-take-exam.css" />
+    <link rel="stylesheet" href="../../css/student-take-exam.css" />
 </head>
-<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
     @*
     Required ViewModel Data:
     * Exam Id
@@ -39,7 +39,7 @@
                         @Model?.CurrentUserName
                     </div>
                     <div class="sidebar__user-role" id="sidebar-user-role">
-                        Teacher
+                        Student
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <div class="sidebar__nav-section">
                     Workspace
                 </div>
-                <a href="/Teacher/Dashboard" class="nav-item">
+                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
                     <span class="nav-icon">
                         &#127968;
                     </span>
@@ -55,7 +55,7 @@
                         Dashboard
                     </span>
                 </a>
-                <a href="/Teacher/Courses" class="nav-item">
+                <a asp-controller="Student" asp-action="Courses" class="nav-item">
                     <span class="nav-icon">
                         &#128218;
                     </span>
@@ -63,7 +63,7 @@
                         Courses
                     </span>
                 </a>
-                <a href="/Teacher/Exams" class="nav-item">
+                <a asp-controller="Student" asp-action="Exams" class="nav-item">
                     <span class="nav-icon">
                         &#128221;
                     </span>
@@ -71,23 +71,15 @@
                         Exams
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=students" class="nav-item">
+                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
                     <span class="nav-icon">
-                        &#128101;
+                        &#128197;
                     </span>
                     <span>
-                        Students
+                        Schedule
                     </span>
                 </a>
-                <a href="/Teacher/Dashboard?view=upgrade" class="nav-item">
-                    <span class="nav-icon">
-                        &#11014;
-                    </span>
-                    <span>
-                        Upgrade
-                    </span>
-                </a>
-                <a href="/Teacher/Dashboard?view=settings" class="nav-item">
+                <a asp-controller="Student" asp-action="Settings" class="nav-item">
                     <span class="nav-icon">
                         &#9881;
                     </span>
@@ -129,7 +121,7 @@
                 </div>
             </header>
             <main class="page-body" id="exam-content">
-                <form id="exam-form" action="/Teacher/Exams/Submit" method="post">
+                <form id="exam-form" action="/Student/Exams/Submit" method="post">
                     <input type="hidden" name="ExamId" value="@Model?.ExamId" />
                     <div class="exam-header">
                         <div>

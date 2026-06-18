@@ -1,0 +1,243 @@
+﻿<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Settings - EduPlatform
+    </title>
+    <link rel="stylesheet" href="../../css/teacher-dashboard.css" />
+</head>
+<body data-user-name="@Model?.CurrentUserName" data-user-role="Teacher">
+    @*
+    Required ViewModel Data:
+    * Teacher Profile
+    * Teacher Email
+    * Notification Settings
+    *@
+    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
+    </div>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__logo">
+                <div class="sidebar__logo-mark">
+                    &#127891;
+                </div>
+                <span class="sidebar__logo-name">
+                    EduPlatform
+                </span>
+            </div>
+            <div class="sidebar__user">
+                <div class="sidebar__avatar" id="sidebar-avatar">
+                    U
+                </div>
+                <div>
+                    <div class="sidebar__user-name" id="sidebar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                    <div class="sidebar__user-role" id="sidebar-user-role">
+                        Teacher
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar__nav" id="sidebar-nav">
+                <div class="sidebar__nav-section">
+                    Workspace
+                </div>
+                <a asp-controller="Teacher" asp-action="Dashboard" class="nav-item">
+                    <span class="nav-icon">
+                        &#127968;
+                    </span>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Courses" class="nav-item">
+                    <span class="nav-icon">
+                        &#128218;
+                    </span>
+                    <span>
+                        Courses
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Exams" class="nav-item">
+                    <span class="nav-icon">
+                        &#128221;
+                    </span>
+                    <span>
+                        Exams
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Students" class="nav-item">
+                    <span class="nav-icon">
+                        &#128101;
+                    </span>
+                    <span>
+                        Students
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Upgrade" class="nav-item">
+                    <span class="nav-icon">
+                        &#11014;
+                    </span>
+                    <span>
+                        Upgrade
+                    </span>
+                </a>
+                <a asp-controller="Teacher" asp-action="Settings" class="nav-item">
+                    <span class="nav-icon">
+                        &#9881;
+                    </span>
+                    <span>
+                        Settings
+                    </span>
+                </a>
+            </nav>
+            <div class="sidebar__bottom">
+                <button class="sidebar__logout" id="logout-btn">
+                    <span class="nav-icon">
+                        &#128682;
+                    </span>
+                    Sign Out
+                </button>
+            </div>
+        </aside>
+        <div class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button class="menu-toggle" id="menu-toggle">
+                        &#9776;
+                    </button>
+                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
+                        &#9776;
+                    </button>
+                    <div>
+                        <div class="topbar__title" id="page-title">
+                            Settings
+                        </div>
+                        <div class="topbar__breadcrumb" id="page-breadcrumb">
+                        </div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="topbar-search">
+                        <span class="search-icon">
+                            &#128269;
+                        </span>
+                        <input type="text" placeholder="Search settings..." id="global-search" />
+                    </div>
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
+                        @Model?.CurrentUserName
+                    </div>
+                </div>
+            </header>
+            <main class="page-body dashboard-view-ready" id="dashboard-content">
+                <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,0.75fr);gap:24px;align-items:start" id="teacher-settings-grid">
+                    <div class="info-card">
+                        <div class="section-header" style="margin-bottom:24px">
+                            <div>
+                                <div class="section-title">Edit Teacher Profile</div>
+                                <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Update the account details your students and workspace will use.</div>
+                            </div>
+                            <span class="badge badge-amber">Teacher Account</span>
+                        </div>
+
+                        <form id="teacher-settings-form" novalidate="">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="teacher-name">Full Name</label>
+                                    <input type="text" id="teacher-name" value="Ms. Sarah Ahmed" placeholder="Your full name">
+                                    <div class="field-error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teacher-email">Email Address</label>
+                                    <input type="email" id="teacher-email" value="teacher@demo.com" placeholder="teacher@email.com">
+                                    <div class="field-error"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="teacher-phone">Phone Number</label>
+                                    <input type="text" id="teacher-phone" value="" placeholder="For student or parent contact">
+                                    <div class="field-error"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teacher-subject">Teaching Specialty</label>
+                                    <input type="text" id="teacher-subject" value="" placeholder="e.g. Mathematics">
+                                    <div class="field-error"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="teacher-bio">About You</label>
+                                <textarea id="teacher-bio" rows="4" placeholder="A short teacher bio for your workspace"></textarea>
+                                <div class="field-error"></div>
+                            </div>
+
+                            <div class="section-header" style="margin:26px 0 14px">
+                                <div>
+                                    <div class="section-title" style="font-size:18px">Change Password</div>
+                                    <div style="font-size:13px;color:var(--gray-400);margin-top:6px">Leave these fields empty if you want to keep your current password.</div>
+                                </div>
+                            </div>
+
+                            <div style="display:grid;gap:14px;margin-bottom:22px">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="teacher-current-password">Current Password</label>
+                                        <input type="password" id="teacher-current-password" placeholder="Enter current password" autocomplete="current-password">
+                                        <div class="field-error"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="teacher-new-password">New Password</label>
+                                        <input type="password" id="teacher-new-password" placeholder="At least 6 characters" autocomplete="new-password">
+                                        <div class="field-error"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teacher-confirm-password">Confirm New Password</label>
+                                    <input type="password" id="teacher-confirm-password" placeholder="Repeat the new password" autocomplete="new-password">
+                                    <div class="field-error"></div>
+                                </div>
+                            </div>
+
+                            <div style="display:flex;justify-content:flex-end;gap:12px">
+                                <button type="button" class="btn-secondary" id="teacher-settings-reset">Reset</button>
+                                <button type="submit" class="btn-primary" id="teacher-settings-save" style="width:auto;padding-inline:26px">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style="display:grid;gap:16px">
+                        <div class="info-card">
+                            <h3>Profile Summary</h3>
+                            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+                                <div style="width:54px;height:54px;border-radius:50%;background:var(--navy);color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px" id="teacher-profile-initials">MS</div>
+                                <div>
+                                    <div style="font-weight:700;color:var(--navy);font-size:16px" id="teacher-profile-name">Ms. Sarah Ahmed</div>
+                                    <div style="font-size:13px;color:var(--gray-400)" id="teacher-profile-email">teacher@demo.com</div>
+                                </div>
+                            </div>
+                            <div class="info-row"><span class="info-row-label">Role</span><span class="info-row-value">Teacher</span></div>
+                            <div class="info-row"><span class="info-row-label">Specialty</span><span class="info-row-value" id="teacher-profile-subject">Not set</span></div>
+                            <div class="info-row"><span class="info-row-label">Phone</span><span class="info-row-value" id="teacher-profile-phone">Not set</span></div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Current Package</h3>
+                            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px">
+                                <div>
+                                    <div style="font-family:var(--font-head);font-size:22px;color:var(--navy)">Growth</div>
+                                    <div style="font-size:13px;color:var(--gray-400)">600 student seats</div>
+                                </div>
+                                <span class="badge badge-blue">$59/ month</span>
+                            </div>
+                            <p style="font-size:14px;color:var(--gray-600);line-height:1.8;margin:0">Balanced package for active teachers managing several classes.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="../../js/app.js">
+    </script>
+</body>
