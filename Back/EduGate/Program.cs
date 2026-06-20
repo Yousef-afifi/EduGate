@@ -1,7 +1,12 @@
+using EduGate.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AppDbContext>(option =>
+option.UseSqlServer(builder.Configuration.GetConnectionString("conString")));
 
 var app = builder.Build();
 
@@ -25,5 +30,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-
+AppDbInitializer.Seed(app);
 app.Run();

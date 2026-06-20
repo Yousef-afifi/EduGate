@@ -1,119 +1,128 @@
 is_global = true
 build_property.TargetFramework = net10.0
-build_property.TargetFrameworkIdentifier = .NETCoreApp
-build_property.TargetFrameworkVersion = v10.0
+build_property.TargetFramework = net10.0
+build_property.TargetPlatformMinVersion = 
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.EntryPointFilePath = 
 build_property.RootNamespace = EduGate
 build_property.RootNamespace = EduGate
-build_property.ProjectDir = D:\4.Work\GitHub\EduGate\Back\EduGate\
+build_property.ProjectDir = D:\GitHub\EduGate\Back\EduGate\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.RazorLangVersion = 9.0
+build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\4.Work\GitHub\EduGate\Back\EduGate
+build_property.MSBuildProjectDirectory = D:\GitHub\EduGate\Back\EduGate
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Auth/Login.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Auth/Register.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Auth/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Home/Index.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Courses.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Courses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxDb3Vyc2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Course_Details.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Course_Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxDb3Vyc2VfRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Dashboard.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Exams.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Exams.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxFeGFtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Schedule.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Schedule.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxTY2hlZHVsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Settings.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Settings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxTZXR0aW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Take_Exam.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Take_Exam.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxUYWtlX0V4YW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Student/Video_Lesson.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Student/Video_Lesson.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxWaWRlb19MZXNzb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Courses.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Courses.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxDb3Vyc2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Course_Details.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Course_Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxDb3Vyc2VfRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Dashboard.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Exams.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Exams.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxFeGFtcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Settings.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Settings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxTZXR0aW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Students.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Students.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Take_Exam.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Take_Exam.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxUYWtlX0V4YW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Upgrade.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Upgrade.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxVcGdyYWRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Teacher/Video_Lesson.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Teacher/Video_Lesson.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhY2hlclxWaWRlb19MZXNzb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/_ViewImports.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/_ViewStart.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/4.Work/GitHub/EduGate/Back/EduGate/Views/Shared/_Layout.cshtml]
+[D:/GitHub/EduGate/Back/EduGate/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-h25vj3s92c
