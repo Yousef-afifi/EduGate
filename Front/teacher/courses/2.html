@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physics 101 - EduGate</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          EduGate
+        </a>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar">JD</div>
+        <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section"><div class="nav-section-title">Main</div>
+          <a href="../dashboard.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+          <a href="../students.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Students</a>
+          <a href="../courses.html" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Courses</a>
+          <a href="../exams.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Exams</a>
+        </div>
+        <div class="nav-section"><div class="nav-section-title">Account</div>
+          <a href="../upgrade.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Upgrade Plan</a>
+          <a href="../settings.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <a href="../courses.html" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+          <h1 class="topbar-title">Physics 101</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" onclick="showToast('No new notifications', 'info')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--primary);border-radius:50%;"></span></button>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <!-- Course Header Card -->
+        <div class="card" style="background:linear-gradient(135deg,#3B82F6,#60A5FA);color:white;margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:20px;">
+            <div style="width:64px;height:64px;border-radius:var(--radius);background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;">&#9889;</div>
+            <div style="flex:1;">
+              <h2 style="font-size:24px;font-weight:700;margin-bottom:4px;">Physics 101</h2>
+              <p style="opacity:0.9;font-size:14px;">Mechanics, thermodynamics, waves, and introductory electromagnetism for undergraduate students.</p>
+            </div>
+            <div style="display:flex;gap:16px;text-align:center;">
+              <div><div style="font-size:24px;font-weight:700;">62</div><div style="font-size:12px;opacity:0.8;">Students</div></div>
+              <div><div style="font-size:24px;font-weight:700;">10</div><div style="font-size:12px;opacity:0.8;">Lessons</div></div>
+              <div><div style="font-size:24px;font-weight:700;">3</div><div style="font-size:12px;opacity:0.8;">Quizzes</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab(this,'lessons')">Lessons</button>
+          <button class="tab" onclick="switchTab(this,'quizzes')">Quizzes</button>
+          <button class="tab" onclick="switchTab(this,'assessments')">Assessments</button>
+          <button class="tab" onclick="switchTab(this,'students')">Students</button>
+        </div>
+
+        <!-- Lessons Tab -->
+        <div id="lessons" class="tab-content">
+          <div class="page-header">
+            <h3 style="font-size:18px;font-weight:600;">Course Lessons</h3>
+            <a href="1/lessons/add.html" class="btn btn-primary btn-sm">+ Add Lesson</a>
+          </div>
+          <div class="card">
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">01</div>
+                <div style="flex:1;"><div style="font-weight:600;">Integration by Parts</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 45 min &middot; 2,341 views</div></div>
+                <span class="badge badge-success">Published</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">02</div>
+                <div style="flex:1;"><div style="font-weight:600;">Trigonometric Integrals</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 52 min &middot; 1,892 views</div></div>
+                <span class="badge badge-success">Published</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">03</div>
+                <div style="flex:1;"><div style="font-weight:600;">Trigonometric Substitution</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 48 min &middot; 1,567 views</div></div>
+                <span class="badge badge-success">Published</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">04</div>
+                <div style="flex:1;"><div style="font-weight:600;">Partial Fractions</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 38 min &middot; 1,234 views</div></div>
+                <span class="badge badge-success">Published</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">05</div>
+                <div style="flex:1;"><div style="font-weight:600;">Improper Integrals</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 41 min &middot; 1,098 views</div></div>
+                <span class="badge badge-success">Published</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--border);color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">06</div>
+                <div style="flex:1;"><div style="font-weight:600;">Sequences and Series</div><div style="font-size:13px;color:var(--text-muted);">Draft &middot; Not published</div></div>
+                <span class="badge badge-warning">Draft</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quizzes Tab -->
+        <div id="quizzes" class="tab-content" style="display:none;">
+          <div class="page-header">
+            <h3 style="font-size:18px;font-weight:600;">Course Quizzes</h3>
+            <a href="1/quizzes/add.html" class="btn btn-primary btn-sm">+ Add Quiz</a>
+          </div>
+          <div class="card">
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q1</div>
+                <div style="flex:1;"><div style="font-weight:600;">Integration Techniques Quiz</div><div style="font-size:13px;color:var(--text-muted);">10 questions &middot; 78 submissions</div></div>
+                <span class="badge badge-success">Active</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q2</div>
+                <div style="flex:1;"><div style="font-weight:600;">Trig Integrals Assessment</div><div style="font-size:13px;color:var(--text-muted);">8 questions &middot; 65 submissions</div></div>
+                <span class="badge badge-success">Active</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q3</div>
+                <div style="flex:1;"><div style="font-weight:600;">Partial Fractions Practice</div><div style="font-size:13px;color:var(--text-muted);">12 questions &middot; 42 submissions</div></div>
+                <span class="badge badge-success">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assessments Tab -->
+        <div id="assessments" class="tab-content" style="display:none;">
+          <div class="page-header">
+            <h3 style="font-size:18px;font-weight:600;">Assessments</h3>
+            <a href="1/assessments/add.html" class="btn btn-primary btn-sm">+ Add Assessment</a>
+          </div>
+          <div class="card">
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                <div style="width:36px;height:36px;border-radius:50%;background:#FEF3C7;color:#D97706;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A1</div>
+                <div style="flex:1;"><div style="font-weight:600;">Midterm Problem Set</div><div style="font-size:13px;color:var(--text-muted);">5 problems &middot; Due Mar 15 &middot; 56 submissions</div></div>
+                <span class="badge badge-warning">Ongoing</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:16px 0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:#FEF3C7;color:#D97706;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A2</div>
+                <div style="flex:1;"><div style="font-weight:600;">Series Convergence Project</div><div style="font-size:13px;color:var(--text-muted);">3 tasks &middot; Due Apr 1 &middot; 12 submissions</div></div>
+                <span class="badge badge-info">Upcoming</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Students Tab -->
+        <div id="students" class="tab-content" style="display:none;">
+          <div class="page-header">
+            <h3 style="font-size:18px;font-weight:600;">Enrolled Students</h3>
+            <a href="../students/generate.html" class="btn btn-primary btn-sm">+ Add Students</a>
+          </div>
+          <div class="card">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Student</th><th>Progress</th><th>Quiz Avg</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:28px;height:28px;font-size:11px;">SJ</div>Sarah Johnson</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:92%"></div></div><span style="font-size:12px;">92%</span></div></td><td>87%</td><td><span class="badge badge-success">Active</span></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:28px;height:28px;font-size:11px;">EW</div>Emma Wilson</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:88%"></div></div><span style="font-size:12px;">88%</span></div></td><td>91%</td><td><span class="badge badge-success">Active</span></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:28px;height:28px;font-size:11px;">NM</div>Noah Martinez</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill orange" style="width:65%"></div></div><span style="font-size:12px;">65%</span></div></td><td>72%</td><td><span class="badge badge-warning">At Risk</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    function switchTab(btn, tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+    }
+  </script>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

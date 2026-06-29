@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Students - EduGate</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          EduGate
+        </a>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar">JD</div>
+        <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section"><div class="nav-section-title">Main</div>
+          <a href="../dashboard.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+          <a href="../students.html" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Students</a>
+          <a href="../courses.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Courses</a>
+          <a href="../exams.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Exams</a>
+        </div>
+        <div class="nav-section"><div class="nav-section-title">Account</div>
+          <a href="../upgrade.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Upgrade Plan</a>
+          <a href="../settings.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../../login.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <a href="../students.html" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+          <h1 class="topbar-title">Generate Student Accounts</h1>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div style="max-width:600px;">
+          <div class="card" style="margin-bottom:24px;">
+            <div class="form-group">
+              <label class="form-label">Number of Students</label>
+              <input type="number" class="form-input" value="10" min="1" max="200" id="studentCount">
+              <p class="form-hint">You can generate up to 200 students at once. Remaining: 352 slots.</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Assign to Course (Optional)</label>
+              <select class="form-select">
+                <option>All Courses</option>
+                <option>Calculus II</option>
+                <option>Physics 101</option>
+                <option>Organic Chemistry</option>
+                <option>Linear Algebra</option>
+                <option>Data Structures</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Naming Convention</label>
+              <select class="form-select" id="namingConvention">
+                <option value="auto">Auto-generate emails</option>
+                <option value="prefix">Custom prefix (e.g., student001@EduGate.edu)</option>
+              </select>
+            </div>
+            <div class="form-group" id="prefixGroup" style="display:none;">
+              <label class="form-label">Email Prefix</label>
+              <input type="text" class="form-input" placeholder="student" value="student">
+            </div>
+            <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                <input type="checkbox" checked style="accent-color:var(--primary);">
+                <span style="font-size:14px;">Send welcome email with login credentials</span>
+              </label>
+            </div>
+            <button class="btn btn-primary w-full" style="padding:12px;" onclick="generateStudents()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Generate Accounts
+            </button>
+          </div>
+
+          <div class="card" id="resultsCard" style="display:none;">
+            <div class="card-header">
+              <h3 class="card-title">Generated Accounts</h3>
+              <button class="btn btn-sm btn-outline" onclick="copyAllCredentials()">Copy All</button>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Email</th><th>Password</th><th></th></tr></thead>
+                <tbody id="resultsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('namingConvention').addEventListener('change', function() {
+      document.getElementById('prefixGroup').style.display = this.value === 'prefix' ? 'block' : 'none';
+    });
+
+    function generateStudents() {
+      const count = parseInt(document.getElementById('studentCount').value);
+      const tbody = document.getElementById('resultsBody');
+      const convention = document.getElementById('namingConvention').value;
+      const prefix = convention === 'prefix' ? (document.querySelector('#prefixGroup input').value || 'student') : 'student';
+      const emailDomain = 'EduGate.edu';
+      
+      tbody.innerHTML = '';
+      for (let i = 1; i <= count; i++) {
+        const num = String(i).padStart(3, '0');
+        const emailName = convention === 'prefix' ? `${prefix}${num}` : `${prefix}${Math.random().toString(36).substring(2, 8)}`;
+        const email = `${emailName.toLowerCase().replace(/[^a-z0-9._-]/g, '')}@${emailDomain}`;
+        const password = generatePassword(10);
+        
+        tbody.innerHTML += `
+          <tr>
+            <td><code style="background:var(--bg);padding:4px 8px;border-radius:4px;font-size:13px;">${email}</code></td>
+            <td><code style="background:var(--bg);padding:4px 8px;border-radius:4px;font-size:13px;">${password}</code></td>
+            <td><button class="btn btn-sm btn-ghost" onclick="copyToClipboard('${email} / ${password}')">Copy</button></td>
+          </tr>
+        `;
+      }
+      
+      document.getElementById('resultsCard').style.display = 'block';
+      showToast(`${count} student accounts generated!`, 'success');
+    }
+
+    function generatePassword(length) {
+      const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let pw = '';
+      for (let i = 0; i < length; i++) pw += chars.charAt(Math.floor(Math.random() * chars.length));
+      return pw;
+    }
+
+    function copyAllCredentials() {
+      const rows = document.querySelectorAll('#resultsBody tr');
+      let text = 'Student Accounts\\n================\\n\\n';
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        text += `${cells[0].textContent} / ${cells[1].textContent}\\n`;
+      });
+      copyToClipboard(text);
+    }
+  </script>
+  <script src="../../js/app.js"></script>
+</body>
+</html>

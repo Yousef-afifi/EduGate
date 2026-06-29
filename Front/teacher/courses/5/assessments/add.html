@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Assessment - Data Structures - EduGate</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../../../index.html" class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          EduGate
+        </a>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar">JD</div>
+        <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section"><div class="nav-section-title">Main</div>
+          <a href="../../../dashboard.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+          <a href="../../../students.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Students</a>
+          <a href="../../../courses.html" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Courses</a>
+          <a href="../../../exams.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Exams</a>
+        </div>
+        <div class="nav-section"><div class="nav-section-title">Account</div>
+          <a href="../../../upgrade.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Upgrade Plan</a>
+          <a href="../../../settings.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../../../../login.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <a href="../../5.html" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+          <h1 class="topbar-title">Add Assessment</h1>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div style="max-width:700px;">
+          <div class="card" style="margin-bottom:24px;">
+            <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
+              <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: Data Structures</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Assessment Title</label>
+              <input type="text" class="form-input" placeholder="e.g., Data Structures - Algorithm Assignment" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course</label>
+              <select class="form-select">
+                <option>Data Structures</option>
+              </select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Assessment Type</label>
+                <select class="form-select">
+                  <option>Problem Set</option>
+                  <option>Project</option>
+                  <option>Portfolio</option>
+                  <option>Written Assignment</option>
+                  <option>Practical Task</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Submission Type</label>
+                <select class="form-select">
+                  <option>File Upload</option>
+                  <option>Text Response</option>
+                  <option>Link Submission</option>
+                  <option>File + Text Response</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Due Date</label>
+                <input type="date" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Due Time</label>
+                <input type="time" class="form-input">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Total Points</label>
+                <input type="number" class="form-input" placeholder="100" min="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Course Weight (%)</label>
+                <input type="number" class="form-input" placeholder="20" min="0" max="100">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Instructions</label>
+              <textarea class="form-textarea" style="min-height:140px;" placeholder="Write assessment instructions, requirements, and deliverables..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Grading Rubric</label>
+              <textarea class="form-textarea" placeholder="Add grading criteria and point breakdown..."></textarea>
+            </div>
+            <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                <input type="checkbox" style="accent-color:var(--primary);">
+                <span style="font-size:14px;">Allow late submissions</span>
+              </label>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end;">
+              <a href="../../5.html" class="btn btn-outline">Cancel</a>
+              <button class="btn btn-primary" onclick="showToast('Assessment created successfully!', 'success'); setTimeout(()=>window.location.href='../../5.html', 800);">Create Assessment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../../../../js/app.js"></script>
+</body>
+</html>

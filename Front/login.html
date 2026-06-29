@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - EduGate</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <a href="index.html" class="logo" style="justify-content:center;margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        EduGate
+      </a>
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-subtitle">Sign in to your account</p>
+    </div>
+
+    <div class="auth-role-toggle">
+      <button class="role-btn active" data-role="teacher">Teacher</button>
+      <button class="role-btn" data-role="student">Student</button>
+    </div>
+
+    <form id="loginForm" onsubmit="return handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="you@example.com" required value="teacher@EduGate.com" id="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Enter your password" required value="password" id="password">
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-light);cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:var(--primary);"> Remember me
+        </label>
+        <a href="#" style="font-size:13px;color:var(--primary);font-weight:500;">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-primary w-full" style="padding:12px;">Sign In</button>
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="register.html">Sign up</a>
+    </div>
+  </div>
+
+  <script>
+    // Role toggle
+    document.querySelectorAll('.role-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const role = btn.dataset.role;
+        document.getElementById('email').value = role === 'teacher' ? 'teacher@myschool.com' : 'student@myschool.com';
+      });
+    });
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const role = document.querySelector('.role-btn.active').dataset.role;
+      showToast('Login successful!', 'success');
+      setTimeout(() => {
+        if (role === 'teacher') {
+          window.location.href = 'teacher/dashboard.html';
+        } else {
+          window.location.href = 'student/dashboard.html';
+        }
+      }, 800);
+      return false;
+    }
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html>

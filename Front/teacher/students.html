@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students - EduGate</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../index.html" class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          EduGate
+        </a>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar">JD</div>
+        <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section"><div class="nav-section-title">Main</div>
+          <a href="dashboard.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+          <a href="students.html" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Students</a>
+          <a href="courses.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Courses</a>
+          <a href="exams.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Exams</a>
+        </div>
+        <div class="nav-section"><div class="nav-section-title">Account</div>
+          <a href="upgrade.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Upgrade Plan</a>
+          <a href="settings.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="../login.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <h1 class="topbar-title">Students</h1>
+        <div class="topbar-actions">
+          <button class="icon-btn" onclick="showToast('No new notifications', 'info')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--primary);border-radius:50%;"></span></button>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <input type="text" class="form-input" placeholder="Search students..." style="width:300px;">
+          </div>
+          <a href="students/generate.html" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Generate Accounts
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr><th>Student</th><th>Email</th><th>Courses</th><th>Progress</th><th>Status</th><th>Joined</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">SJ</div><strong>Sarah Johnson</strong></div></td>
+                  <td>sarah.j@student.edu</td>
+                  <td>3</td>
+                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:78%"></div></div><span style="font-size:12px;">78%</span></div></td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:13px;">Jan 15, 2026</td>
+                </tr>
+                <tr>
+                  <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">MP</div><strong>Mike Peters</strong></div></td>
+                  <td>mike.p@student.edu</td>
+                  <td>2</td>
+                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill orange" style="width:45%"></div></div><span style="font-size:12px;">45%</span></div></td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:13px;">Feb 2, 2026</td>
+                </tr>
+                <tr>
+                  <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">EW</div><strong>Emma Wilson</strong></div></td>
+                  <td>emma.w@student.edu</td>
+                  <td>4</td>
+                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:92%"></div></div><span style="font-size:12px;">92%</span></div></td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:13px;">Dec 10, 2025</td>
+                </tr>
+                <tr>
+                  <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">LB</div><strong>Liam Brown</strong></div></td>
+                  <td>liam.b@student.edu</td>
+                  <td>1</td>
+                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill blue" style="width:60%"></div></div><span style="font-size:12px;">60%</span></div></td>
+                  <td><span class="badge badge-warning">Pending</span></td>
+                  <td style="color:var(--text-muted);font-size:13px;">Mar 1, 2026</td>
+                </tr>
+                <tr>
+                  <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">OD</div><strong>Olivia Davis</strong></div></td>
+                  <td>olivia.d@student.edu</td>
+                  <td>3</td>
+                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:85%"></div></div><span style="font-size:12px;">85%</span></div></td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:13px;">Jan 28, 2026</td>
+                </tr>
+                <tr>
+                  <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">NM</div><strong>Noah Martinez</strong></div></td>
+                  <td>noah.m@student.edu</td>
+                  <td>2</td>
+                  <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill orange" style="width:32%"></div></div><span style="font-size:12px;">32%</span></div></td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td style="color:var(--text-muted);font-size:13px;">Feb 18, 2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-light);">
+            <span style="font-size:13px;color:var(--text-muted);">Showing 6 of 248 students</span>
+            <div style="display:flex;gap:4px;">
+              <button class="btn btn-sm btn-ghost" disabled>Prev</button>
+              <button class="btn btn-sm btn-primary">1</button>
+              <button class="btn btn-sm btn-ghost">2</button>
+              <button class="btn btn-sm btn-ghost">3</button>
+              <button class="btn btn-sm btn-ghost">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>
