@@ -3,7 +3,7 @@
     public enum ExamType
     {
         Exam,
-        Assessment,
+        Assignment,
         Quiz
     }
 }
