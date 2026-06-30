@@ -13,7 +13,7 @@ namespace EduGate.Models
         public DateTime CreatedAt {  get; set; }
         public DateTime? UpdatedAt { get; set; }
         [ForeignKey("course")]
-        public int Coures_Id { get; set; }
+        public int Course_Id { get; set; }
         public Course course { get; set; }
         public List<Question>? Questions { get; set; }
     }

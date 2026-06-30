@@ -468,7 +468,7 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             CreatedAt = DateTime.Now,
-                            Coures_Id = 1
+                            Course_Id = 1
                         },
                         new Exam
                         {
@@ -477,7 +477,7 @@ namespace EduGate.Data
                              Duration = 120,
                              Total_Marks = 10,
                              CreatedAt = DateTime.Now,
-                             Coures_Id = 2
+                             Course_Id = 2
                         },
                         new Exam
                         {
@@ -486,7 +486,7 @@ namespace EduGate.Data
                              Duration = 120,
                              Total_Marks = 10,
                              CreatedAt = DateTime.Now,
-                             Coures_Id = 3
+                             Course_Id = 3
                         },
 
                     });
