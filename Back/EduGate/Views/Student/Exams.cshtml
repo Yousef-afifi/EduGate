@@ -1,231 +1,133 @@
 ﻿<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-        Exams - EduPlatform
-    </title>
-    <link rel="stylesheet" href="../../css/student-exams.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exams - EduGate</title>
+    <link rel="stylesheet" href="~/css/style.css">
 </head>
-<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
-    @*
-    Required ViewModel Data:
-    * Available Exams
-    * Student Exam Results
-    * Upcoming Exam Count
-    *@
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
-    </div>
-    <div class="app-shell">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar__logo">
-                <div class="sidebar__logo-mark">
-                    &#127891;
-                </div>
-                <span class="sidebar__logo-name">
-                    EduPlatform
-                </span>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a asp-controller="Home" asp-action="Index" class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+                    EduGate
+                </a>
             </div>
-            <div class="sidebar__user">
-                <div class="sidebar__avatar" id="sidebar-avatar">
-                    U
-                </div>
-                <div>
-                    <div class="sidebar__user-name" id="sidebar-user-name">
-                        @Model?.CurrentUserName
-                    </div>
-                    <div class="sidebar__user-role" id="sidebar-user-role">
-                        Student
-                    </div>
-                </div>
+            <div class="sidebar-user">
+                <div class="user-avatar" style="background:#3B82F6;">SJ</div>
+                <div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div>
             </div>
-            <nav class="sidebar__nav" id="sidebar-nav">
-                <div class="sidebar__nav-section">
-                    Workspace
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a asp-controller="Student" asp-action="Dashboard" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>Dashboard</a>
+                    <a asp-controller="Student" asp-action="Courses" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>My Courses</a>
+                    <a asp-controller="Student" asp-action="Exams" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>Exams</a>
+                    <a asp-controller="Student" asp-action="Schedule" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>Schedule</a>
                 </div>
-                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
-                    <span class="nav-icon">
-                        &#127968;
-                    </span>
-                    <span>
-                        Dashboard
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Courses" class="nav-item">
-                    <span class="nav-icon">
-                        &#128218;
-                    </span>
-                    <span>
-                        Courses
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Exams" class="nav-item">
-                    <span class="nav-icon">
-                        &#128221;
-                    </span>
-                    <span>
-                        Exams
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
-                    <span class="nav-icon">
-                        &#128197;
-                    </span>
-                    <span>
-                        Schedule
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Settings" class="nav-item">
-                    <span class="nav-icon">
-                        &#9881;
-                    </span>
-                    <span>
-                        Settings
-                    </span>
-                </a>
+                <div class="nav-section">
+                    <div class="nav-section-title">Account</div>
+                    <a asp-controller="Student" asp-action="Settings" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg>Settings</a>
+                </div>
             </nav>
-            <div class="sidebar__bottom">
-                <button class="sidebar__logout" id="logout-btn">
-                    <span class="nav-icon">
-                        &#128682;
-                    </span>
-                    Sign Out
-                </button>
+            <div class="sidebar-footer">
+                <a asp-controller="Auth" asp-action="Login" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>Logout</a>
             </div>
         </aside>
-        <div class="main-content">
-            <header class="topbar">
-                <div class="topbar__left">
-                    <button class="menu-toggle" id="menu-toggle">
-                        &#9776;
-                    </button>
-                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
-                        &#9776;
-                    </button>
-                    <div>
-                        <div class="topbar__title" id="page-title">
-                            Exams
-                        </div>
-                        <div class="topbar__breadcrumb" id="page-breadcrumb">
-                        </div>
-                    </div>
+
+        <main class="main-content">
+            <div class="topbar">
+                <h1 class="topbar-title">Exams</h1>
+                <div class="topbar-actions">
+                    <button class="icon-btn" onclick="showToast('No new notifications', 'info')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--primary);border-radius:50%;"></span></button>
                 </div>
-                <div class="topbar__right">
-                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
-                        @Model?.CurrentUserName
-                    </div>
+            </div>
+
+            <div class="page-content">
+                <div class="tabs" data-student-exam-filters style="margin-bottom:24px;">
+                    <button class="tab active" data-filter="upcoming">Upcoming</button>
+                    <button class="tab" data-filter="completed">Completed</button>
                 </div>
-            </header>
-            <main class="page-body">
-                <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between">
-                    <div>
-                        <h1 id="exams-heading">
-                            Exams
-                        </h1>
-                        <p id="exams-subheading">
-                            Review assigned exams and results
-                        </p>
-                    </div>
-                </div>
-                @* TODO: Backend
-          Required Data:
-          * Total Exams
-          * Pending Exams
-          * Completed Exams
-          * Average Score or Submission Rate
-          *@
-                <div class="stats-row" id="exam-stats">
-                    <div class="stat-card">
-                        <div class="stat-card__icon">
-                            &#128221;
-                        </div>
-                        <div class="stat-card__num">
-                            0
-                        </div>
-                        <div class="stat-card__label">
-                            Total Exams
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card__icon">
-                            &#9203;
-                        </div>
-                        <div class="stat-card__num">
-                            0
-                        </div>
-                        <div class="stat-card__label">
-                            Pending
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-bar" style="margin-bottom:24px">
-                    <button class="filter-pill active" data-status="all">
-                        All Exams
-                    </button>
-                    <button class="filter-pill" data-status="pending">
-                        Pending
-                    </button>
-                    <button class="filter-pill" data-status="completed">
-                        Completed
-                    </button>
-                    <button class="filter-pill" data-status="missed">
-                        Missed
-                    </button>
-                </div>
-                <div class="exams-grid" id="exams-grid">
-                    @* TODO: Backend
-            Required Data:
-            * Exam Id
-            * Exam Title
-            * Course Name
-            * Duration Minutes
-            * Question Count
-            * Due Date
-            * Exam Status
-            * Student Score or Submission Count
-            *@
-                    <div class="exam-card" data-status="pending">
-                        <div class="exam-card__icon">
-                            &#128221;
-                        </div>
-                        <div class="exam-card__title">
-                            Exam Title
-                        </div>
-                        <div class="exam-card__course">
-                            Course Name
-                        </div>
-                        <div class="exam-card__details">
-                            <div class="exam-detail-row">
-                                &#127909; Duration:
-                                <strong>
-                                    Duration min
-                                </strong>
+
+                <div class="exam-section" data-section="upcoming">
+                    <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text-light);">Upcoming Exams</h3>
+                    <div class="exam-card" data-status="upcoming">
+                        <div class="exam-header">
+                            <div>
+                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Calculus II - Midterm Examination</h3>
+                                <p style="font-size:13px;color:var(--text-muted);">50 questions &middot; 120 minutes &middot; Passing: 60%</p>
                             </div>
-                            <div class="exam-detail-row">
-                                &#10067; Questions:
-                                <strong>
-                                    Question count
-                                </strong>
-                            </div>
-                            <div class="exam-detail-row">
-                                &#128197; Due:
-                                <strong>
-                                    Due date
-                                </strong>
-                            </div>
+                            <span class="badge badge-warning">Upcoming</span>
                         </div>
-                        <div class="exam-card__footer">
-                            <span class="badge badge-amber">
-                                Status
-                            </span>
-                            <a class="btn-amber" href="/Student/TakeExam?id=@Model?.ExamId">
-                                Open
-                            </a>
+                        <div class="exam-meta">
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Mar 15, 2026</span>
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> 9:00 AM</span>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:16px;">
+                            <a asp-controller="Student" asp-action="Take_Exam" class="btn btn-primary btn-sm">Start Exam</a>
+                        </div>
+                    </div>
+
+                    <div class="exam-card" data-status="upcoming">
+                        <div class="exam-header">
+                            <div>
+                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Physics 101 - Final Exam</h3>
+                                <p style="font-size:13px;color:var(--text-muted);">75 questions &middot; 180 minutes &middot; Passing: 60%</p>
+                            </div>
+                            <span class="badge badge-info">Scheduled</span>
+                        </div>
+                        <div class="exam-meta">
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Apr 28, 2026</span>
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> 10:00 AM</span>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:16px;">
+                            <a asp-controller="Student" asp-action="Take_Exam" class="btn btn-primary btn-sm">Start Exam</a>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+
+                <div class="exam-section" data-section="completed" style="display:none;">
+                    <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text-light);">Completed Exams</h3>
+                    <div class="exam-card" data-status="completed">
+                        <div class="exam-header">
+                            <div>
+                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Organic Chemistry - Unit Test 3</h3>
+                                <p style="font-size:13px;color:var(--text-muted);">30 questions &middot; 60 minutes</p>
+                            </div>
+                            <span class="badge badge-success">Score: 87%</span>
+                        </div>
+                        <div class="exam-meta">
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Feb 20, 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="exam-card" data-status="completed">
+                        <div class="exam-header">
+                            <div>
+                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Linear Algebra - Quiz Marathon</h3>
+                                <p style="font-size:13px;color:var(--text-muted);">25 questions &middot; 45 minutes</p>
+                            </div>
+                            <span class="badge badge-success">Score: 92%</span>
+                        </div>
+                        <div class="exam-meta">
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Jan 30, 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-    <script src="../../js/app.js">
+    <script>
+            document.querySelectorAll('[data-student-exam-filters] .tab').forEach(tab => {
+              tab.addEventListener('click', () => {
+                const filter = tab.getAttribute('data-filter');
+                document.querySelectorAll('[data-student-exam-filters] .tab').forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.exam-section').forEach(section => {
+                  section.style.display = section.getAttribute('data-section') === filter ? 'block' : 'none';
+                });
+              });
+            });
     </script>
+    <script src="~/js/app.js"></script>
 </body>

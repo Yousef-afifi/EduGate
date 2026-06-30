@@ -1,200 +1,104 @@
 ﻿<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-        Take Exam - EduPlatform
-    </title>
-    <link rel="stylesheet" href="../../css/student-take-exam.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Exam - EduGate</title>
+    <link rel="stylesheet" href="~/css/style.css">
 </head>
-<body data-user-name="@Model?.CurrentUserName" data-user-role="Student">
-    @*
-    Required ViewModel Data:
-    * Exam Id
-    * Exam Title
-    * Course Name
-    * Duration Minutes
-    * Instructions
-    * Question List
-    * Question Options
-    * Existing Student Answers For Review
-    *@
-    <div id="sidebar-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99">
-    </div>
-    <div class="app-shell">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar__logo">
-                <div class="sidebar__logo-mark">
-                    &#127891;
-                </div>
-                <span class="sidebar__logo-name">
-                    EduPlatform
-                </span>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a asp-controller="Home" asp-action="Index" class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+                    EduGate
+                </a>
             </div>
-            <div class="sidebar__user">
-                <div class="sidebar__avatar" id="sidebar-avatar">
-                    U
-                </div>
-                <div>
-                    <div class="sidebar__user-name" id="sidebar-user-name">
-                        @Model?.CurrentUserName
-                    </div>
-                    <div class="sidebar__user-role" id="sidebar-user-role">
-                        Student
-                    </div>
-                </div>
+            <div class="sidebar-user">
+                <div class="user-avatar" style="background:#3B82F6;">SJ</div>
+                <div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div>
             </div>
-            <nav class="sidebar__nav" id="sidebar-nav">
-                <div class="sidebar__nav-section">
-                    Workspace
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a asp-controller="Student" asp-action="Dashboard" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>Dashboard</a>
+                    <a asp-controller="Student" asp-action="Courses" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>My Courses</a>
+                    <a asp-controller="Student" asp-action="Exams" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>Exams</a>
+                    <a asp-controller="Student" asp-action="Schedule" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>Schedule</a>
                 </div>
-                <a asp-controller="Student" asp-action="Dashboard" class="nav-item">
-                    <span class="nav-icon">
-                        &#127968;
-                    </span>
-                    <span>
-                        Dashboard
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Courses" class="nav-item">
-                    <span class="nav-icon">
-                        &#128218;
-                    </span>
-                    <span>
-                        Courses
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Exams" class="nav-item">
-                    <span class="nav-icon">
-                        &#128221;
-                    </span>
-                    <span>
-                        Exams
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Schedule" class="nav-item">
-                    <span class="nav-icon">
-                        &#128197;
-                    </span>
-                    <span>
-                        Schedule
-                    </span>
-                </a>
-                <a asp-controller="Student" asp-action="Settings" class="nav-item">
-                    <span class="nav-icon">
-                        &#9881;
-                    </span>
-                    <span>
-                        Settings
-                    </span>
-                </a>
+                <div class="nav-section">
+                    <div class="nav-section-title">Account</div>
+                    <a asp-controller="Student" asp-action="Settings" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg>Settings</a>
+                </div>
             </nav>
-            <div class="sidebar__bottom">
-                <button class="sidebar__logout" id="logout-btn">
-                    <span class="nav-icon">
-                        &#128682;
-                    </span>
-                    Sign Out
-                </button>
+            <div class="sidebar-footer">
+                <a asp-controller="Auth" asp-action="Login" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>Logout</a>
             </div>
         </aside>
-        <div class="main-content">
-            <header class="topbar">
-                <div class="topbar__left">
-                    <button class="menu-toggle" id="menu-toggle">
-                        &#9776;
-                    </button>
-                    <button class="sidebar-peek-toggle" id="sidebar-peek-toggle" title="Toggle sidebar">
-                        &#9776;
-                    </button>
-                    <div>
-                        <div class="topbar__title" id="page-title">
-                            Take Exam
-                        </div>
-                        <div class="topbar__breadcrumb" id="page-breadcrumb">
-                        </div>
-                    </div>
+
+        <main class="main-content">
+            <div class="topbar">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <a asp-controller="Student" asp-action="Exams" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <h1 class="topbar-title" id="examTitle">Start Exam</h1>
                 </div>
-                <div class="topbar__right">
-                    <div style="font-size:13px;font-weight:600;color:var(--navy)" id="topbar-user-name">
-                        @Model?.CurrentUserName
-                    </div>
-                </div>
-            </header>
-            <main class="page-body" id="exam-content">
-                <form id="exam-form" action="/Student/Exams/Submit" method="post">
-                    <input type="hidden" name="ExamId" value="@Model?.ExamId" />
-                    <div class="exam-header">
+            </div>
+
+            <div class="page-content">
+                <div class="card" style="margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
                         <div>
-                            @* TODO: Backend
-                Required Data:
-                * Exam Title
-                * Course Name
-                * Duration Minutes
-                *@
-                            <h1>
-                                Exam Title
-                            </h1>
-                            <p>
-                                Course Name
-                            </p>
+                            <h3 id="examName" style="font-size:20px;font-weight:700;margin-bottom:4px;">Exam</h3>
+                            <p id="examMeta" style="font-size:13px;color:var(--text-muted);">50 questions &middot; 120 minutes &middot; Passing: 60%</p>
                         </div>
-                        <div class="badge badge-amber" id="answered-count">
-                            0/1
-                        </div>
+                        <span class="badge badge-warning">In Progress</span>
                     </div>
-                    @* TODO: Backend
-            Required Data:
-            * Question Id
-            * Question Text
-            * Options
-            * Option Id
-            * Option Text
-            *@
-                    <div class="question-card">
-                        <div class="question-title">
-                            Question text placeholder
-                        </div>
-                        <label>
-                            <input type="radio" name="Answers[0].SelectedOption" value="A" />
-                            Option A
-                        </label>
-                        <label>
-                            <input type="radio" name="Answers[0].SelectedOption" value="B" />
-                            Option B
-                        </label>
-                    </div>
-                    <div style="display:flex;justify-content:flex-end;margin-top:24px">
-                        <button type="button" class="btn-primary" id="submit-exam-btn">
-                            Submit Exam
-                        </button>
-                    </div>
-                </form>
-            </main>
-        </div>
-    </div>
-    <div class="modal-overlay" id="submit-confirm-modal">
-        <div class="modal" style="max-width:400px">
-            <div class="modal-header">
-                <div class="modal-title">
-                    Submit Exam?
                 </div>
-                <button class="modal-close" data-close-modal="submit-confirm-modal">
-                    &times;
-                </button>
+
+                <div id="examQuestions" style="display:flex;flex-direction:column;gap:16px;"></div>
+
+                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px;">
+                    <a asp-controller="Student" asp-action="Exams" class="btn btn-outline">Cancel</a>
+                    <button class="btn btn-primary" onclick="submitExam()">Submit Exam</button>
+                </div>
             </div>
-            <p style="font-size:14.5px;color:var(--gray-600);line-height:1.6" id="submit-confirm-msg">
-                Are you sure you want to submit? You cannot change your answers after submitting.
-            </p>
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" data-close-modal="submit-confirm-modal">
-                    Go Back
-                </button>
-                <button type="button" class="btn-primary" id="confirm-submit-btn">
-                    Submit Now
-                </button>
-            </div>
-        </div>
+        </main>
     </div>
-    <script src="../../js/app.js">
+    <script src="~/js/app.js"></script>
+    <script>
+        const exams = {
+        1: { title: 'Calculus II - Midterm Examination', meta: '50 questions - 120 minutes - Passing: 60%' },
+        2: { title: 'Physics 101 - Final Exam', meta: '75 questions - 180 minutes - Passing: 60%' }
+        };
+        const examId = new URLSearchParams(location.search).get('exam') || '1';
+        const exam = exams[examId] || exams[1];
+        document.title = `${exam.title} - EduGate`;
+        document.getElementById('examTitle').textContent = exam.title;
+        document.getElementById('examName').textContent = exam.title;
+        document.getElementById('examMeta').textContent = exam.meta;
+
+        const questions = [
+        'Choose the best answer for question 1.',
+        'Choose the best answer for question 2.',
+        'Choose the best answer for question 3.'
+        ];
+        document.getElementById('examQuestions').innerHTML = questions.map((question, index) => `
+        <div class="card">
+        <div class="form-group">
+        <label class="form-label">Question ${index + 1}</label>
+        <p style="margin-bottom:12px;">${question}</p>
+        ${['Option A', 'Option B', 'Option C', 'Option D'].map((option, optionIndex) => `
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;">
+        <input type="radio" name="q${index}" value="${optionIndex}" style="accent-color:var(--primary);">
+        <span>${option}</span>
+        </label>
+        `).join('')}
+        </div>
+        </div>
+        `).join('');
+
+        function submitExam() {
+        showToast('Exam submitted successfully!', 'success');
+        setTimeout(() => window.location.href = 'exams.html', 900);
+        }
     </script>
 </body>

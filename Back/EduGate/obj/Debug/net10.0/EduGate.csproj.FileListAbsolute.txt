@@ -130,7 +130,6 @@ D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\rjsmcshtml.dswa.cache.js
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\scopedcss\bundle\EduGate.styles.css
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\scopedcss\projectbundle\EduGate.bundle.scp.css
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\83y3h067af-{0}-61n19gt1b8-61n19gt1b8.gz
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\a586cc2emj-{0}-bqjiyaj88i-bqjiyaj88i.gz
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\asu87tau6r-{0}-c2jlpeoesf-c2jlpeoesf.gz
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\wmzr791m7j-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -204,22 +203,6 @@ D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\refint\EduGate.dll
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\EduGate.pdb
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\EduGate.genruntimeconfig.cache
 D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\ref\EduGate.dll
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\skeky7zip3-{0}-y1sagwobaa-y1sagwobaa.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\6a4s87q82o-{0}-4r9mfj16kp-4r9mfj16kp.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\fkzov35os3-{0}-3unptvfcga-3unptvfcga.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\whm9s77kca-{0}-3pqr3kobgs-3pqr3kobgs.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\8og76r2lfb-{0}-b183p1hln1-b183p1hln1.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\od79jj4q7f-{0}-ai20j75ryo-ai20j75ryo.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\b00fnhcjmm-{0}-orxx26hjqz-orxx26hjqz.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\hgp434roke-{0}-b8f2crxokf-b8f2crxokf.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\ww73w0jreq-{0}-hw5yu7aql9-hw5yu7aql9.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\4ynooj7lga-{0}-h24031bap9-h24031bap9.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\76t9ho2b3r-{0}-orqr9ew6d8-orqr9ew6d8.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\39c1ih744u-{0}-p1k5cfhyyz-p1k5cfhyyz.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\donq8d9w8o-{0}-ptybw30i6b-ptybw30i6b.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\bzkt0n530i-{0}-u7mfdosud3-u7mfdosud3.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\rvqms34193-{0}-f09qz19glq-f09qz19glq.gz
-D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\qk8ihrmzwe-{0}-ot75dmkyb4-ot75dmkyb4.gz
 D:\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\appsettings.Development.json
 D:\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\appsettings.json
 D:\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\EduGate.staticwebassets.runtime.json
@@ -478,3 +461,5 @@ D:\4.Work\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\ru\Microsoft.CodeAnalysi
 D:\4.Work\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 D:\4.Work\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 D:\4.Work\GitHub\EduGate\Back\EduGate\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\gguoud9ie2-{0}-hh1gvgmcvs-hh1gvgmcvs.gz
+D:\4.Work\GitHub\EduGate\Back\EduGate\obj\Debug\net10.0\compressed\qk8ihrmzwe-{0}-wxcmcxp4qg-wxcmcxp4qg.gz

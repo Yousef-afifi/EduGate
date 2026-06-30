@@ -1,4 +1,5 @@
-﻿using EduGate.Models;
+﻿using EduGate.Data;
+using EduGate.Models;
 using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,6 +8,11 @@ namespace EduGate.Controllers
 {
     public class AuthController : Controller
     {
+        private readonly AppDbContext _context;
+        public AuthController(AppDbContext context)
+        {
+            _context = context;
+        }
         [HttpGet]
         public IActionResult Login()
         {

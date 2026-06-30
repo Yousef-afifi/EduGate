@@ -1,126 +1,46 @@
-﻿<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-        Teacher & Student Login - EduPlatform
-    </title>
-    <link rel="stylesheet" href="~/css/auth-login.css" />
+﻿@model LoginVM
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EduGate</title>
+    <link rel="stylesheet" href="~/css/style.css">
 </head>
-<body>
-    @*
-    Required ViewModel Data:
-    * Email
-    * Password
-    * Remember Me
-    * Validation Errors
-    *@
-    <header class="auth-header" aria-label="Authentication">
-    </header>
-    <main class="auth-main">
-        <div class="auth-root">
-            <div class="auth-brand">
-                <div class="auth-brand__logo">
-                    <div class="auth-brand__logo-mark">
-                        &#127891;
-                    </div>
-                    <span class="auth-brand__logo-name">
-                        EduPlatform
-                    </span>
-                </div>
-                <h1 class="auth-brand__headline">
-                    Launch Your Teaching
-                    <br>
-                    Platform
-                    <span>
-                        Faster.
-                    </span>
-                </h1>
-                <p class="auth-brand__sub">
-                    One ready platform for online teachers with lessons, exams, student accounts, and dashboards.
-                </p>
-                <div class="auth-brand__stats">
-                    <div>
-                        <div class="auth-brand__stat-num">
-                            200+
-                        </div>
-                        <div class="auth-brand__stat-lbl">
-                            Starter seats
-                        </div>
-                    </div>
-                    <div>
-                        <div class="auth-brand__stat-num">
-                            600
-                        </div>
-                        <div class="auth-brand__stat-lbl">
-                            Growth package
-                        </div>
-                    </div>
-                    <div>
-                        <div class="auth-brand__stat-num">
-                            1000
-                        </div>
-                        <div class="auth-brand__stat-lbl">
-                            Scale package
-                        </div>
-                    </div>
-                </div>
-                <div class="auth-brand__deco">
-                </div>
-                <div class="auth-brand__deco2">
-                </div>
-            </div>
-            <div class="auth-form-panel">
-                <div class="auth-form-box">
-                    <h2>
-                        Welcome back
-                    </h2>
-                    <p class="auth-sub">
-                        Don't have an account?
-                        <a asp-controller="Auth" asp-action="Register">
-                            Create one
-                        </a>
-                    </p>
-                    <div class="alert alert-error" id="login-alert" role="alert">
-                        <span>
-                            &#9888;
-                        </span>
-                        <span class="alert-msg">
-                        </span>
-                    </div>
-                    <form id="login-form" asp-controller="Auth" asp-action="Login" method="post" novalidate>
-                        <div class="form-group">
-                            <label for="email">
-                                Email Address
-                            </label>
-                            <input type="email" id="email" name="Email" placeholder="you@example.com" autocomplete="email" data-validate="required|email" />
-                            <div class="field-error">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">
-                                Password
-                            </label>
-                            <input type="password" id="password" name="Password" placeholder="Your password" autocomplete="current-password" data-validate="required" />
-                            <div class="field-error">
-                            </div>
-                        </div>
-                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-                            <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-600);cursor:pointer">
-                                <input type="checkbox" id="remember-me" name="RememberMe" value="true" style="accent-color:var(--amber);width:14px;height:14px" />
-                                Remember me
-                            </label>
-                            <a href="#" style="font-size:13px;color:var(--amber-dark);font-weight:500">
-                                Need help?
-                            </a>
-                        </div>
-                        <button type="submit" class="btn-primary" id="login-btn">
-                            Sign In
-                        </button>
-                    </form>
-                </div>
-            </div>
+<body class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <a asp-controller="Home" asp-action="Index" class="logo" style="justify-content:center;margin-bottom:16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                EduGate
+            </a>
+            <h1 class="auth-title">Welcome back</h1>
+            <p class="auth-subtitle">Sign in to your account</p>
         </div>
-    </main>
-    <script src="~/js/app.js">
-    </script>
+
+        <form id="loginForm" asp-controller="Auth" asp-action="Login" method="post">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-input" placeholder="you@example.com" required id="email">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-input" placeholder="Enter your password" required id="password">
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-light);cursor:pointer;">
+                    <input type="checkbox" checked style="accent-color:var(--primary);"> Remember me
+                </label>
+                <a href="#" style="font-size:13px;color:var(--primary);font-weight:500;">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary w-full" style="padding:12px;">Sign In</button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <a asp-controller="Auth" asp-action="Register">Sign up</a>
+        </div>
+    </div>
+
+    <script src="~/js/app.js"></script>
 </body>
