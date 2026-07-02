@@ -1,5 +1,6 @@
 ﻿using EduGate.Data;
 using EduGate.Models;
+using EduGate.Services.StuServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,22 +8,26 @@ namespace EduGate.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly AppDbContext _context;
-        public StudentController(AppDbContext context)
+        private readonly ICoursesService _service;
+        public StudentController(ICoursesService service)
         {
-            _context = context;
+            _service = service;
         }
         public IActionResult Dashboard()
         {
             return View();
         }
-        public IActionResult Courses()
+        public async Task<IActionResult> Courses()
         {
-            return View();
+            int fakecurrentid = 3;
+            var data = await _service.GetStudentCoursesAsync(fakecurrentid);
+            return View(data);
         }
-        public IActionResult Course_Details(int id)
+        public async Task<IActionResult> Course_Details(int id)
         {
-            return View();
+            int fakecurrentid = 1;
+            var data = await _service.GetCourseDeatailsAsync(fakecurrentid);
+            return View(data);
         }
         public IActionResult Exams()
         {

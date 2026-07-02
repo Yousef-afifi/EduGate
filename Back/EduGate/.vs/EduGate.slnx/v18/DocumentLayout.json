@@ -1,7 +1,48 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\4.Work\\GitHub\\EduGate\\Back\\EduGate\\",
-  "Documents": [],
+  "WorkspaceRootPath": "D:\\GitHub\\EduGate\\Back\\EduGate\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\views\\student\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:views\\student\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\views\\student\\course_details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:views\\student\\course_details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\data\\appdbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:data\\appdbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\models\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:models\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\viewmodels\\coursevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:viewmodels\\coursevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\views\\student\\courses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:views\\student\\courses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\services\\stuservices\\icoursesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:services\\stuservices\\icoursesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\services\\stuservices\\coursesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:services\\stuservices\\coursesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|d:\\github\\edugate\\back\\edugate\\edugate.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{2D5FF07D-201A-5134-842B-80217D11D708}|EduGate.csproj|solutionrelative:edugate.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +50,141 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Views\\Student\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "Views\\Student\\Dashboard.cshtml",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Views\\Student\\Dashboard.cshtml",
+              "RelativeToolTip": "Views\\Student\\Dashboard.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-02T16:05:56.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Courses.cshtml",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Views\\Student\\Courses.cshtml",
+              "RelativeDocumentMoniker": "Views\\Student\\Courses.cshtml",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Views\\Student\\Courses.cshtml",
+              "RelativeToolTip": "Views\\Student\\Courses.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-02T15:56:47.266Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EduGate",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\EduGate.csproj",
+              "RelativeDocumentMoniker": "EduGate.csproj",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\EduGate.csproj",
+              "RelativeToolTip": "EduGate.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-07-02T15:53:59.026Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CoursesService.cs",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Services\\StuServices\\CoursesService.cs",
+              "RelativeDocumentMoniker": "Services\\StuServices\\CoursesService.cs",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Services\\StuServices\\CoursesService.cs",
+              "RelativeToolTip": "Services\\StuServices\\CoursesService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-02T04:37:05.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ICoursesService.cs",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Services\\StuServices\\ICoursesService.cs",
+              "RelativeDocumentMoniker": "Services\\StuServices\\ICoursesService.cs",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Services\\StuServices\\ICoursesService.cs",
+              "RelativeToolTip": "Services\\StuServices\\ICoursesService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-02T04:36:01.532Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "StudentController.cs",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Controllers\\StudentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\StudentController.cs",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Controllers\\StudentController.cs",
+              "RelativeToolTip": "Controllers\\StudentController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAcwBoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-02T04:32:50.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppDbInitializer.cs",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Data\\AppDbInitializer.cs",
+              "RelativeDocumentMoniker": "Data\\AppDbInitializer.cs",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Data\\AppDbInitializer.cs",
+              "RelativeToolTip": "Data\\AppDbInitializer.cs",
+              "ViewState": "AgIAAKkBAAAAAAAAAAAqwLQBAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-02T07:37:20.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Course.cs",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Models\\Course.cs",
+              "RelativeDocumentMoniker": "Models\\Course.cs",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Models\\Course.cs",
+              "RelativeToolTip": "Models\\Course.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-02T06:57:22.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CourseVM.cs",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\ViewModels\\CourseVM.cs",
+              "RelativeDocumentMoniker": "ViewModels\\CourseVM.cs",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\ViewModels\\CourseVM.cs",
+              "RelativeToolTip": "ViewModels\\CourseVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-02T04:56:02.055Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Course_Details.cshtml",
+              "DocumentMoniker": "D:\\GitHub\\EduGate\\Back\\EduGate\\Views\\Student\\Course_Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Student\\Course_Details.cshtml",
+              "ToolTip": "D:\\GitHub\\EduGate\\Back\\EduGate\\Views\\Student\\Course_Details.cshtml",
+              "RelativeToolTip": "Views\\Student\\Course_Details.cshtml",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAuwHAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-02T06:20:34.194Z",
+              "EditorCaption": ""
             }
           ]
         }
