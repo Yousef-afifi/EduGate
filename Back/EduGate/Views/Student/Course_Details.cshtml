@@ -1,5 +1,4 @@
-﻿@model EduGate.ViewModels.CourseDetailsVM
-
+﻿@model CourseDetailsVM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,6 +45,7 @@
             </div>
 
             <div class="page-content">
+                <!-- Course Header -->
                 <div class="card" style="background:linear-gradient(135deg,#E84C4C,#FF8A80);color:white;margin-bottom:24px;">
                     <div style="display:flex;align-items:center;gap:20px;">
                         <div style="width:64px;height:64px;border-radius:var(--radius);background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;">&#128218;</div>
@@ -66,7 +66,7 @@
                     <button class="tab" onclick="switchTab(this,'assessments')">Assessments</button>
                     <button class="tab" onclick="switchTab(this,'materials')">Materials</button>
                 </div>
-
+                <!-- Lessons Tab -->
                 <div id="lessons" class="tab-content">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Lessons</h3>
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Quizzes Tab -->
                 <div id="quizzes" class="tab-content" style="display:none;">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Quizzes</h3>
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Assessments Tab -->
                 <div id="assessments" class="tab-content" style="display:none;">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Assessments</h3>
@@ -153,7 +153,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Materials Tab -->
                 <div id="materials" class="tab-content" style="display:none;">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Course Materials (By Lesson)</h3>
@@ -204,8 +204,6 @@
                 const title = row.querySelector('div[style*="font-weight:600"]');
                 const videoTitle = document.querySelector('.student-video-title');
                 if (title && videoTitle) videoTitle.textContent = title.textContent;
-
-                // هنا يمكنك إضافة كود لتحديث الـ src الخاص بالـ video player الفعلي بالـ Url: row.dataset.video
             }
     </script>
     <script src="~/js/app.js"></script>

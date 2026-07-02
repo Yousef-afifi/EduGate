@@ -1,5 +1,6 @@
 ﻿using EduGate.Data;
 using EduGate.Models;
+using EduGate.Services.AuthServices;
 using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -8,10 +9,10 @@ namespace EduGate.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly AppDbContext _context;
-        public AuthController(AppDbContext context)
+        private readonly IAuthService _service;
+        public AuthController(IAuthService service)
         {
-            _context = context;
+            _service = service;
         }
         [HttpGet]
         public IActionResult Login()
@@ -19,19 +20,24 @@ namespace EduGate.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(LoginVM model)
+        public async Task<IActionResult> Login(LoginVM model)
         {
-            if (model.Email.StartsWith("teacher"))
+            var User_Type = await _service.Login(model);
+            if(User_Type == "User")
             {
                 return RedirectToAction("Dashboard", "Teacher");
             }
 
-            if (model.Email.StartsWith("student"))
+            if(User_Type == "Stu")
             {
                 return RedirectToAction("Dashboard", "Student");
             }
-
-            ModelState.AddModelError("", "Invalid username or password");
+            
+            if(User_Type == "Error")
+            {
+                ModelState.AddModelError("", "Invalid username or password");
+            }
+            
             return View(model);
         }
         public IActionResult Register()

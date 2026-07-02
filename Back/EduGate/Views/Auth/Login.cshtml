@@ -22,11 +22,11 @@
         <form id="loginForm" asp-controller="Auth" asp-action="Login" method="post">
             <div class="form-group">
                 <label class="form-label">Email</label>
-                <input asp-for="Email" type="email" class="form-input" placeholder="you@example.com" required id="email">
+                <input asp-for="Email" type="text" class="form-input" placeholder="you@example.com" required id="email">
             </div>
             <div class="form-group">
                 <label class="form-label">Password</label>
-                <input asp-for="Password" type="password" class="form-input" placeholder="Enter your password" required id="password">
+                <input asp-for="Password" type="text" class="form-input" placeholder="Enter your password" required id="password">
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                 <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-light);cursor:pointer;">

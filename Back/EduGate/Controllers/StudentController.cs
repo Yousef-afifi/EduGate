@@ -8,8 +8,8 @@ namespace EduGate.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly ICoursesService _service;
-        public StudentController(ICoursesService service)
+        private readonly IStuService _service;
+        public StudentController(IStuService service)
         {
             _service = service;
         }

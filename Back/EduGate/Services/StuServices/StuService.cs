@@ -6,19 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduGate.Services.StuServices
 {
-    public class CoursesService : ICoursesService
+    public class StuService : IStuService
     {
         private readonly AppDbContext _context;
-        public CoursesService(AppDbContext context)
+        public StuService(AppDbContext context)
         {
             _context = context;
         }
-
-   
-
         public async Task<List<CourseVM>> GetStudentCoursesAsync(int id)
         {
-          
             var data = await _context.Enrollment
                 .Where(s => s.Student_Id == id)
                 .Select(s => s.course) 
@@ -35,15 +31,13 @@ namespace EduGate.Services.StuServices
 
             return data;
         }
-
-        public async Task <CourseDetailsVM> GetCourseDeatailsAsync(int id)
+        public async Task<CourseDetailsVM> GetCourseDeatailsAsync(int id)
         {
             var course = await _context.Course
                  .Include(c => c.teacher)
                  .Include(c => c.Lessons).ThenInclude(l => l.Materials)
                  .Include(c => c.Exams)
                  .ThenInclude(c => c.Questions)
-
                  .FirstOrDefaultAsync(c => c.Id == id);
 
             if (course == null)
@@ -93,11 +87,7 @@ namespace EduGate.Services.StuServices
                     DueDate = a.Duration.HasValue ? $"{a.Duration.Value} Mins" : "No Limit"
 
                 }).ToList() ?? new List<AssessmentVM>(),
-
-
             };
         }   
     }
 }
-
-

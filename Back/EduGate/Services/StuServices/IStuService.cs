@@ -3,7 +3,7 @@ using EduGate.ViewModels;
 
 namespace EduGate.Services.StuServices
 {
-    public interface ICoursesService
+    public interface IStuService
     {
         Task<List<CourseVM>> GetStudentCoursesAsync(int id);
         Task<CourseDetailsVM> GetCourseDeatailsAsync(int id);
