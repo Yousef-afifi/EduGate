@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model List<CourseVM>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Courses - EduGate</title>
@@ -45,65 +46,32 @@
 
             <div class="page-content">
                 <div class="course-grid">
-                    <div class="course-card card-hover">
-                        <div class="course-img" style="background:linear-gradient(135deg,#E84C4C,#FF8A80);">&#128218;</div>
-                        <div class="course-body">
-                            <h3 class="course-title">Calculus II</h3>
-                            <p class="course-meta">Dr. John Doe &middot; 12 lessons &middot; 4 quizzes</p>
-                            <div class="course-progress">
-                                <div class="progress-bar"><div class="progress-fill" style="width:78%;background:var(--primary);"></div></div>
-                                <span>78%</span>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var course in Model)
+                        {
+                            <div class="course-card card-hover">
+                                <div class="course-img" style="background:linear-gradient(135deg,#3B82F6,#60A5FA);">&#128218;</div>
+                                <div class="course-body">
+                                    <h3 class="course-title">@course.Name</h3>
+                                    <p class="course-meta">@course.TeacherName &middot; @course.LessonCount lessons &middot; @course.ExamCount quizzes</p>
+                                    <div class="course-progress">
+                                        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--primary);"></div></div>
+                                        <span>0%</span>
+                                    </div>
+                                    <div style="margin-top:12px;display:flex;gap:8px;">
+                                        <a asp-controller="Student" asp-action="Course_Details" asp-route-id="@course.Id" class="btn btn-sm btn-primary">Continue</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="margin-top:12px;display:flex;gap:8px;">
-                                <a asp-controller="Student" asp-action="Course_Details" class="btn btn-sm btn-primary">Continue</a>
-                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                            <h3>No courses joined yet!</h3>
                         </div>
-                    </div>
-
-                    <div class="course-card card-hover">
-                        <div class="course-img" style="background:linear-gradient(135deg,#3B82F6,#60A5FA);">&#9889;</div>
-                        <div class="course-body">
-                            <h3 class="course-title">Physics 101</h3>
-                            <p class="course-meta">Dr. Robert Chen &middot; 10 lessons &middot; 3 quizzes</p>
-                            <div class="course-progress">
-                                <div class="progress-bar"><div class="progress-fill" style="width:65%;background:#3B82F6;"></div></div>
-                                <span>65%</span>
-                            </div>
-                            <div style="margin-top:12px;display:flex;gap:8px;">
-                                <a asp-controller="Student" asp-action="Course_Details" class="btn btn-sm btn-primary">Continue</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="course-card card-hover">
-                        <div class="course-img" style="background:linear-gradient(135deg,#10B981,#34D399);">&#9883;</div>
-                        <div class="course-body">
-                            <h3 class="course-title">Organic Chemistry</h3>
-                            <p class="course-meta">Prof. Sarah Mitchell &middot; 15 lessons &middot; 5 quizzes</p>
-                            <div class="course-progress">
-                                <div class="progress-bar"><div class="progress-fill" style="width:92%;background:#10B981;"></div></div>
-                                <span>92%</span>
-                            </div>
-                            <div style="margin-top:12px;display:flex;gap:8px;">
-                                <a asp-controller="Student" asp-action="Course_Details" class="btn btn-sm btn-primary">Continue</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="course-card card-hover">
-                        <div class="course-img" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">&#8853;</div>
-                        <div class="course-body">
-                            <h3 class="course-title">Linear Algebra</h3>
-                            <p class="course-meta">Dr. John Doe &middot; 8 lessons &middot; 2 quizzes</p>
-                            <div class="course-progress">
-                                <div class="progress-bar"><div class="progress-fill" style="width:54%;background:#8B5CF6;"></div></div>
-                                <span>54%</span>
-                            </div>
-                            <div style="margin-top:12px;display:flex;gap:8px;">
-                                <a asp-controller="Student" asp-action="Course_Details" class="btn btn-sm btn-primary">Continue</a>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </main>
