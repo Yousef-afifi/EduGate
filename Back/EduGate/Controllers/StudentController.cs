@@ -29,9 +29,13 @@ namespace EduGate.Controllers
             var data = await _service.GetCourseDeatailsAsync(fakecurrentid);
             return View(data);
         }
-        public IActionResult Exams()
+        public async Task<IActionResult> Exams()
         {
-            return View();
+            int studentId = 2; // مؤقتا
+
+            var model = await _service.GetStudentExams(studentId);
+
+            return View(model);
         }
         public IActionResult Take_Exam(int id)
         {

@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model StudentExamsVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exams - EduGate</title>
@@ -51,68 +52,95 @@
 
                 <div class="exam-section" data-section="upcoming">
                     <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text-light);">Upcoming Exams</h3>
-                    <div class="exam-card" data-status="upcoming">
-                        <div class="exam-header">
-                            <div>
-                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Calculus II - Midterm Examination</h3>
-                                <p style="font-size:13px;color:var(--text-muted);">50 questions &middot; 120 minutes &middot; Passing: 60%</p>
-                            </div>
-                            <span class="badge badge-warning">Upcoming</span>
-                        </div>
-                        <div class="exam-meta">
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Mar 15, 2026</span>
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> 9:00 AM</span>
-                        </div>
-                        <div style="display:flex;gap:8px;margin-top:16px;">
-                            <a asp-controller="Student" asp-action="Take_Exam" class="btn btn-primary btn-sm">Start Exam</a>
-                        </div>
-                    </div>
+                    @foreach (var exam in Model.UpcomingExams)
+                    {
+                        <div class="exam-card" data-status="upcoming">
+                            <div class="exam-header">
+                                <div>
+                                    <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">
+                                        @exam.Name
+                                    </h3>
 
-                    <div class="exam-card" data-status="upcoming">
-                        <div class="exam-header">
-                            <div>
-                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Physics 101 - Final Exam</h3>
-                                <p style="font-size:13px;color:var(--text-muted);">75 questions &middot; 180 minutes &middot; Passing: 60%</p>
+                                    <p style="font-size:13px;color:var(--text-muted);">
+                                        @exam.QuestionCount questions &middot;
+                                        @exam.Duration minutes &middot;
+                                        Passing: @exam.PassingPercentage%
+                                    </p>
+                                </div>
+
+                                <span class="badge badge-warning">Upcoming</span>
                             </div>
-                            <span class="badge badge-info">Scheduled</span>
+
+                            <div class="exam-meta">
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+
+                                    @exam.StartDate.ToString("MMM dd, yyyy")
+                                </span>
+
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+
+                                    @exam.StartDate.ToString("hh:mm tt")
+                                </span>
+                            </div>
+
+                            <div style="display:flex;gap:8px;margin-top:16px;">
+                                <a asp-controller="Student"
+                                   asp-action="Take_Exam"
+                                   asp-route-id="@exam.Id"
+                                   class="btn btn-primary btn-sm">
+                                    Start Exam
+                                </a>
+                            </div>
                         </div>
-                        <div class="exam-meta">
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Apr 28, 2026</span>
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> 10:00 AM</span>
-                        </div>
-                        <div style="display:flex;gap:8px;margin-top:16px;">
-                            <a asp-controller="Student" asp-action="Take_Exam" class="btn btn-primary btn-sm">Start Exam</a>
-                        </div>
-                    </div>
+                    }
                 </div>
 
                 <div class="exam-section" data-section="completed" style="display:none;">
                     <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text-light);">Completed Exams</h3>
-                    <div class="exam-card" data-status="completed">
-                        <div class="exam-header">
-                            <div>
-                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Organic Chemistry - Unit Test 3</h3>
-                                <p style="font-size:13px;color:var(--text-muted);">30 questions &middot; 60 minutes</p>
-                            </div>
-                            <span class="badge badge-success">Score: 87%</span>
-                        </div>
-                        <div class="exam-meta">
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Feb 20, 2026</span>
-                        </div>
-                    </div>
+                    @foreach (var exam in Model.CompletedExams)
+                    {
+                        <div class="exam-card" data-status="completed">
+                            <div class="exam-header">
+                                <div>
+                                    <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">
+                                        @exam.Name
+                                    </h3>
 
-                    <div class="exam-card" data-status="completed">
-                        <div class="exam-header">
-                            <div>
-                                <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">Linear Algebra - Quiz Marathon</h3>
-                                <p style="font-size:13px;color:var(--text-muted);">25 questions &middot; 45 minutes</p>
+                                    <p style="font-size:13px;color:var(--text-muted);">
+                                        @exam.QuestionCount questions &middot;
+                                        @exam.Duration minutes
+                                    </p>
+                                </div>
+
+                                <span class="badge badge-success">
+                                    Score: @exam.Score%
+                                </span>
                             </div>
-                            <span class="badge badge-success">Score: 92%</span>
+
+                            <div class="exam-meta">
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+
+                                    @exam.SubmittedAt.ToString("MMM dd, yyyy")
+                                </span>
+                            </div>
                         </div>
-                        <div class="exam-meta">
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg> Jan 30, 2026</span>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </main>

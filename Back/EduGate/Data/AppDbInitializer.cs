@@ -460,39 +460,50 @@ namespace EduGate.Data
                 if (!context.Exam.Any())
                 {
                     context.Exam.AddRange(new List<Exam>()
-                    {
+                        {
+                        // Completed Exam
                         new Exam
                         {
                             Name = "C# Basics Quiz",
                             Type = ExamType.Quiz,
                             Duration = 30,
                             Total_Marks = 50,
+                            PassingPercentage = 60,
+                            StartDate = DateTime.Now.AddDays(-7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
                         },
+
+                        // Upcoming Exam
                         new Exam
                         {
-                             Name = "ASP.NET Core",
-                             Type = ExamType.Assignment,
-                             Duration = 120,
-                             Total_Marks = 10,
-                             CreatedAt = DateTime.Now,
-                             Course_Id = 2
+                            Name = "ASP.NET Core Assignment",
+                            Type = ExamType.Assignment,
+                            Duration = 120,
+                            Total_Marks = 10,
+                            PassingPercentage = 50,
+                            StartDate = DateTime.Now.AddDays(3),
+                            CreatedAt = DateTime.Now,
+                            Course_Id = 2
                         },
+
+                        // Completed Exam
                         new Exam
                         {
-                             Name = "Sql Basics",
-                             Type = ExamType.Exam,
-                             Duration = 120,
-                             Total_Marks = 10,
-                             CreatedAt = DateTime.Now,
-                             Course_Id = 3
-                        },
+                            Name = "SQL Basics Exam",
+                            Type = ExamType.Exam,
+                            Duration = 120,
+                            Total_Marks = 10,
+                            PassingPercentage = 70,
+                            StartDate = DateTime.Now.AddDays(-5),
+                            CreatedAt = DateTime.Now,
+                            Course_Id = 3
+                        }
 
-                    });
+                        });
 
-                    context.SaveChanges();
-                }
+                                    context.SaveChanges();
+                                }
 
                 if (!context.Question.Any())
                 {

@@ -7,5 +7,10 @@ namespace EduGate.Services.StuServices
     {
         Task<List<CourseVM>> GetStudentCoursesAsync(int id);
         Task<CourseDetailsVM> GetCourseDeatailsAsync(int id);
+     
+        //------------------------------------------------------------
+        Task<StudentExamsVM> GetStudentExams(int studentId);
+        Task<List<UpcomingExamVM>> GetUpcomingExams(int studentId);
+        Task<List<CompletedExamVM>> GetCompletedExams(int studentId);
     }
 }
