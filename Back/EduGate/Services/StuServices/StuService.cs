@@ -33,15 +33,21 @@ namespace EduGate.Services.StuServices
         }
         public async Task<CourseDetailsVM> GetCourseDeatailsAsync(int id)
         {
-            var course = await _context.Course
-                 .Include(c => c.teacher)
-                 .Include(c => c.Lessons).ThenInclude(l => l.Materials)
-                 .Include(c => c.Exams)
-                 .ThenInclude(c => c.Questions)
-                 .FirstOrDefaultAsync(c => c.Id == id);
+            
+            var studentAttempts = await _context.ExamAttempt
+                .Where(a => a.Student_Id == id)
+                .ToListAsync();
 
-            if (course == null)
+            var enrollment = await _context.Enrollment
+                .Include(s => s.course).ThenInclude(c => c.teacher)
+                .Include(s => s.course).ThenInclude(c => c.Lessons).ThenInclude(l => l.Materials)
+                .Include(s => s.course).ThenInclude(c => c.Exams).ThenInclude(e => e.Questions)
+                .FirstOrDefaultAsync(s => s.Student_Id == id);
+
+            if (enrollment == null || enrollment.course == null)
                 return null;
+
+            var course = enrollment.course;
 
             return new CourseDetailsVM
             {
@@ -67,25 +73,45 @@ namespace EduGate.Services.StuServices
                 }).ToList() ?? new List<LessonVM>(),
 
                 Quizzes = course.Exams?.Where(e => e.Type == Enums.ExamType.Quiz)
-                .Select(q => new QuizVM
-                {
-                    Id = q.Id,
-                    Name = q.Name,
-                    QuestionCount = q.Questions != null ? q.Questions.Count() : 0,
-                    score = "", 
-                    Status = ""
+                .Select(q => {
+                    
+                    var attempt = studentAttempts.FirstOrDefault(a => a.Exam_Id == q.Id);
 
+                    string status = "Not Started";
+                    if (attempt != null)
+                    {
+                        status = attempt.IsCompleted ? "Completed" : "In Progress";
+                    }
+
+                    return new QuizVM
+                    {
+                        Id = q.Id,
+                        Name = q.Name,
+                        QuestionCount = q.Questions != null ? q.Questions.Count() : 0,
+                        score = attempt != null && attempt.IsCompleted ? $"{attempt.Score}" : "--",
+                        Status = status
+                    };
                 }).ToList() ?? new List<QuizVM>(),
 
-                Assessments = course.Exams?.Where(e => e.Type == Enums.ExamType.Assignment || e.Type == ExamType.Exam)
-                .Select(a => new AssessmentVM
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    score = "",
-                    Status = "",
-                    DueDate = a.Duration.HasValue ? $"{a.Duration.Value} Mins" : "No Limit"
+                Assessments = course.Exams?.Where(e => e.Type == Enums.ExamType.Assignment )
+                .Select(a => {
+                    
+                    var attempt = studentAttempts.FirstOrDefault(a => a.Exam_Id == a.Id);
 
+                    string status = "Not Submitted";
+                    if (attempt != null)
+                    {
+                        status = attempt.IsCompleted ? "Submitted" : "Incomplete / Draft";
+                    }
+
+                    return new AssessmentVM
+                    {
+                        Id = a.Id,
+                        Name = a.Name,
+                        score = attempt != null && attempt.IsCompleted ? $"{attempt.Score}/100" : "--",
+                        Status = status,
+                        DueDate = a.Duration.HasValue ? $"{a.Duration.Value} Mins" : "No Limit"
+                    };
                 }).ToList() ?? new List<AssessmentVM>(),
             };
         }

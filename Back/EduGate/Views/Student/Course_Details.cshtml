@@ -1,4 +1,6 @@
 ﻿@model CourseDetailsVM
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +47,6 @@
             </div>
 
             <div class="page-content">
-                <!-- Course Header -->
                 <div class="card" style="background:linear-gradient(135deg,#E84C4C,#FF8A80);color:white;margin-bottom:24px;">
                     <div style="display:flex;align-items:center;gap:20px;">
                         <div style="width:64px;height:64px;border-radius:var(--radius);background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;">&#128218;</div>
@@ -54,7 +55,7 @@
                             <p style="opacity:0.9;font-size:14px;">@Model.TeacherName &middot; @Model.Description</p>
                         </div>
                         <div style="text-align:center;">
-                            <div style="font-size:32px;font-weight:700;">78%</div>
+                            <div style="font-size:32px;font-weight:700;">@Model.ProgressPrecentage%</div>
                             <div style="font-size:12px;opacity:0.8;">Complete</div>
                         </div>
                     </div>
@@ -66,7 +67,7 @@
                     <button class="tab" onclick="switchTab(this,'assessments')">Assessments</button>
                     <button class="tab" onclick="switchTab(this,'materials')">Materials</button>
                 </div>
-                <!-- Lessons Tab -->
+
                 <div id="lessons" class="tab-content">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Lessons</h3>
@@ -94,7 +95,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Quizzes Tab -->
+
                 <div id="quizzes" class="tab-content" style="display:none;">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Quizzes</h3>
@@ -106,14 +107,36 @@
                                 @foreach (var quiz in Model.Quizzes)
                                 {
                                     <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                                        @if (quiz.Status == "Completed")
+                                        {
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                                        }
+                                        else
+                                        {
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" /></svg>
+                                        }
                                         <div style="flex:1;">
                                             <div style="font-weight:600;">@quiz.Name</div>
                                             <div style="font-size:13px;color:var(--text-muted);">@quiz.QuestionCount questions &middot; Score: @quiz.score</div>
-
                                         </div>
-                                        <span class="badge badge-success">@quiz.Status</span>
-                                        <a asp-controller="Student" asp-action="Take_Quiz" class="btn btn-sm btn-primary">Take Quiz</a>
+
+                                        @if (quiz.Status == "Completed")
+                                        {
+                                            <span class="badge badge-success">Completed</span>
+                                        }
+                                        else if (quiz.Status == "In Progress")
+                                        {
+                                            <span class="badge badge-warning">In Progress</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-ghost">Not Started</span>
+                                        }
+
+                                        @if (quiz.Status != "Completed")
+                                        {
+                                            <a asp-controller="Student" asp-action="Take_Quiz" asp-route-id="@quiz.Id" class="btn btn-sm btn-primary">Take Quiz</a>
+                                        }
                                     </div>
                                 }
                             }
@@ -124,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Assessments Tab -->
+
                 <div id="assessments" class="tab-content" style="display:none;">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Assessments</h3>
@@ -136,13 +159,31 @@
                                 @foreach (var item in Model.Assessments)
                                 {
                                     <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                        <div style="width:20px;height:20px;border-radius:50%;border:2px solid var(--primary);display:flex;align-items:center;justify-content:center;"><div style="width:8px;height:8px;background:var(--primary);border-radius:50%;"></div></div>
+                                        <div style="width:20px;height:20px;border-radius:50%;border:2px solid @(item.Status == "Submitted" ? "#10B981" : "var(--primary)");display:flex;align-items:center;justify-content:center;">
+                                            <div style="width:8px;height:8px;background:@(item.Status == "Submitted" ? "#10B981" : "var(--primary)");border-radius:50%;"></div>
+                                        </div>
                                         <div style="flex:1;">
                                             <div style="font-weight:600;">@item.Name</div>
                                             <div style="font-size:13px;color:var(--text-muted);">Due: @item.DueDate &middot; Score: @item.score</div>
                                         </div>
-                                        <span class="badge badge-primary">@item.Status</span>
-                                        <a asp-controller="Student" asp-action="Submit_Assessment" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Open</a>
+
+                                        @if (item.Status == "Submitted")
+                                        {
+                                            <span class="badge badge-success">Submitted</span>
+                                        }
+                                        else if (item.Status == "Incomplete / Draft")
+                                        {
+                                            <span class="badge badge-warning">Draft</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-primary">Not Submitted</span>
+                                        }
+
+                                        @if (item.Status != "Submitted")
+                                        {
+                                            <a asp-controller="Student" asp-action="Submit_Assessment" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Open</a>
+                                        }
                                     </div>
                                 }
                             }
@@ -153,7 +194,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Materials Tab -->
+
                 <div id="materials" class="tab-content" style="display:none;">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Course Materials (By Lesson)</h3>
@@ -208,3 +249,4 @@
     </script>
     <script src="~/js/app.js"></script>
 </body>
+</html>
