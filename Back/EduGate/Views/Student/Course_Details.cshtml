@@ -84,12 +84,11 @@
                             @foreach (var lesson in Model.Lessons)
                             {
                                 <div class="lesson-row" onclick="playLesson(this)" data-video="@lesson.Video_Url" style="display:flex;align-items:center;gap:16px;padding:16px 0;cursor:pointer;border-bottom:1px solid var(--border-light);">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                                    <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">01</div>
                                     <div style="flex:1;">
                                         <div style="font-weight:600;">@lesson.Name</div>
                                         <div style="font-size:13px;color:var(--text-muted);">45 min &middot; Completed</div>
                                     </div>
-                                    <span class="badge badge-success">Done</span>
                                 </div>
                             }
                         </div>
