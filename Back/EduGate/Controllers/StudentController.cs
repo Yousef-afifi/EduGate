@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace EduGate.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
         private readonly IStuService _service;
         public StudentController(IStuService service)
@@ -19,21 +19,21 @@ namespace EduGate.Controllers
         }
         public async Task<IActionResult> Courses()
         {
-            int fakecurrentid = 3;
-            var data = await _service.GetStudentCoursesAsync(fakecurrentid);
+            var StudentId = UserId.Value;
+            var data = await _service.GetStudentCoursesAsync(StudentId);
             return View(data);
         }
         public async Task<IActionResult> Course_Details(int id)
         {
-            int fakecurrentid = 1;
-            var data = await _service.GetCourseDeatailsAsync(fakecurrentid);
+            int StudentId = UserId.Value;
+            var data = await _service.GetCourseDeatailsAsync(StudentId);
             return View(data);
         }
         public async Task<IActionResult> Exams()
         {
-            int studentId = 2; // مؤقتا
+            int StudentId = UserId.Value; 
 
-            var model = await _service.GetStudentExams(studentId);
+            var model = await _service.GetStudentExams(StudentId);
 
             return View(model);
         }

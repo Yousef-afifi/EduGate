@@ -25,7 +25,7 @@
         <main class="main-content">
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a id="backLink" href="courses.html" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <a id="backLink" asp-controller="Student" asp-action="Course_Details" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
                     <h1 class="topbar-title" id="pageTitle">Assessment</h1>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                         <textarea class="form-textarea" placeholder="Add notes for your teacher..."></textarea>
                     </div>
                     <div style="display:flex;justify-content:flex-end;gap:12px;">
-                        <a id="cancelLink" asp-controller="Student" asp-action="Courses" class="btn btn-outline">Cancel</a>
+                        <a id="cancelLink" asp-controller="Student" asp-action="Course_Details" class="btn btn-outline">Cancel</a>
                         <button class="btn btn-primary" onclick="submitAssessment()">Submit Assessment</button>
                     </div>
                 </div>
@@ -64,19 +64,9 @@
     </div>
     <script src="~/js/app.js"></script>
     <script>
-        const courses = { 1: 'Calculus II', 2: 'Physics 101', 3: 'Organic Chemistry', 4: 'Linear Algebra' };
-        const courseId = new URLSearchParams(location.search).get('course') || '1';
-        const courseName = courses[courseId] || courses[1];
-        document.title = `${courseName} Assessment - EduGate`;
-        document.getElementById('pageTitle').textContent = `${courseName} Assessment`;
-        document.getElementById('assessmentTitle').textContent = `${courseName} Course Project Draft`;
-        document.getElementById('assessmentMeta').textContent = 'Due Mar 22 - 100 points - File upload';
-        document.getElementById('backLink').href = `courses/${courseId}.html`;
-        document.getElementById('cancelLink').href = `courses/${courseId}.html`;
-
         function submitAssessment() {
         showToast('Assessment submitted successfully!', 'success');
-        setTimeout(() => window.location.href = `courses/${courseId}.html`, 900);
+                setTimeout(() => window.location.href = `/Student/Course_Details`, 900);
         }
     </script>
 </body>

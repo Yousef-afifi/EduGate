@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace EduGate.Controllers
 {
-    public class TeacherController : Controller
+    public class TeacherController : BaseController
     {
         private readonly AppDbContext _context;
         public TeacherController(AppDbContext context)

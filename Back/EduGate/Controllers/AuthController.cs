@@ -22,22 +22,18 @@ namespace EduGate.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            var User_Type = await _service.Login(model);
-            if(User_Type == "User")
-            {
-                return RedirectToAction("Dashboard", "Teacher");
-            }
+            var result = await _service.Login(model);
 
-            if(User_Type == "Stu")
+            if(result.Success)
             {
+                HttpContext.Session.SetInt32("UserId", result.Id);
+                HttpContext.Session.SetString("Role", result.Role);
+
+                if (result.Role == "Teacher")
+                    return RedirectToAction("Dashboard", "Teacher");
                 return RedirectToAction("Dashboard", "Student");
             }
-            
-            if(User_Type == "Error")
-            {
-                ModelState.AddModelError("", "Invalid username or password");
-            }
-            
+
             return View(model);
         }
         public IActionResult Register()
