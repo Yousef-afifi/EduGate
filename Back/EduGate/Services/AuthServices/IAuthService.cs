@@ -5,6 +5,6 @@ namespace EduGate.Services.AuthServices
 {
     public interface IAuthService
     {
-        Task<string?> Login(LoginVM model);
+        Task<LoginResultVM> Login(LoginVM model);
     }
 }

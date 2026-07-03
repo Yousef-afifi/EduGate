@@ -12,19 +12,32 @@ namespace EduGate.Services.AuthServices
         {
             _context = context;
         }
-        public async Task<string?> Login(LoginVM model)
+        public async Task<LoginResultVM> Login(LoginVM model)
         {
             var stu = await _context.Account.FirstOrDefaultAsync(s => s.User_Name == model.Email);
             if(stu != null && stu.Password_Hash == model.Password)
             {
-                return "Stu";
+                return new LoginResultVM
+                {
+                    Success = true,
+                    Id = stu.Student_Id,
+                    Role = "Student"
+                };
             }
             var user = await _context.Teacher.FirstOrDefaultAsync(t => t.Email == model.Email);
             if(user != null && user.Password_Hash == model.Password)
             {
-                return "User";
+                return new LoginResultVM
+                {
+                    Success = true,
+                    Id = user.Id,
+                    Role = "Teacher"
+                };
             }
-            return "Error";
+            return new LoginResultVM
+            {
+                Success = false
+            };
         }
     }
 }
