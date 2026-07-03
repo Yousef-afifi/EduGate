@@ -110,6 +110,7 @@ namespace EduGate.Services.StuServices
 
             var exams = enrollments
                 .SelectMany(e => e.course.Exams)
+                .Where(e => e.Type == ExamType.Exam)
                 .ToList();
 
             var completedExamIds = await _context.ExamAttempt
@@ -143,6 +144,7 @@ namespace EduGate.Services.StuServices
 
             var exams = enrollments
                 .SelectMany(e => e.course.Exams)
+                .Where(e => e.Type == ExamType.Exam)
                 .ToList();
 
             var attempts = await _context.ExamAttempt
