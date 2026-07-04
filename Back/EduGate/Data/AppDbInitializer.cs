@@ -23,7 +23,7 @@ namespace EduGate.Data
                             Last_Name = "Tawfik",
                             Gender =Enums.Gender.Male,
                             Email = "mohamedtawfik34@gmail.com",
-                            Password_Hash = "Hashed_pasword",
+                            Password = "pasword",
                             Phone = "01299783142",
                             CreatedAt = DateTime.Now,
                         },
@@ -33,7 +33,7 @@ namespace EduGate.Data
                             Last_Name = "Ismail",
                             Gender =Enums.Gender.Male,
                             Email = "A_Ismail400@gmail.com",
-                            Password_Hash = "Hashed_pasword",
+                            Password = "pasword",
                             Phone = "01542217836",
                             CreatedAt = DateTime.Now,
                         },
@@ -43,7 +43,7 @@ namespace EduGate.Data
                             Last_Name = "Mohamed",
                             Gender =Enums.Gender.Female,
                             Email = "Nawal778@gmail.com",
-                            Password_Hash = "Hashed_pasword",
+                            Password = "pasword",
                             Phone = "01123479120",
                             CreatedAt = DateTime.Now,
                         },
@@ -53,7 +53,7 @@ namespace EduGate.Data
                             Last_Name = "Gomaa",
                             Gender =Enums.Gender.Male,
                             Email = "EB_Gomaaaa12@gmail.com",
-                            Password_Hash = "Hashed_pasword",
+                            Password = "pasword",
                             Phone = "010089125631",
                             CreatedAt = DateTime.Now,
                         }
@@ -131,7 +131,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "ahmed_ali@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active, 
                             CreatedAt = DateTime.Now,
                             Student_Id = 1, 
@@ -140,7 +140,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "salma_ahmed@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 2,
@@ -149,7 +149,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "amir_mohamed@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 3, 
@@ -158,7 +158,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "mohamed_ibrahim@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 4,
@@ -167,7 +167,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "Abdallah_mohamed@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 5,
@@ -176,7 +176,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "menna_mahmoud@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 6,
@@ -185,7 +185,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "mohamed_fathi@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 7,
@@ -194,7 +194,7 @@ namespace EduGate.Data
                         new Account
                         {
                             User_Name = "yara_hamdy@stu.com",
-                            Password_Hash = "student_password_hash",
+                            Password = "password",
                             Status = AccountStatus.Active,
                             CreatedAt = DateTime.Now,
                             Student_Id = 8,

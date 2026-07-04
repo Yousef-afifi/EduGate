@@ -9,7 +9,7 @@ namespace EduGate.Models
         public string Last_Name { get; set; }
         public Gender Gender { get; set; }
         public string Email { get; set; }
-        public string Password_Hash { get; set; }
+        public string Password { get; set; }
         public string Phone { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<Account>? Accounts { get; set; }

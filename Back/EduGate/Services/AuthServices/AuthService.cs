@@ -18,7 +18,7 @@ namespace EduGate.Services.AuthServices
         public async Task<LoginResultVM> Login(LoginVM model)
         {
             var stu = await _context.Account.FirstOrDefaultAsync(s => s.User_Name == model.Email);
-            if(stu != null && stu.Password_Hash == model.Password)
+            if(stu != null && stu.Password == model.Password)
             {
                 return new LoginResultVM
                 {
@@ -28,7 +28,7 @@ namespace EduGate.Services.AuthServices
                 };
             }
             var user = await _context.Teacher.FirstOrDefaultAsync(t => t.Email == model.Email);
-            if(user != null && user.Password_Hash == model.Password)
+            if(user != null && user.Password == model.Password)
             {
                 return new LoginResultVM
                 {
@@ -61,7 +61,7 @@ namespace EduGate.Services.AuthServices
                 Last_Name = model.Last_Name,
                 Gender = model.Gender,
                 Email = model.Email,
-                Password_Hash = model.Password,
+                Password = model.Password,
                 Phone = model.Phone,
                 CreatedAt = DateTime.Now
             };
