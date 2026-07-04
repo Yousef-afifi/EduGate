@@ -1,6 +1,7 @@
 ﻿using EduGate.Data;
 using EduGate.Models;
 using EduGate.Services.StuServices;
+using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -37,9 +38,25 @@ namespace EduGate.Controllers
 
             return View(model);
         }
-        public IActionResult Take_Exam(int id)
+        public async Task<IActionResult> TakeExam(int id)
         {
-            return View();
+            int studentId = UserId.Value;
+
+            var model = await _service.StartExam(studentId, id);
+
+            if (model == null)
+                return RedirectToAction(nameof(Exams));
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SubmitExam(SubmitExamVM model)
+        {
+            int studentId = UserId.Value;
+
+            await _service.SubmitExam(studentId, model);
+
+            return RedirectToAction(nameof(Exams));
         }
         public IActionResult Take_Quiz(int id)
         {

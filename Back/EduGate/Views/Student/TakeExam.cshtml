@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model TakeExamVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Start Exam - EduGate</title>
@@ -39,66 +40,91 @@
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
                     <a asp-controller="Student" asp-action="Exams" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
-                    <h1 class="topbar-title" id="examTitle">Start Exam</h1>
+                    <h1 class="topbar-title" id="examTitle">@Model.ExamName</h1>
                 </div>
             </div>
 
             <div class="page-content">
-                <div class="card" style="margin-bottom:24px;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-                        <div>
-                            <h3 id="examName" style="font-size:20px;font-weight:700;margin-bottom:4px;">Exam</h3>
-                            <p id="examMeta" style="font-size:13px;color:var(--text-muted);">50 questions &middot; 120 minutes &middot; Passing: 60%</p>
+
+                <form asp-controller="Student"
+                      asp-action="SubmitExam"
+                      method="post">
+
+                    <input type="hidden" name="ExamId" value="@Model.ExamId" />
+
+                    <div class="card" style="margin-bottom:24px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+                            <div>
+                                <h3 id="examName" style="font-size:20px;font-weight:700;margin-bottom:4px;">
+                                    @Model.ExamName
+                                </h3>
+
+                                <p id="examMeta" style="font-size:13px;color:var(--text-muted);">
+                                    @Model.Questions.Count questions &middot;
+                                    @Model.Duration minutes &middot;
+                                    Passing: @Model.PassingPercentage%
+                                </p>
+                            </div>
+
+                            <span class="badge badge-warning">In Progress</span>
                         </div>
-                        <span class="badge badge-warning">In Progress</span>
                     </div>
-                </div>
 
-                <div id="examQuestions" style="display:flex;flex-direction:column;gap:16px;"></div>
+                    <div id="examQuestions" style="display:flex;flex-direction:column;gap:16px;">
 
-                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px;">
-                    <a asp-controller="Student" asp-action="Exams" class="btn btn-outline">Cancel</a>
-                    <button class="btn btn-primary" onclick="submitExam()">Submit Exam</button>
-                </div>
+                        @for (int i = 0; i < Model.Questions.Count; i++)
+                        {
+                            <div class="card">
+                                <div class="form-group">
+
+                                    <label class="form-label">
+                                        Question @(i + 1)
+                                    </label>
+
+                                    <p style="margin-bottom:12px;">
+                                        @Model.Questions[i].Text
+                                    </p>
+
+                                    <input type="hidden"
+                                           name="Answers[@i].QuestionId"
+                                           value="@Model.Questions[i].Id" />
+
+                                    @foreach (var choice in Model.Questions[i].Choices)
+                                    {
+                                        <label style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;">
+
+                                            <input type="radio"
+                                                   name="Answers[@i].SelectedChoiceId"
+                                                   value="@choice.Id"
+                                                   style="accent-color:var(--primary);" />
+
+                                            <span>@choice.Text</span>
+
+                                        </label>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px;">
+                        <a asp-controller="Student"
+                           asp-action="Exams"
+                           class="btn btn-outline">
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            Submit Exam
+                        </button>
+                    </div>
+
+                </form>
+
             </div>
         </main>
     </div>
-    <script src="~/js/app.js"></script>
-    <script>
-        const exams = {
-        1: { title: 'Calculus II - Midterm Examination', meta: '50 questions - 120 minutes - Passing: 60%' },
-        2: { title: 'Physics 101 - Final Exam', meta: '75 questions - 180 minutes - Passing: 60%' }
-        };
-        const examId = new URLSearchParams(location.search).get('exam') || '1';
-        const exam = exams[examId] || exams[1];
-        document.title = `${exam.title} - EduGate`;
-        document.getElementById('examTitle').textContent = exam.title;
-        document.getElementById('examName').textContent = exam.title;
-        document.getElementById('examMeta').textContent = exam.meta;
-
-        const questions = [
-        'Choose the best answer for question 1.',
-        'Choose the best answer for question 2.',
-        'Choose the best answer for question 3.'
-        ];
-        document.getElementById('examQuestions').innerHTML = questions.map((question, index) => `
-        <div class="card">
-        <div class="form-group">
-        <label class="form-label">Question ${index + 1}</label>
-        <p style="margin-bottom:12px;">${question}</p>
-        ${['Option A', 'Option B', 'Option C', 'Option D'].map((option, optionIndex) => `
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;">
-        <input type="radio" name="q${index}" value="${optionIndex}" style="accent-color:var(--primary);">
-        <span>${option}</span>
-        </label>
-        `).join('')}
-        </div>
-        </div>
-        `).join('');
-
-        function submitExam() {
-        showToast('Exam submitted successfully!', 'success');
-        setTimeout(() => window.location.href = 'exams.html', 900);
-        }
-    </script>
+    
 </body>

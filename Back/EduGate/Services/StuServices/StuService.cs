@@ -191,5 +191,106 @@ namespace EduGate.Services.StuServices
                 })
                 .ToList();
         }
+
+        public async Task<TakeExamVM?> StartExam(int studentId, int examId)
+        {
+            var exam = await _context.Exam
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(e => e.Id == examId);
+
+            if (exam == null)
+                return null;
+
+            if (exam.Type != ExamType.Exam)
+                return null;
+
+            var isEnrolled = await _context.Enrollment.AnyAsync(e =>
+                e.Student_Id == studentId &&
+                e.Course_Id == exam.Course_Id);
+
+            if (!isEnrolled)
+                return null;
+
+            var attempt = await _context.ExamAttempt
+                .FirstOrDefaultAsync(a =>
+                    a.Student_Id == studentId &&
+                    a.Exam_Id == examId);
+
+            if (attempt != null && attempt.IsCompleted)
+                return null;
+
+            if (attempt == null)
+            {
+                attempt = new ExamAttempt
+                {
+                    Student_Id = studentId,
+                    Exam_Id = examId,
+                    StartedAt = DateTime.Now,
+                    IsCompleted = false
+                };
+
+                _context.ExamAttempt.Add(attempt);
+                await _context.SaveChangesAsync();
+            }
+
+            return new TakeExamVM
+            {
+                ExamId = exam.Id,
+                ExamName = exam.Name,
+                Duration = exam.Duration ?? 0,
+                TotalMarks = exam.Total_Marks ?? 0,
+                PassingPercentage = exam.PassingPercentage,
+                Questions = exam.Questions.Select(q => new QuestionVM
+                {
+                    Id = q.Id,
+                    Text = q.Text,
+                    Mark = q.Mark,
+
+                    Choices = q.Choices.Select(c => new ChoiceVM
+                    {
+                        Id = c.Id,
+                        Text = c.Text
+                    }).ToList()
+
+                }).ToList()
+            };
+
+        }
+            public async Task SubmitExam(int studentId, SubmitExamVM model)
+            {
+                var attempt = await _context.ExamAttempt
+                    .FirstOrDefaultAsync(a =>
+                        a.Student_Id == studentId &&
+                        a.Exam_Id == model.ExamId &&
+                        !a.IsCompleted);
+
+                if (attempt == null)
+                    return;
+
+                int score = 0;
+
+                foreach (var answer in model.Answers)
+                {
+                    var choice = await _context.Choice
+                        .FirstOrDefaultAsync(c =>
+                            c.Id == answer.SelectedChoiceId);
+
+                    if (choice != null && choice.IsCorrect)
+                    {
+                        var question = await _context.Question
+                            .FirstOrDefaultAsync(q => q.Id == answer.QuestionId);
+
+                        if (question != null)
+                            score += question.Mark;
+                    }
+                }
+
+                attempt.Score = score;
+                attempt.IsCompleted = true;
+                attempt.SubmittedAt = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+            }
     }
 }
