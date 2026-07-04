@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model RegisterVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - EduGate</title>
@@ -18,39 +19,53 @@
             <p class="auth-subtitle">Start your 14-day free trial</p>
         </div>
 
-        <form id="registerForm" onsubmit="return handleRegister(event)">
+        <form id="registerForm" asp-controller="Auth" asp-action="Register" method="post">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div class="form-group">
-                    <label class="form-label">First Name</label>
-                    <input type="text" class="form-input" placeholder="John" required>
+                    <label asp-for="First_Name" class="form-label">First Name</label>
+                    <input asp-for="First_Name" type="text" class="form-input" placeholder="John" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" class="form-input" placeholder="Doe" required>
+                    <label asp-for="Last_Name" class="form-label">Last Name</label>
+                    <input asp-for="Last_Name" type="text" class="form-input" placeholder="Doe" required>
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-input" placeholder="you@example.com" required>
+                <label asp-for="Phone" class="form-label">Phone</label>
+                <input asp-for="Phone" type="tel" class="form-input" placeholder="01000000000" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-input" placeholder="Min 8 characters" required>
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-input" placeholder="you@example.com" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" class="form-input" placeholder="Repeat password" required>
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-input" placeholder="Min 8 characters" required>
+            </div>
+            <div class="form-group">
+                <label asp-for="PasswordConfirmation" class="form-label">Confirm Password</label>
+                <input asp-for="PasswordConfirmation" type="password" class="form-input" placeholder="Repeat password" required>
             </div>
             <div class="form-group" id="packageSelect">
-                <label class="form-label">Select Package</label>
-                <select class="form-select">
-                    <option value="starter">Starter - $29.99/month (200 students)</option>
-                    <option value="professional" selected>Professional - $79.99/month (600 students)</option>
-                    <option value="enterprise">Enterprise - $149.99/month (1000 students)</option>
+                <label asp-for="Package_Id" class="form-label">Select Package</label>
+                <select asp-for="Package_Id" asp-items="Model.Packages" class="form-select">
+                    <option value="">Select Package</option>
                 </select>
             </div>
-            <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-light);margin-bottom:20px;cursor:pointer;">
-                <input type="checkbox" required style="accent-color:var(--primary);margin-top:3px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label asp-for="Gender" class="form-label">
+                        <input asp-for="Gender" type="radio" name="Gender" value="Male" required /> Male
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" class="form-label">
+                        <input asp-for="Gender" type="radio" name="Gender" value="Female" required /> Female
+                    </label>
+                </div>
+            </div>
+            <label asp-for="AcceptTerms" style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-light);margin-bottom:20px;cursor:pointer;">
+                <input asp-for="AcceptTerms" type="checkbox" required style="accent-color:var(--primary);margin-top:3px;">
                 I agree to the <a href="#" style="color:var(--primary);">Terms of Service</a> and <a href="#" style="color:var(--primary);">Privacy Policy</a>
             </label>
             <button type="submit" class="btn btn-primary w-full" style="padding:12px;">Create Account</button>

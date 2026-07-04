@@ -3,6 +3,8 @@ using EduGate.Models;
 using EduGate.Services.AuthServices;
 using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace EduGate.Controllers
@@ -36,9 +38,34 @@ namespace EduGate.Controllers
 
             return View(model);
         }
-        public IActionResult Register()
+        [HttpGet]
+        public async Task<IActionResult> Register()
         {
-            return View();
+            var vm = new RegisterVM();
+
+            vm.Packages = await _service.GetPackagesAsync();
+
+            return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM model)
+        {
+            if(!ModelState.IsValid)
+            {
+                model.Packages = await _service.GetPackagesAsync();
+                return View(model);
+            }
+                
+            var result = await _service.Register(model);
+
+            if(!result.Success)
+            {
+                model.Packages = await _service.GetPackagesAsync();
+                ModelState.AddModelError("", result.Message);
+                return View(model);
+            }
+
+            return RedirectToAction("Login");
         }
     }
 }

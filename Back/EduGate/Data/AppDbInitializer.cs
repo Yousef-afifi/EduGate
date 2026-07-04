@@ -855,25 +855,25 @@ namespace EduGate.Data
                          {
                              Text = "What is View?",
                              Mark = 10,
-                             Exam_Id = 10
+                             Exam_Id = 11
                          },
                          new Question
                          {
                              Text = "Impelement any MVC project.",
                              Mark = 10,
-                             Exam_Id = 11
+                             Exam_Id = 12
                          },
                          new Question
                          {
                              Text = "What is View?",
                              Mark = 10,
-                             Exam_Id = 12
+                             Exam_Id = 13
                          },
                          new Question
                          {
                              Text = "What is Inner Join?",
                              Mark = 10,
-                             Exam_Id = 13
+                             Exam_Id = 14
                          },
                     });
                     context.SaveChanges();

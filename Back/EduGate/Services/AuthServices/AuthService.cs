@@ -1,6 +1,9 @@
 ﻿using EduGate.Data;
+using EduGate.Enums;
+using EduGate.Models;
 using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduGate.Services.AuthServices
@@ -38,6 +41,57 @@ namespace EduGate.Services.AuthServices
             {
                 Success = false
             };
+        }
+        public async Task<RegisterResultVM>Register(RegisterVM model) 
+        {
+            var exists = await _context.Teacher.AllAsync(x => x.Email == model.Email);
+
+            if(exists) 
+            {
+                return new RegisterResultVM
+                {
+                    Success = false,
+                    Message = "Email already exist"
+                };
+            }
+
+            var teacher = new Teacher
+            {
+                First_Name = model.First_Name,
+                Last_Name = model.Last_Name,
+                Gender = model.Gender,
+                Email = model.Email,
+                Password_Hash = model.Password,
+                Phone = model.Phone,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Teacher.Add(teacher);
+            await _context.SaveChangesAsync();
+
+            var subscription = new Subscription
+            {
+                Start_Date = DateOnly.FromDateTime(DateTime.Now),
+                End_Date = DateOnly.FromDateTime(DateTime.Now.AddMonths(3)),
+                Status = SubscriptionStatus.Active,
+                Package_Id = model.Package_Id,
+                Teacher_Id = teacher.Id
+            };
+            
+            _context.Subscription.Add(subscription);
+            await _context.SaveChangesAsync();
+
+            return new RegisterResultVM { Success = true };
+        }
+        public async Task<IEnumerable<SelectListItem>> GetPackagesAsync()
+        {
+            return await _context.Package
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.Name
+                })
+                .ToListAsync();
         }
     }
 }
