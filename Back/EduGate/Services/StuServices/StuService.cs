@@ -17,7 +17,7 @@ namespace EduGate.Services.StuServices
         {
             var data = await _context.Enrollment
                 .Where(s => s.Student_Id == id)
-                .Select(s => s.course) 
+                .Select(s => s.course)
                 .Select(c => new CourseVM
                 {
                     Id = c.Id,
@@ -31,18 +31,19 @@ namespace EduGate.Services.StuServices
 
             return data;
         }
-        public async Task<CourseDetailsVM> GetCourseDeatailsAsync(int id)
+        public async Task<CourseDetailsVM> GetCourseDeatailsAsync(int studentId, int courseId)
         {
-            
+
             var studentAttempts = await _context.ExamAttempt
-                .Where(a => a.Student_Id == id)
+                .Where(a => a.Student_Id == studentId)
                 .ToListAsync();
+
 
             var enrollment = await _context.Enrollment
                 .Include(s => s.course).ThenInclude(c => c.teacher)
                 .Include(s => s.course).ThenInclude(c => c.Lessons).ThenInclude(l => l.Materials)
                 .Include(s => s.course).ThenInclude(c => c.Exams).ThenInclude(e => e.Questions)
-                .FirstOrDefaultAsync(s => s.Student_Id == id);
+                .FirstOrDefaultAsync(s => s.Student_Id == studentId && s.Course_Id == courseId);
 
             if (enrollment == null || enrollment.course == null)
                 return null;
@@ -73,8 +74,8 @@ namespace EduGate.Services.StuServices
                 }).ToList() ?? new List<LessonVM>(),
 
                 Quizzes = course.Exams?.Where(e => e.Type == Enums.ExamType.Quiz)
-                .Select(q => {
-                    
+                .Select(q =>
+                {
                     var attempt = studentAttempts.FirstOrDefault(a => a.Exam_Id == q.Id);
 
                     string status = "Not Started";
@@ -93,10 +94,11 @@ namespace EduGate.Services.StuServices
                     };
                 }).ToList() ?? new List<QuizVM>(),
 
-                Assessments = course.Exams?.Where(e => e.Type == Enums.ExamType.Assignment )
-                .Select(a => {
-                    
-                    var attempt = studentAttempts.FirstOrDefault(a => a.Exam_Id == a.Id);
+                Assessments = course.Exams?.Where(e => e.Type == Enums.ExamType.Assignment)
+                .Select(a =>
+                {
+
+                    var attempt = studentAttempts.FirstOrDefault(at => at.Exam_Id == a.Id);
 
                     string status = "Not Submitted";
                     if (attempt != null)
@@ -114,6 +116,112 @@ namespace EduGate.Services.StuServices
                     };
                 }).ToList() ?? new List<AssessmentVM>(),
             };
+        }
+
+        public async Task<TakeExamVM?> TakeQuiz(int studentId, int QuizId)
+        {
+            var quiz = await _context.Exam
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(e => e.Id == QuizId);
+
+            if (quiz == null)
+                return null;
+
+            if (quiz.Type != ExamType.Quiz)
+                return null;
+
+            var isEnrolled = await _context.Enrollment.AnyAsync(e =>
+                e.Student_Id == studentId &&
+                e.Course_Id == quiz.Course_Id);
+
+            if (!isEnrolled)
+                return null;
+
+            var attempt = await _context.ExamAttempt
+                .FirstOrDefaultAsync(a =>
+                    a.Student_Id == studentId &&
+                    a.Exam_Id == QuizId);
+
+            if (attempt != null && attempt.IsCompleted)
+                return null;
+
+            if (attempt == null)
+            {
+                attempt = new ExamAttempt
+                {
+                    Student_Id = studentId,
+                    Exam_Id = QuizId,
+                    StartedAt = DateTime.Now,
+                    IsCompleted = false
+                };
+
+                _context.ExamAttempt.Add(attempt);
+                await _context.SaveChangesAsync();
+            }
+
+            return new TakeExamVM
+            {
+                ExamId = quiz.Id,
+                ExamName = quiz.Name,
+                Duration = quiz.Duration ?? 0,
+                TotalMarks = quiz.Total_Marks ?? 0,
+                PassingPercentage = quiz.PassingPercentage,
+                Questions = quiz.Questions.Select(q => new QuestionVM
+                {
+                    Id = q.Id,
+                    Text = q.Text,
+                    Mark = q.Mark,
+
+                    Choices = q.Choices.Select(c => new ChoiceVM
+                    {
+                        Id = c.Id,
+                        Text = c.Text
+                    }).ToList()
+
+                }).ToList()
+            };
+
+        }
+
+        public async Task<int> SubmitQuiz(int studentId, SubmitExamVM model)
+        {
+            var attempt = await _context.ExamAttempt
+                .FirstOrDefaultAsync(a =>
+                    a.Student_Id == studentId &&
+                    a.Exam_Id == model.ExamId &&
+                    !a.IsCompleted);
+
+            if (attempt == null)
+                return 0;
+
+            int score = 0;
+
+            foreach (var answer in model.Answers)
+            {
+                var choice = await _context.Choice
+                    .FirstOrDefaultAsync(c =>
+                        c.Id == answer.SelectedChoiceId);
+
+                if (choice != null && choice.IsCorrect)
+                {
+                    var question = await _context.Question
+                        .FirstOrDefaultAsync(q => q.Id == answer.QuestionId);
+
+                    if (question != null)
+                        score += question.Mark;
+                }
+            }
+
+            attempt.Score = score;
+            attempt.IsCompleted = true;
+            attempt.SubmittedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            var exam = await _context.Exam.FirstOrDefaultAsync(e => e.Id == model.ExamId);
+
+            return exam?.Course_Id ?? 0;
         }
         //---------------------------------------------------------------------------
         public async Task<StudentExamsVM> GetStudentExams(int studentId)
@@ -257,40 +365,42 @@ namespace EduGate.Services.StuServices
             };
 
         }
-            public async Task SubmitExam(int studentId, SubmitExamVM model)
+        public async Task SubmitExam(int studentId, SubmitExamVM model)
+        {
+            var attempt = await _context.ExamAttempt
+                .FirstOrDefaultAsync(a =>
+                    a.Student_Id == studentId &&
+                    a.Exam_Id == model.ExamId &&
+                    !a.IsCompleted);
+
+            if (attempt == null)
+                return;
+
+            int score = 0;
+
+            foreach (var answer in model.Answers)
             {
-                var attempt = await _context.ExamAttempt
-                    .FirstOrDefaultAsync(a =>
-                        a.Student_Id == studentId &&
-                        a.Exam_Id == model.ExamId &&
-                        !a.IsCompleted);
+                var choice = await _context.Choice
+                    .FirstOrDefaultAsync(c =>
+                        c.Id == answer.SelectedChoiceId);
 
-                if (attempt == null)
-                    return;
-
-                int score = 0;
-
-                foreach (var answer in model.Answers)
+                if (choice != null && choice.IsCorrect)
                 {
-                    var choice = await _context.Choice
-                        .FirstOrDefaultAsync(c =>
-                            c.Id == answer.SelectedChoiceId);
+                    var question = await _context.Question
+                        .FirstOrDefaultAsync(q => q.Id == answer.QuestionId);
 
-                    if (choice != null && choice.IsCorrect)
-                    {
-                        var question = await _context.Question
-                            .FirstOrDefaultAsync(q => q.Id == answer.QuestionId);
-
-                        if (question != null)
-                            score += question.Mark;
-                    }
+                    if (question != null)
+                        score += question.Mark;
                 }
-
-                attempt.Score = score;
-                attempt.IsCompleted = true;
-                attempt.SubmittedAt = DateTime.Now;
-
-                await _context.SaveChangesAsync();
             }
+
+            attempt.Score = score;
+            attempt.IsCompleted = true;
+            attempt.SubmittedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+        }
+
+       
     }
 }

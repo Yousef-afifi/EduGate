@@ -25,7 +25,12 @@
         <main class="main-content">
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a id="backLink" asp-controller="Student" asp-action="Course_Details" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <a id="backLink" href="javascript:void(0);" onclick="history.back();" class="icon-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
+                    </a>
                     <h1 class="topbar-title" id="pageTitle">Assessment</h1>
                 </div>
             </div>
@@ -55,7 +60,7 @@
                         <textarea class="form-textarea" placeholder="Add notes for your teacher..."></textarea>
                     </div>
                     <div style="display:flex;justify-content:flex-end;gap:12px;">
-                        <a id="cancelLink" asp-controller="Student" asp-action="Course_Details" class="btn btn-outline">Cancel</a>
+                        <a id="cancelLink" href="javascript:void(0);" onclick="history.back();" class="btn btn-outline">Cancel</a>
                         <button class="btn btn-primary" onclick="submitAssessment()">Submit Assessment</button>
                     </div>
                 </div>
@@ -66,7 +71,11 @@
     <script>
         function submitAssessment() {
         showToast('Assessment submitted successfully!', 'success');
-                setTimeout(() => window.location.href = `/Student/Course_Details`, 900);
+
+       
+        setTimeout(() => {
+        history.go(-1);
+        }, 900);
         }
     </script>
 </body>

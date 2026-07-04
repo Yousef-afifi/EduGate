@@ -24,10 +24,14 @@ namespace EduGate.Controllers
             var data = await _service.GetStudentCoursesAsync(StudentId);
             return View(data);
         }
-        public async Task<IActionResult> Course_Details(int id)
+        public async Task<IActionResult> Course_Details(int id) 
         {
-            int StudentId = UserId.Value;
-            var data = await _service.GetCourseDeatailsAsync(StudentId);
+            int studentId = UserId.Value;
+            var data = await _service.GetCourseDeatailsAsync(studentId, id);
+            if (data == null)
+            {
+                return NotFound(); 
+            }
             return View(data);
         }
         public async Task<IActionResult> Exams()
@@ -58,9 +62,25 @@ namespace EduGate.Controllers
 
             return RedirectToAction(nameof(Exams));
         }
-        public IActionResult Take_Quiz(int id)
+        public async Task<IActionResult> Take_Quiz(int id)
         {
-            return View();
+            int studentId = UserId.Value;
+
+            var model = await _service.TakeQuiz(studentId, id);
+
+            if (model == null)
+                return RedirectToAction(nameof(Course_Details));
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SubmitQuiz(SubmitExamVM model)
+        {
+            int studentId = UserId.Value;
+
+            var courseid = await _service.SubmitQuiz(studentId, model);
+
+            return RedirectToAction(nameof(Course_Details), new { id = courseid });
         }
         public IActionResult Submit_Assessment(int id)
         {
