@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace EduGate.ViewModels
+namespace EduGate.ViewModels.Auth
 {
     public class RegisterVM
     {

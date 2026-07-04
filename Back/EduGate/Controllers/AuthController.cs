@@ -1,7 +1,7 @@
 ﻿using EduGate.Data;
 using EduGate.Models;
 using EduGate.Services.AuthServices;
-using EduGate.ViewModels;
+using EduGate.ViewModels.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

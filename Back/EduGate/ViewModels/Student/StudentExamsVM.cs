@@ -1,4 +1,4 @@
-﻿namespace EduGate.ViewModels
+﻿namespace EduGate.ViewModels.Student
 {
     public class StudentExamsVM
     {

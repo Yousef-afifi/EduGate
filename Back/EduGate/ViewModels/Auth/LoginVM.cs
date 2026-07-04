@@ -1,4 +1,4 @@
-﻿namespace EduGate.ViewModels
+﻿namespace EduGate.ViewModels.Auth
 {
     public class LoginVM
     {

@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.CourseDetailsVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculus II - EduGate</title>
@@ -40,7 +41,7 @@
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
                     <a asp-controller="Teacher" asp-action="Courses" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
-                    <h1 class="topbar-title">Calculus II</h1>
+                    <h1 class="topbar-title">@Model.Name</h1>
                 </div>
                 <div class="topbar-actions">
                     <button class="icon-btn" onclick="showToast('No new notifications', 'info')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--primary);border-radius:50%;"></span></button>
@@ -53,13 +54,11 @@
                     <div style="display:flex;align-items:center;gap:20px;">
                         <div style="width:64px;height:64px;border-radius:var(--radius);background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;">&#128218;</div>
                         <div style="flex:1;">
-                            <h2 style="font-size:24px;font-weight:700;margin-bottom:4px;">Calculus II</h2>
-                            <p style="opacity:0.9;font-size:14px;">Advanced integration techniques, sequences and series, power series, and applications.</p>
+                            <h2 style="font-size:24px;font-weight:700;margin-bottom:4px;">@Model.Name</h2>
+                            <p style="opacity:0.9;font-size:14px;">@Model.Description</p>
                         </div>
                         <div style="display:flex;gap:16px;text-align:center;">
-                            <div><div style="font-size:24px;font-weight:700;">84</div><div style="font-size:12px;opacity:0.8;">Students</div></div>
-                            <div><div style="font-size:24px;font-weight:700;">12</div><div style="font-size:12px;opacity:0.8;">Lessons</div></div>
-                            <div><div style="font-size:24px;font-weight:700;">4</div><div style="font-size:12px;opacity:0.8;">Quizzes</div></div>
+                            <div><div style="font-size:24px;font-weight:700;">@Model.LessonCount</div><div style="font-size:12px;opacity:0.8;">Lessons</div></div>
                         </div>
                     </div>
                 </div>
@@ -69,7 +68,7 @@
                     <button class="tab active" onclick="switchTab(this,'lessons')">Lessons</button>
                     <button class="tab" onclick="switchTab(this,'quizzes')">Quizzes</button>
                     <button class="tab" onclick="switchTab(this,'assessments')">Assessments</button>
-                    <button class="tab" onclick="switchTab(this,'students')">Students</button>
+                    <button class="tab" onclick="switchTab(this,'materials')">Materials</button>
                 </div>
 
                 <!-- Lessons Tab -->
@@ -79,38 +78,24 @@
                         <a asp-controller="Teacher" asp-action="Add_Lesson" class="btn btn-primary btn-sm">+ Add Lesson</a>
                     </div>
                     <div class="card">
-                        <div style="display:flex;flex-direction:column;gap:0;">
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">01</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Integration by Parts</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 45 min &middot; 2,341 views</div></div>
-                                <span class="badge badge-success">Published</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">02</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Trigonometric Integrals</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 52 min &middot; 1,892 views</div></div>
-                                <span class="badge badge-success">Published</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">03</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Trigonometric Substitution</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 48 min &middot; 1,567 views</div></div>
-                                <span class="badge badge-success">Published</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">04</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Partial Fractions</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 38 min &middot; 1,234 views</div></div>
-                                <span class="badge badge-success">Published</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">05</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Improper Integrals</div><div style="font-size:13px;color:var(--text-muted);">Video &middot; 41 min &middot; 1,098 views</div></div>
-                                <span class="badge badge-success">Published</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;">
-                                <div style="width:36px;height:36px;border-radius:50%;background:var(--border);color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">06</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Sequences and Series</div><div style="font-size:13px;color:var(--text-muted);">Draft &middot; Not published</div></div>
-                                <span class="badge badge-warning">Draft</span>
-                            </div>
-                        </div>
+                        @if(Model.Lessons != null)
+                        {
+                            var LCNT = 0;
+                            @foreach(var lesson in Model.Lessons)
+                            {
+                                LCNT += 1;
+                                <div style="display:flex;flex-direction:column;gap:0;">
+                                    <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                                        <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">@LCNT</div>
+                                        <div style="flex:1;"><div style="font-weight:600;">@lesson.Name</div></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="padding: 16px; color: var(--text-muted);">No lessons yet.</p>
+                        }
                     </div>
                 </div>
 
@@ -121,23 +106,24 @@
                         <a asp-controller="Teacher" asp-action="Add_Quiz" class="btn btn-primary btn-sm">+ Add Quiz</a>
                     </div>
                     <div class="card">
-                        <div style="display:flex;flex-direction:column;gap:0;">
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q1</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Integration Techniques Quiz</div><div style="font-size:13px;color:var(--text-muted);">10 questions &middot; 78 submissions</div></div>
-                                <span class="badge badge-success">Active</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q2</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Trig Integrals Assessment</div><div style="font-size:13px;color:var(--text-muted);">8 questions &middot; 65 submissions</div></div>
-                                <span class="badge badge-success">Active</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;">
-                                <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q3</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Partial Fractions Practice</div><div style="font-size:13px;color:var(--text-muted);">12 questions &middot; 42 submissions</div></div>
-                                <span class="badge badge-success">Active</span>
-                            </div>
-                        </div>
+                        @if(Model.Quizzes != null)
+                        {
+                            var QCNT = 0;
+                            @foreach(var quiz in Model.Quizzes)
+                            {
+                                QCNT += 1;
+                                <div style="display:flex;flex-direction:column;gap:0;">
+                                    <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                                        <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q @QCNT</div>
+                                        <div style="flex:1;"><div style="font-weight:600;">@quiz.Name</div><div style="font-size:13px;color:var(--text-muted);">@quiz.QustionConut questions</div></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="padding: 16px; color: var(--text-muted);">No quizzes yet.</p>
+                        }
                     </div>
                 </div>
 
@@ -149,36 +135,56 @@
                     </div>
                     <div class="card">
                         <div style="display:flex;flex-direction:column;gap:0;">
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
-                                <div style="width:36px;height:36px;border-radius:50%;background:#FEF3C7;color:#D97706;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A1</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Midterm Problem Set</div><div style="font-size:13px;color:var(--text-muted);">5 problems &middot; Due Mar 15 &middot; 56 submissions</div></div>
-                                <span class="badge badge-warning">Ongoing</span>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:16px;padding:16px 0;">
-                                <div style="width:36px;height:36px;border-radius:50%;background:#FEF3C7;color:#D97706;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A2</div>
-                                <div style="flex:1;"><div style="font-weight:600;">Series Convergence Project</div><div style="font-size:13px;color:var(--text-muted);">3 tasks &middot; Due Apr 1 &middot; 12 submissions</div></div>
-                                <span class="badge badge-info">Upcoming</span>
-                            </div>
+                            @if(Model.Assessments != null)
+                            {
+                                 var ACNT = 0;
+                                 @foreach(var assessment in Model.Assessments)
+                                 {
+                                     ACNT += 1;
+                                    <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                                        <div style="width:36px;height:36px;border-radius:50%;background:#FEF3C7;color:#D97706;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A @ACNT</div>
+                                        <div style="flex:1;"><div style="font-weight:600;">@assessment.Name</div><div style="font-size:13px;color:var(--text-muted);">Due @assessment.DueDate</div></div>
+                                    </div>
+                                 }
+                            }
+                            else
+                            {
+                                <p style="padding: 16px; color: var(--text-muted);">No assessments yet.</p>
+                            }
                         </div>
                     </div>
                 </div>
 
-                <!-- Students Tab -->
-                <div id="students" class="tab-content" style="display:none;">
-                    <div class="page-header">
-                        <h3 style="font-size:18px;font-weight:600;">Enrolled Students</h3>
-                        <a asp-controller="Teacher" asp-action="Generate_Students" class="btn btn-primary btn-sm">+ Add Students</a>
-                    </div>
+                <!-- Material Tab -->
+                <div id="materials" class="tab-content" style="display:none;">
                     <div class="card">
-                        <div class="table-wrap">
-                            <table class="data-table">
-                                <thead><tr><th>Student</th><th>Progress</th><th>Quiz Avg</th><th>Status</th></tr></thead>
-                                <tbody>
-                                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:28px;height:28px;font-size:11px;">SJ</div>Sarah Johnson</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:92%"></div></div><span style="font-size:12px;">92%</span></div></td><td>87%</td><td><span class="badge badge-success">Active</span></td></tr>
-                                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:28px;height:28px;font-size:11px;">EW</div>Emma Wilson</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:88%"></div></div><span style="font-size:12px;">88%</span></div></td><td>91%</td><td><span class="badge badge-success">Active</span></td></tr>
-                                    <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:28px;height:28px;font-size:11px;">NM</div>Noah Martinez</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill orange" style="width:65%"></div></div><span style="font-size:12px;">65%</span></div></td><td>72%</td><td><span class="badge badge-warning">At Risk</span></td></tr>
-                                </tbody>
-                            </table>
+                        <div style="display:flex;flex-direction:column;gap:0;">
+                                @if(Model.Lessons != null)
+                                {
+                                    var MCNT = 0;
+                                    @foreach(var lesson in Model.Lessons)
+                                    {
+                                        if(lesson.Materials != null)
+                                        {
+                                            @foreach(var material in lesson.Materials)
+                                            {
+                                                <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+                                                    <div style="flex:1;"><div style="font-weight:600;">@material.Name</div><div style="font-size:13px;color:var(--text-muted);">@material.File_Size MB</div></div>
+                                                    <button href="@material.Url" class="btn btn-sm btn-ghost">Download</button>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p style="padding: 16px; color: var(--text-muted);">No material files uploaded yet for any lesson.</p>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <p style="padding: 16px; color: var(--text-muted);">No material files uploaded yet for any lesson.</p>
+                                }
                         </div>
                     </div>
                 </div>

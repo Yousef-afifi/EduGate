@@ -1,5 +1,5 @@
 ﻿using EduGate.Models;
-using EduGate.ViewModels;
+using EduGate.ViewModels.Student;
 
 namespace EduGate.Services.StuServices
 {

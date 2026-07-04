@@ -1,7 +1,7 @@
 ﻿using EduGate.Data;
 using EduGate.Models;
 using EduGate.Services.StuServices;
-using EduGate.ViewModels;
+using EduGate.ViewModels.Student;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

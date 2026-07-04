@@ -1,7 +1,7 @@
 ﻿using EduGate.Data;
 using EduGate.Enums;
 using EduGate.Models;
-using EduGate.ViewModels;
+using EduGate.ViewModels.Student;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduGate.Services.StuServices

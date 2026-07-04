@@ -1,6 +1,6 @@
 ﻿using EduGate.Enums;
 
-namespace EduGate.ViewModels
+namespace EduGate.ViewModels.Student
 {
     public class CourseVM
     {
