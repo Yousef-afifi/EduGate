@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/EduGate.styles.css" asp-append-version="true" />
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navbar = document.querySelector(".landing-nav");
+
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+    });
+</script>
 <body>
 
     @RenderBody()

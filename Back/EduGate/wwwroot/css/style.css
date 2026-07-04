@@ -296,15 +296,42 @@ button {
 }
 
 /* ===== Landing Page ===== */
+
 .landing-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: rgba(245, 240, 235, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.landing-nav.scrolled {
+    background: #1E1E2E;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+
+.landing-nav.scrolled .nav-links a {
+    color: #fff;
+}
+
+    .landing-nav.scrolled .logo {
+        color: var(--primary);
+    }
+
+/*.landing-nav .nav-links a {
+    color: white;
+}*/
+.nav-links a:hover {
+    color: var(--primary);
+}
+.landing-nav.scrolled .logo {
+    color: #E84C4C;
 }
 
 .landing-nav .container {
@@ -421,7 +448,7 @@ button {
   font-size: 36px;
   font-weight: 700;
   color: var(--dark);
-  margin-bottom: 8px;
+  margin-bottom: 28px;
   text-align: center;
 }
 
