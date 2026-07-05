@@ -5,7 +5,10 @@ namespace EduGate.Services.StuServices
 {
     public interface IStuService
     {
-        Task<List<CourseVM>> GetStudentCoursesAsync(int id);
+        Task<DashboardVM> GetStudentOverview(int studentId);
+        Task<List<CoursesVM>> GetAllCoursesEnrolled(int studentId);
+        Task<List<RecentGradesVM>> GetQuiz_AssesmentGrades(int studentId);
+        Task<coursepageVM> GetStudentCoursesAsync(int id);
         Task<CourseDetailsVM> GetCourseDeatailsAsync(int studentId, int courseId);
         Task<TakeExamVM?> TakeQuiz(int studentId, int QuizId);
         Task <int> SubmitQuiz(int studentId, SubmitExamVM model);

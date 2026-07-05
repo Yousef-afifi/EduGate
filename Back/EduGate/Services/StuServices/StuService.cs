@@ -13,7 +13,57 @@ namespace EduGate.Services.StuServices
         {
             _context = context;
         }
-        public async Task<List<CourseVM>> GetStudentCoursesAsync(int id)
+        //-----------------Dashboard---------------------
+
+
+        public async Task<DashboardVM> GetStudentOverview(int studentId)
+        {
+            return new DashboardVM {
+                EnrolledCourses = await GetAllCoursesEnrolled(studentId),
+                RecentGrades = await GetQuiz_AssesmentGrades(studentId),
+            };
+            
+        }
+
+        public async Task<List<CoursesVM>> GetAllCoursesEnrolled(int studentId)
+        {
+            var courses = await _context.Enrollment
+                .Where(s => s.Student_Id == studentId)
+                .Select(s => s.course)
+                .Select(c => new CoursesVM
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                })
+                .ToListAsync();
+
+            return courses;
+        }
+
+        public async Task<List<RecentGradesVM>> GetQuiz_AssesmentGrades(int studentId)
+        {
+
+            var studentAttempts = await _context.ExamAttempt
+            .Include(a => a.exam)
+            .ThenInclude(e => e.course)
+            .Where(a => a.Student_Id == studentId)
+            .OrderByDescending(a => a.SubmittedAt)
+            .ToListAsync();
+
+            var recentGrades = studentAttempts.Select(a => new RecentGradesVM
+            {
+                Id = a.Id,
+                AssessmentName = a.exam?.Name, 
+                CourseName = a.exam?.course?.Name,
+                StudentGrade=a.Score,
+                TotalMark = a.exam != null ? a.exam.Total_Marks : 0,
+
+            }).ToList();
+
+            return recentGrades;
+        }
+        //-----------------Courses-----------------------
+        public async Task<coursepageVM> GetStudentCoursesAsync(int id)
         {
             var data = await _context.Enrollment
                 .Where(s => s.Student_Id == id)
@@ -29,7 +79,21 @@ namespace EduGate.Services.StuServices
                 })
                 .ToListAsync();
 
-            return data;
+            var Student = await _context.Student
+               .Where(s => s.Id == id)
+               .FirstOrDefaultAsync();
+
+
+            var result = new coursepageVM
+            {
+                initials = Student != null? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper(): "??",
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
+                courses = data,
+                
+            };
+
+
+            return result;
         }
         public async Task<CourseDetailsVM> GetCourseDeatailsAsync(int studentId, int courseId)
         {
@@ -37,6 +101,11 @@ namespace EduGate.Services.StuServices
             var studentAttempts = await _context.ExamAttempt
                 .Where(a => a.Student_Id == studentId)
                 .ToListAsync();
+
+
+            var Student = await _context.Student
+               .Where(s => s.Id == studentId)
+               .FirstOrDefaultAsync();
 
 
             var enrollment = await _context.Enrollment
@@ -56,7 +125,8 @@ namespace EduGate.Services.StuServices
                 Name = course.Name,
                 Description = course.Description,
                 TeacherName = course.teacher != null ? course.teacher.First_Name : "No Teacher",
-                ProgressPrecentage = 78,
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
 
                 Lessons = course.Lessons?.Select(l => new LessonVM
                 {
@@ -66,9 +136,8 @@ namespace EduGate.Services.StuServices
                     Materials = l.Materials?.Select(m => new LessonMaterialVM
                     {
                         Id = m.Id,
-                        FileName = m.File_Path,
-                        FileSize = "1.2 MB",
-                        UploadedDate = "Jan 10",
+                        FileName = m.Title,
+                        FileSize = m.File_Size,
                         DownloadUrl = m.File_Path
                     }).ToList() ?? new List<LessonMaterialVM>(),
                 }).ToList() ?? new List<LessonVM>(),
@@ -125,6 +194,12 @@ namespace EduGate.Services.StuServices
                     .ThenInclude(q => q.Choices)
                 .FirstOrDefaultAsync(e => e.Id == QuizId);
 
+
+            var Student = await _context.Student
+               .Where(s => s.Id == studentId)
+               .FirstOrDefaultAsync();
+
+
             if (quiz == null)
                 return null;
 
@@ -162,6 +237,8 @@ namespace EduGate.Services.StuServices
 
             return new TakeExamVM
             {
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
                 ExamId = quiz.Id,
                 ExamName = quiz.Name,
                 Duration = quiz.Duration ?? 0,
@@ -226,8 +303,14 @@ namespace EduGate.Services.StuServices
         //---------------------------------------------------------------------------
         public async Task<StudentExamsVM> GetStudentExams(int studentId)
         {
+            var Student = await _context.Student
+               .Where(s => s.Id == studentId)
+               .FirstOrDefaultAsync();
+
             return new StudentExamsVM
             {
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
                 UpcomingExams = await GetUpcomingExams(studentId),
                 CompletedExams = await GetCompletedExams(studentId)
             };
@@ -307,6 +390,11 @@ namespace EduGate.Services.StuServices
                     .ThenInclude(q => q.Choices)
                 .FirstOrDefaultAsync(e => e.Id == examId);
 
+            var Student = await _context.Student
+                .Where(s => s.Id == studentId)
+                .FirstOrDefaultAsync();
+
+
             if (exam == null)
                 return null;
 
@@ -344,6 +432,8 @@ namespace EduGate.Services.StuServices
 
             return new TakeExamVM
             {
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
                 ExamId = exam.Id,
                 ExamName = exam.Name,
                 Duration = exam.Duration ?? 0,

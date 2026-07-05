@@ -17,8 +17,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar" style="background:#3B82F6;">SJ</div>
-                <div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div>
+                <div class="user-avatar" style="background:#3B82F6;">@Model.initials</div>
+                <div class="user-info"><div class="user-name">@Model.StudentName</div><div class="user-role">Student</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -54,10 +54,7 @@
                             <h2 style="font-size:24px;font-weight:700;margin-bottom:4px;">@Model.Name</h2>
                             <p style="opacity:0.9;font-size:14px;">@Model.TeacherName &middot; @Model.Description</p>
                         </div>
-                        <div style="text-align:center;">
-                            <div style="font-size:32px;font-weight:700;">@Model.ProgressPrecentage%</div>
-                            <div style="font-size:12px;opacity:0.8;">Complete</div>
-                        </div>
+                       
                     </div>
                 </div>
 
@@ -216,7 +213,7 @@
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
                                             <div style="flex:1;">
                                                 <div style="font-weight:600;">@material.FileName</div>
-                                                <div style="font-size:13px;color:var(--text-muted);">Lesson: @lesson.Name &middot; Size: @material.FileSize &middot; Uploaded: @material.UploadedDate</div>
+                                                <div style="font-size:13px;color:var(--text-muted);">Lesson: @lesson.Name &middot; Size: @material.FileSize &middot;</div>
                                             </div>
                                             <a href="@material.DownloadUrl" class="btn btn-sm btn-ghost" download>Download</a>
                                         </div>

@@ -80,20 +80,20 @@
                             <div class="card-header"><h3 class="card-title">My Courses</h3><a asp-controller="Student" asp-action="Courses" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a></div>
                             <div style="display:flex;flex-direction:column;gap:16px;">
                                 <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Calculus II</span><span style="font-size:13px;color:var(--text-muted);">78%</span></div>
-                                    <div class="progress-bar"><div class="progress-fill" style="width:78%;background:var(--primary);"></div></div>
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Calculus II</span></div>
                                 </div>
                                 <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Physics 101</span><span style="font-size:13px;color:var(--text-muted);">65%</span></div>
-                                    <div class="progress-bar"><div class="progress-fill" style="width:65%;background:#3B82F6;"></div></div>
+                                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Physics 101</span></div>
+
+                                    
                                 </div>
                                 <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Organic Chemistry</span><span style="font-size:13px;color:var(--text-muted);">92%</span></div>
-                                    <div class="progress-bar"><div class="progress-fill" style="width:92%;background:#10B981;"></div></div>
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Organic Chemistry</span></div>
+                                    
                                 </div>
                                 <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Linear Algebra</span><span style="font-size:13px;color:var(--text-muted);">54%</span></div>
-                                    <div class="progress-bar"><div class="progress-fill" style="width:54%;background:#8B5CF6;"></div></div>
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Linear Algebra</span></div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -102,31 +102,19 @@
                             <div class="card-header"><h3 class="card-title">Recent Grades</h3></div>
                             <div class="table-wrap">
                                 <table class="data-table">
-                                    <thead><tr><th>Assessment</th><th>Course</th><th>Score</th><th>Grade</th></tr></thead>
+                                    <thead><tr><th>Assessment</th><th>Course</th><th>Score</th></tr></thead>
                                     <tbody>
-                                        <tr><td>Quiz 3</td><td>Calculus II</td><td>92%</td><td><span class="badge badge-success">A</span></td></tr>
-                                        <tr><td>Lab Report</td><td>Physics 101</td><td>85%</td><td><span class="badge badge-success">B+</span></td></tr>
-                                        <tr><td>Unit Test 2</td><td>Organic Chemistry</td><td>96%</td><td><span class="badge badge-success">A</span></td></tr>
-                                        <tr><td>Problem Set 4</td><td>Linear Algebra</td><td>78%</td><td><span class="badge badge-warning">C+</span></td></tr>
+                                        <tr><td>Quiz 3</td><td>Calculus II</td><td>92%</td></tr>
+                                        <tr><td>Lab Report</td><td>Physics 101</td><td>85%</td></tr>
+                                        <tr><td>Unit Test 2</td><td>Organic Chemistry</td><td>96%</td></tr>
+                                        <tr><td>Problem Set 4</td><td>Linear Algebra</td><td>78%</td></tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <div class="card">
-                            <div class="card-header"><h3 class="card-title">Upcoming Exams</h3><a asp-controller="Student" asp-action="Exams" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a></div>
-                            <div style="display:flex;flex-direction:column;gap:12px;">
-                                <div style="display:flex;gap:12px;align-items:center;padding:12px;background:var(--bg-cream);border-radius:var(--radius);">
-                                    <div style="width:48px;height:48px;border-radius:var(--radius);background:var(--primary-light);display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700;font-size:14px;">15<br><span style="font-size:10px;font-weight:400;">MAR</span></div>
-                                    <div style="flex:1;"><div style="font-weight:600;font-size:14px;">Calculus II Midterm</div><div style="font-size:12px;color:var(--text-muted);">9:00 AM &middot; 120 min</div></div>
-                                </div>
-                                <div style="display:flex;gap:12px;align-items:center;padding:12px;background:var(--bg-cream);border-radius:var(--radius);">
-                                    <div style="width:48px;height:48px;border-radius:var(--radius);background:#DBEAFE;display:flex;align-items:center;justify-content:center;color:#2563EB;font-weight:700;font-size:14px;">28<br><span style="font-size:10px;font-weight:400;">APR</span></div>
-                                    <div style="flex:1;"><div style="font-weight:600;font-size:14px;">Physics 101 Final</div><div style="font-size:12px;color:var(--text-muted);">10:00 AM &middot; 180 min</div></div>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <div class="card">
                             <div class="card-header"><h3 class="card-title">This Week's Schedule</h3></div>

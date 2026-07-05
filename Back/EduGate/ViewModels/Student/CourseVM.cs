@@ -10,6 +10,14 @@ namespace EduGate.ViewModels.Student
         public string TeacherName { get; set; }
         public int LessonCount { get; set; }
         public int ExamCount { get; set; }
+
+        public int ProgressPercentage { get; set; }
+    }
+    public class coursepageVM
+    {
+        public string initials { get; set; }
+        public string StudentName { get; set; }
+        public List<CourseVM> courses { get; set; } = new List<CourseVM>();
     }
     public class CourseDetailsVM
     {
@@ -17,6 +25,8 @@ namespace EduGate.ViewModels.Student
         public string Name { get; set; }
         public string Description { get; set; }
         public string TeacherName { get; set; }
+        public string StudentName { get; set; }
+        public string initials { get; set; }
         public int ProgressPrecentage { get; set; }
 
         public List<LessonVM> Lessons { get; set; } = new List<LessonVM>();
@@ -53,8 +63,7 @@ namespace EduGate.ViewModels.Student
     {
         public int Id { get; set; }
         public string FileName { get; set; }
-        public string FileSize { get; set; }
-        public string UploadedDate { get; set; }
+        public double FileSize { get; set; }
         public string DownloadUrl { get; set; }
     }
 

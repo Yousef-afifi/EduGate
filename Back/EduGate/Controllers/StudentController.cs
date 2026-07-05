@@ -14,9 +14,13 @@ namespace EduGate.Controllers
         {
             _service = service;
         }
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            return View();
+            int studentId = UserId.Value;
+
+            var data = await _service.GetStudentOverview(studentId);
+
+            return View(data);
         }
         public async Task<IActionResult> Courses()
         {

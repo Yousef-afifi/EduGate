@@ -1,4 +1,4 @@
-﻿@model List<EduGate.ViewModels.Student.CourseVM>
+﻿@model EduGate.ViewModels.Student.coursepageVM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar" style="background:#3B82F6;">SJ</div>
-                <div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div>
+                <div class="user-avatar" style="background:#3B82F6;">@Model.initials</div>
+                <div class="user-info"><div class="user-name">@Model.StudentName</div><div class="user-role">Student</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -46,22 +46,32 @@
 
             <div class="page-content">
                 <div class="course-grid">
-                    @if (Model != null && Model.Any())
+                    @if (Model != null)
                     {
-                        foreach (var course in Model)
+                        @foreach (var course in Model.courses)
                         {
-                            <div class="course-card card-hover">
+                            <div class="course-card card-hover" style="display: flex; flex-direction: column; height: 100%;">
                                 <div class="course-img" style="background:linear-gradient(135deg,#3B82F6,#60A5FA);">&#128218;</div>
-                                <div class="course-body">
+
+                                <div class="course-body" style="flex-grow: 1; display: flex; flex-direction: column;">
                                     <h3 class="course-title">@course.Name</h3>
                                     <p class="course-meta">@course.TeacherName &middot; @course.LessonCount lessons &middot; @course.ExamCount quizzes</p>
-                                    <div class="course-progress">
-                                        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--primary);"></div></div>
-                                        <span>0%</span>
+
+                                    <div class="course-status" style="margin-top: auto; width: 100%;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding-top: 20px;">
+
+                                            <div style="display: flex; gap: 8px;">
+                                                <a asp-controller="Student" asp-action="Course_Details" asp-route-id="@course.Id" class="btn btn-sm btn-primary">Continue</a>
+                                            </div>
+
+                                            <span style="
+                                                background-color: rgba(0, 0, 0, 0.05); color: #555555; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; letter-spacing: 0.8px; text-transform: uppercase; display: inline-block;">
+                                                Enrolled
+                                            </span>
+
+                                        </div>
                                     </div>
-                                    <div style="margin-top:12px;display:flex;gap:8px;">
-                                        <a asp-controller="Student" asp-action="Course_Details" asp-route-id="@course.Id" class="btn btn-sm btn-primary">Continue</a>
-                                    </div>
+
                                 </div>
                             </div>
                         }

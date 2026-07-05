@@ -2,9 +2,13 @@
 {
     public class StudentExamsVM
     {
+        public string StudentName { get; set; }
+        public string initials { get; set; }
         public List<UpcomingExamVM> UpcomingExams { get; set; }
         public List<CompletedExamVM> CompletedExams { get; set; }
     }
+
+   
     public class UpcomingExamVM
     {
         public int Id { get; set; }

@@ -9,7 +9,9 @@
             public int Duration { get; set; }
             public int TotalMarks { get; set; }
             public int PassingPercentage { get; set; }
-        public List<QuestionVM> Questions { get; set; } = new();
+            public string StudentName { get; set; }
+            public string initials { get; set; }
+            public List<QuestionVM> Questions { get; set; } = new();
         }
 
     public class QuestionVM
