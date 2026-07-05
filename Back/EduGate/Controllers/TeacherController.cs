@@ -31,10 +31,6 @@ namespace EduGate.Controllers
         public async Task<IActionResult> Course_Details(int id)
         {
             var data = await _service.GetCourseDetailsAsync(id);
-            if (data == null)
-            {
-                return NotFound();
-            }
             return View(data);
         }
         public IActionResult Add_Lesson(int id)
@@ -61,9 +57,11 @@ namespace EduGate.Controllers
         {
             return View();
         }
-        public IActionResult Students()
+        public async Task<IActionResult> Students()
         {
-            return View();
+            var TeacherId = UserId.Value;
+            var data = await _service.GetAllStudentsAsync(TeacherId);
+            return View(data);
         }
         public IActionResult Generate_Students()
         {

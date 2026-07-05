@@ -4,7 +4,8 @@ namespace EduGate.Services.TeachService
 {
     public interface ITeachService
     {
-        Task<List<CourseVM>> GetAllCoursesAsync(int id);
+        Task<CoursePageVM> GetAllCoursesAsync(int id);
         Task<CourseDetailsVM> GetCourseDetailsAsync(int courseId);
+        Task<StudentPageVM> GetAllStudentsAsync(int id);
     }
 }

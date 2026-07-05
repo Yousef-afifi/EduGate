@@ -1,4 +1,4 @@
-﻿@model List<EduGate.ViewModels.Teacher.CourseVM>
+﻿@model EduGate.ViewModels.Teacher.CoursePageVM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -57,15 +57,15 @@
                 </div>
 
                 <div class="course-grid">
-                    @if(Model != null && Model.Any())
+                    @if(Model != null)
                     {
-                        @foreach(var course in Model)
+                        @foreach(var course in Model.Courses)
                         {
                             <div class="course-card card-hover">
                                 <div class="course-img" style="background:linear-gradient(135deg,#E84C4C,#FF8A80);">&#128218;</div>
                                 <div class="course-body">
                                     <h3 class="course-title">@course.Name</h3>
-                                    <p class="course-meta">@course.TeacherName &middot; @course.LessonCount lessons</p>
+                                    <p class="course-meta">@course.TeacherName &middot; @course.LessonCount lessons &middot; @course.StudentConut students</p>
                                     <div class="course-actions">
                                         <a asp-controller="Teacher" asp-action="Add_Lesson" asp-route-id="@course.Id" class="btn btn-sm btn-ghost">+ Lesson</a>
                                         <a asp-controller="Teacher" asp-action="Add_Quiz" asp-route-id="@course.Id" class="btn btn-sm btn-ghost">+ Quiz</a>

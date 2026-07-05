@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.StudentPageVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students - EduGate</title>
@@ -15,8 +16,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -60,57 +61,22 @@
                     <div class="table-wrap">
                         <table class="data-table">
                             <thead>
-                                <tr><th>Student</th><th>Email</th><th>Courses</th><th>Progress</th><th>Status</th><th>Joined</th></tr>
+                                <tr><th>Student</th><th>Email</th><th>Courses</th><th>Status</th><th>Joined</th></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">SJ</div><strong>Sarah Johnson</strong></div></td>
-                                    <td>sarah.j@student.edu</td>
-                                    <td>3</td>
-                                    <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:78%"></div></div><span style="font-size:12px;">78%</span></div></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td style="color:var(--text-muted);font-size:13px;">Jan 15, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">MP</div><strong>Mike Peters</strong></div></td>
-                                    <td>mike.p@student.edu</td>
-                                    <td>2</td>
-                                    <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill orange" style="width:45%"></div></div><span style="font-size:12px;">45%</span></div></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td style="color:var(--text-muted);font-size:13px;">Feb 2, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">EW</div><strong>Emma Wilson</strong></div></td>
-                                    <td>emma.w@student.edu</td>
-                                    <td>4</td>
-                                    <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:92%"></div></div><span style="font-size:12px;">92%</span></div></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td style="color:var(--text-muted);font-size:13px;">Dec 10, 2025</td>
-                                </tr>
-                                <tr>
-                                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">LB</div><strong>Liam Brown</strong></div></td>
-                                    <td>liam.b@student.edu</td>
-                                    <td>1</td>
-                                    <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill blue" style="width:60%"></div></div><span style="font-size:12px;">60%</span></div></td>
-                                    <td><span class="badge badge-warning">Pending</span></td>
-                                    <td style="color:var(--text-muted);font-size:13px;">Mar 1, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">OD</div><strong>Olivia Davis</strong></div></td>
-                                    <td>olivia.d@student.edu</td>
-                                    <td>3</td>
-                                    <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill green" style="width:85%"></div></div><span style="font-size:12px;">85%</span></div></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td style="color:var(--text-muted);font-size:13px;">Jan 28, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">NM</div><strong>Noah Martinez</strong></div></td>
-                                    <td>noah.m@student.edu</td>
-                                    <td>2</td>
-                                    <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-bar" style="width:80px;"><div class="progress-fill orange" style="width:32%"></div></div><span style="font-size:12px;">32%</span></div></td>
-                                    <td><span class="badge badge-success">Active</span></td>
-                                    <td style="color:var(--text-muted);font-size:13px;">Feb 18, 2026</td>
-                                </tr>
+                                @if(Model.Students != null)
+                                {
+                                    @foreach(var student in Model.Students)
+                                    {
+                                        <tr>
+                                            <td><div style="display:flex;align-items:center;gap:10px;"><div class="student-avatar" style="width:32px;height:32px;font-size:12px;">@student.Initials</div><strong>@student.StudentName</strong></div></td>
+                                            <td>@student.StudentEmail</td>
+                                            <td>@student.ECourseCount</td>
+                                            <td><span class="badge badge-success">@student.Status</span></td>
+                                            <td style="color:var(--text-muted);font-size:13px;">@student.Joined</td>
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
                     </div>
