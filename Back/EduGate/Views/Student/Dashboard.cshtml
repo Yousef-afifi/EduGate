@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Student.DashboardVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - EduGate</title>
@@ -79,22 +80,15 @@
                         <div class="card">
                             <div class="card-header"><h3 class="card-title">My Courses</h3><a asp-controller="Student" asp-action="Courses" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a></div>
                             <div style="display:flex;flex-direction:column;gap:16px;">
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Calculus II</span></div>
-                                </div>
-                                <div>
-                                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Physics 101</span></div>
-
-                                    
-                                </div>
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Organic Chemistry</span></div>
-                                    
-                                </div>
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">Linear Algebra</span></div>
-                                    
-                                </div>
+                                @if(Model.EnrolledCourses != null)
+                                {
+                                    @foreach(var course in Model.EnrolledCourses)
+                                    {
+                                        <div>
+                                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">@course.Name</span></div>
+                                        </div>
+                                    }
+                                }
                             </div>
                         </div>
 
@@ -104,18 +98,22 @@
                                 <table class="data-table">
                                     <thead><tr><th>Assessment</th><th>Course</th><th>Score</th></tr></thead>
                                     <tbody>
-                                        <tr><td>Quiz 3</td><td>Calculus II</td><td>92%</td></tr>
-                                        <tr><td>Lab Report</td><td>Physics 101</td><td>85%</td></tr>
-                                        <tr><td>Unit Test 2</td><td>Organic Chemistry</td><td>96%</td></tr>
-                                        <tr><td>Problem Set 4</td><td>Linear Algebra</td><td>78%</td></tr>
+                                        @if(Model.RecentGrades != null)
+                                        {
+                                            var MostRecentGrades = Model.RecentGrades.TakeLast(4).ToList();
+                                            int? Percentage = 0;
+                                            @foreach(var grade in MostRecentGrades)
+                                            {
+                                                Percentage = (grade.StudentGrade/grade.TotalMark)*100;
+                                                <tr><td>@grade.AssessmentName</td><td>@grade.CourseName</td><td>@Percentage%</td></tr>
+                                            }
+                                        }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div>
-                        
-
                         <div class="card">
                             <div class="card-header"><h3 class="card-title">This Week's Schedule</h3></div>
                             <div style="display:flex;flex-direction:column;gap:10px;">
