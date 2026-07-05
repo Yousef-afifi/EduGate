@@ -76,7 +76,7 @@
                 <div id="lessons" class="tab-content">
                     <div class="page-header">
                         <h3 style="font-size:18px;font-weight:600;">Course Lessons</h3>
-                        <a asp-controller="Teacher" asp-action="Add_Lesson" class="btn btn-primary btn-sm">+ Add Lesson</a>
+                        <a asp-controller="Teacher" asp-action="Add_Lesson" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">+ Add Lesson</a>
                     </div>
                     <div class="card">
                         @if(Model.Lessons != null)

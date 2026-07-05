@@ -1,4 +1,5 @@
 ﻿using EduGate.Data;
+using EduGate.Models;
 using EduGate.ViewModels.Teacher;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
@@ -102,6 +103,33 @@ namespace EduGate.Services.TeachService
                 }).FirstOrDefaultAsync();
 
             return data;
+        }
+        public async Task<AddLessonVM> GetAddLesson(int Id)
+        {
+            var data = await _context.Course
+                .Where(c => c.Id == Id)
+                .Include(c => c.teacher)
+                .Select(x => new AddLessonVM
+                {
+                    TeacherName = x.teacher.First_Name + " " + x.teacher.Last_Name,
+                    Initials = $"{char.ToUpper(x.teacher.First_Name[0])}{char.ToUpper(x.teacher.Last_Name[0])}",
+                    CourseName = x.Name,
+                    CourseId = x.Id
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task AddLesson(AddLessonVM model)
+        {
+            var lesson = new Lesson
+            {
+                Name = model.LessonTitle,
+                Video_Url = model.VideoUrl,
+                Course_Id = model.CourseId,
+                CreatedAt = DateTime.Now
+            };
+            _context.Lesson.Add(lesson);
+            await _context.SaveChangesAsync();
         }
     }
 }

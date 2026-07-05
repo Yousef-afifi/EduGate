@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.AddLessonVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Lesson - Calculus II - EduGate</title>
@@ -14,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -39,7 +40,7 @@
         <main class="main-content">
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a asp-controller="Teacher" asp-action="Course_Details" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
                     <h1 class="topbar-title">Add Lesson</h1>
                 </div>
             </div>
@@ -47,56 +48,24 @@
             <div class="page-content">
                 <div style="max-width:700px;">
                     <div class="card" style="margin-bottom:24px;">
-                        <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
-                            <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: Calculus II</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Lesson Title</label>
-                            <input type="text" class="form-input" placeholder="e.g., Integration by Parts" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-textarea" placeholder="Brief description of this lesson..."></textarea>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                        <form asp-action="Add_Lesson" method="post">
+                            <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
+                                <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: @Model.CourseName</span>
+                            </div>
+                            <input asp-for="CourseId" type="hidden" />
                             <div class="form-group">
-                                <label class="form-label">Lesson Type</label>
-                                <select class="form-select">
-                                    <option>Video Lesson</option>
-                                    <option>Text Lesson</option>
-                                    <option>Interactive</option>
-                                    <option>Document/PDF</option>
-                                </select>
+                                <label asp-for="@Model.LessonTitle" class="form-label">Lesson Title</label>
+                                <input asp-for="@Model.LessonTitle" type="text" class="form-input" placeholder="e.g., Integration by Parts" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Duration (minutes)</label>
-                                <input type="number" class="form-input" placeholder="45" min="1">
+                                <label asp-for="@Model.VideoUrl" class="form-label">Video URL</label>
+                                <input asp-for="@Model.VideoUrl" type="text" class="form-input" placeholder="Paste video URL">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Video URL / File</label>
-                            <input type="text" class="form-input" placeholder="Paste video URL or upload file">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Lesson Content</label>
-                            <textarea class="form-textarea" style="min-height:200px;" placeholder="Write lesson content here...
-
-                            You can include:
-                            - Text explanations
-                            - Code examples
-                            - Mathematical formulas
-                            - Links to resources"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-                                <input type="checkbox" style="accent-color:var(--primary);">
-                                <span style="font-size:14px;">Publish immediately</span>
-                            </label>
-                        </div>
-                        <div style="display:flex;gap:12px;justify-content:flex-end;">
-                            <a asp-controller="Teacher" asp-action="Course_Details" class="btn btn-outline">Cancel</a>
-                            <button class="btn btn-primary" onclick="showToast('Lesson added successfully!', 'success'); setTimeout(()=>window.location.href='../../1.html', 800);">Save Lesson</button>
-                        </div>
+                            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                                <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="btn btn-outline">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Save Lesson</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

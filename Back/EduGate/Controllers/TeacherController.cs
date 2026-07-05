@@ -2,6 +2,7 @@
 using EduGate.Models;
 using EduGate.Services.StuServices;
 using EduGate.Services.TeachService;
+using EduGate.ViewModels.Teacher;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -33,9 +34,37 @@ namespace EduGate.Controllers
             var data = await _service.GetCourseDetailsAsync(id);
             return View(data);
         }
-        public IActionResult Add_Lesson(int id)
+        [HttpGet]
+        public async Task<IActionResult> Add_Lesson(int id)
         {
-            return View();
+            var data = await _service.GetAddLesson(id);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add_Lesson(AddLessonVM model)
+        {
+            if(!ModelState.IsValid)
+            {
+                var data = await _service.GetAddLesson(model.CourseId);
+
+                model.TeacherName = data.TeacherName;
+                model.CourseName = data.CourseName;
+                model.Initials = data.Initials;
+
+                foreach (var item in ModelState)
+                {
+                    foreach (var error in item.Value.Errors)
+                    {
+                        Console.WriteLine($"{item.Key} : {error.ErrorMessage}");
+                    }
+                }
+
+                return View(model);
+            }
+
+            await _service.AddLesson(model);
+
+            return RedirectToAction("Course_Details", "Teacher", new {id = model.CourseId});
         }
         public IActionResult Add_Quiz(int id)
         {
