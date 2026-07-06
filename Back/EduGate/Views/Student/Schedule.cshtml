@@ -1,4 +1,4 @@
-﻿@model List<EduGate.ViewModels.Student.ExamScheduleVM>
+﻿@model EduGate.ViewModels.Student.ExamScheduleVM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar" style="background:#3B82F6;">SJ</div>
-                <div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div>
+                <div class="user-avatar" style="background:#3B82F6;">@Model.initials</div>
+                <div class="user-info"><div class="user-name">@Model.StudentName</div><div class="user-role">Student</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -48,7 +48,7 @@
                 <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Upcoming Events</h3>
                 <div class="schedule-list">
 
-                    @foreach (var exam in Model)
+                    @foreach (var exam in Model.Examinfo)
                     {
                         <div class="schedule-item">
 
@@ -83,7 +83,7 @@
                         </div>
                     }
 
-                    @if (!Model.Any())
+                    @if (!Model.Examinfo.Any())
                     {
                         <div class="card" style="text-align:center;padding:40px;">
                             <h5>No upcoming schedule</h5>

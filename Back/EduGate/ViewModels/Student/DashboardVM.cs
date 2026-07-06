@@ -3,14 +3,17 @@
     public class DashboardVM
     {
         public int EnrolledCoursesCount { get; set; }  
-        public int AvgScore { get; set; }              
-        public int CompletedLessonsCount { get; set; } 
-        public int UpcomingExamsCount { get; set; }    
+        public double ExamsAvgScore { get; set; }              
+        public int CompletedExamsCount { get; set; }
+        public int UpcomingExamsCount { get; set; }
+        public string initials { get; set; }
+        public string StudentName { get; set; }
 
-       
+
         public List<CoursesVM> EnrolledCourses { get; set; } = new List<CoursesVM>();
         public List<RecentGradesVM> RecentGrades { get; set; } = new List<RecentGradesVM>();
         public List<ScheduleVM> Schedule { get; set; } = new List<ScheduleVM>();
+        public List<ExamInfoVM> ExamsSchedule { get; set; } = new List<ExamInfoVM>();
     }
 
     public class CoursesVM
