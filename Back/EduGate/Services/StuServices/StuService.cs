@@ -243,7 +243,7 @@ namespace EduGate.Services.StuServices
                 ExamId = quiz.Id,
                 ExamName = quiz.Name,
                 Duration = quiz.Duration ?? 0,
-                TotalMarks = quiz.Total_Marks ?? 0,
+                TotalMarks = quiz.Total_Marks,
                 PassingPercentage = quiz.PassingPercentage,
                 Questions = quiz.Questions.Select(q => new QuestionVM
                 {
@@ -343,7 +343,7 @@ namespace EduGate.Services.StuServices
                     Id = e.Id,
                     Name = e.Name,
                     Duration = e.Duration ?? 0,
-                    TotalMarks = e.Total_Marks ?? 0,
+                    TotalMarks = e.Total_Marks,
                     QuestionCount = e.Questions.Count,
                     PassingPercentage = e.PassingPercentage,
                     StartDate = e.StartDate
@@ -376,7 +376,7 @@ namespace EduGate.Services.StuServices
                     Id = e.Id,
                     Name = e.Name,
                     Duration = e.Duration ?? 0,
-                    TotalMarks = e.Total_Marks ?? 0,
+                    TotalMarks = e.Total_Marks,
                     QuestionCount = e.Questions.Count,
                     Score = attempts.First(a => a.Exam_Id == e.Id).Score,
                     SubmittedAt = attempts.First(a => a.Exam_Id == e.Id).SubmittedAt ?? DateTime.MinValue
@@ -438,7 +438,7 @@ namespace EduGate.Services.StuServices
                 ExamId = exam.Id,
                 ExamName = exam.Name,
                 Duration = exam.Duration ?? 0,
-                TotalMarks = exam.Total_Marks ?? 0,
+                TotalMarks = exam.Total_Marks,
                 PassingPercentage = exam.PassingPercentage,
                 Questions = exam.Questions.Select(q => new QuestionVM
                 {

@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.AddAssessmentVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Assessment - Calculus II - EduGate</title>
@@ -14,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -39,87 +40,53 @@
         <main class="main-content">
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a asp-controller="Teacher" asp-action="Course_Details" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
                     <h1 class="topbar-title">Add Assessment</h1>
                 </div>
             </div>
 
             <div class="page-content">
                 <div style="max-width:700px;">
-                    <div class="card" style="margin-bottom:24px;">
-                        <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
-                            <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: Calculus II</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Assessment Title</label>
-                            <input type="text" class="form-input" placeholder="e.g., Calculus II - Problem Set" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Course</label>
-                            <select class="form-select">
-                                <option>Calculus II</option>
-                            </select>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <form asp-action="Add_Assessment" method="post">
+                        <div class="card" style="margin-bottom:24px;">
+                            <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
+                                <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: @Model.CourseName</span>
+                            </div>
+                            <input asp-for="CourseId" type="hidden" />
                             <div class="form-group">
-                                <label class="form-label">Assessment Type</label>
-                                <select class="form-select">
-                                    <option>Problem Set</option>
-                                    <option>Project</option>
-                                    <option>Portfolio</option>
-                                    <option>Written Assignment</option>
-                                    <option>Practical Task</option>
-                                </select>
+                                <label asp-for="@Model.AssessmentTitle" class="form-label">Assessment Title</label>
+                                <input asp-for="@Model.AssessmentTitle" type="text" class="form-input" placeholder="e.g., Calculus II - Problem Set" required>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label asp-for="@Model.Date" class="form-label">Due Date</label>
+                                    <input asp-for="@Model.Date" type="date" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="@Model.Time" class="form-label">Due Time</label>
+                                    <input asp-for="@Model.Time" type="time" class="form-input">
+                                </div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label asp-for="@Model.TotalMark" class="form-label">Total Points</label>
+                                    <input asp-for="@Model.TotalMark" type="number" class="form-input" placeholder="100" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="@Model.PassingScore" class="form-label">Passing Score (%)</label>
+                                    <input asp-for="@Model.PassingScore" type="number" class="form-input" placeholder="20" min="0" max="100">
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Submission Type</label>
-                                <select class="form-select">
-                                    <option>File Upload</option>
-                                    <option>Text Response</option>
-                                    <option>Link Submission</option>
-                                    <option>File + Text Response</option>
-                                </select>
+                                <label asp-for="@Model.Instruction" class="form-label">Instructions</label>
+                                <textarea asp-for="@Model.Instruction" class="form-textarea" style="min-height:140px;" placeholder="Write assessment instructions, requirements, and deliverables..."></textarea>
+                            </div>
+                            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                                <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="btn btn-outline">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Create Assessment</button>
                             </div>
                         </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Due Date</label>
-                                <input type="date" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Due Time</label>
-                                <input type="time" class="form-input">
-                            </div>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Total Points</label>
-                                <input type="number" class="form-input" placeholder="100" min="1">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Course Weight (%)</label>
-                                <input type="number" class="form-input" placeholder="20" min="0" max="100">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Instructions</label>
-                            <textarea class="form-textarea" style="min-height:140px;" placeholder="Write assessment instructions, requirements, and deliverables..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Grading Rubric</label>
-                            <textarea class="form-textarea" placeholder="Add grading criteria and point breakdown..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-                                <input type="checkbox" style="accent-color:var(--primary);">
-                                <span style="font-size:14px;">Allow late submissions</span>
-                            </label>
-                        </div>
-                        <div style="display:flex;gap:12px;justify-content:flex-end;">
-                            <a asp-controller="Teacher" asp-action="Course_Details" class="btn btn-outline">Cancel</a>
-                            <button class="btn btn-primary" onclick="showToast('Assessment created successfully!', 'success'); setTimeout(()=>window.location.href='../../1.html', 800);">Create Assessment</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </main>

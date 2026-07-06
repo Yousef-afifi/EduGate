@@ -82,9 +82,29 @@ namespace EduGate.Controllers
 
             return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
-        public IActionResult Add_Assessment(int id)
+        [HttpGet]
+        public async Task<IActionResult> Add_Assessment(int id)
         {
-            return View();
+            var data = await _service.GetAddAssessment(id);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add_Assessment(AddAssessmentVM model)
+        {
+            if(!ModelState.IsValid)
+            {
+                var data = await _service.GetAddAssessment(model.CourseId);
+
+                model.CourseName = data.CourseName;
+                model.TeacherName = data.TeacherName;
+                model.Initials = data.Initials;
+
+                return View(model);
+            }
+
+            await _service.AddAssessment(model);
+
+            return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
         public IActionResult Exams()
         {

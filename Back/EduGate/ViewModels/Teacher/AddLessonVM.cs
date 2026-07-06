@@ -1,5 +1,6 @@
 ﻿using EduGate.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 
 namespace EduGate.ViewModels.Teacher
 {
@@ -50,5 +51,24 @@ namespace EduGate.ViewModels.Teacher
         public string Text { get; set; }
         [Required]
         public bool IsCorrect { get; set; }
+    }
+    public class AddAssessmentVM
+    {
+        public string? TeacherName { get; set; }
+        public string? Initials { get; set; }
+        public string? CourseName { get; set; }
+        public int CourseId { get; set; }
+        [Required]
+        public string AssessmentTitle { get; set; }
+        [Required]
+        public DateOnly Date { get; set; }
+        [Required]
+        public TimeOnly Time { get; set; }
+        [Required]
+        public int TotalMark { get; set; }
+        [Required]
+        public int PassingScore { get; set; }
+        [Required]
+        public string Instruction { get; set; }
     }
 }

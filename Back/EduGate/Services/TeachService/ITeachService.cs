@@ -11,5 +11,7 @@ namespace EduGate.Services.TeachService
         Task AddLesson(AddLessonVM model);
         Task<AddQuizVM> GetAddQuiz(int courseId);
         Task AddQuiz(AddQuizVM model);
+        Task<AddAssessmentVM> GetAddAssessment(int courseId);
+        Task AddAssessment(AddAssessmentVM model);
     }
 }

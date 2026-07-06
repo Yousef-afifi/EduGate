@@ -9,10 +9,11 @@ namespace EduGate.Models
         public string Name { get; set; }
         public ExamType Type { get; set; }
         public int? Duration { get; set; }
-        public int? Total_Marks { get; set; }
+        public int Total_Marks { get; set; }
         public DateTime CreatedAt {  get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime StartDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public int PassingPercentage { get; set; } = 60;
         [ForeignKey("course")]
         public int Course_Id { get; set; }

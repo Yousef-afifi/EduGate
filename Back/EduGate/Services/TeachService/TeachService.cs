@@ -184,5 +184,46 @@ namespace EduGate.Services.TeachService
             _context.Exam.Add(quiz);
             await _context.SaveChangesAsync();
         }
+        public async Task<AddAssessmentVM> GetAddAssessment(int courseId)
+        {
+            var data = await _context.Course
+                .Where(c => c.Id == courseId)
+                .Select(x => new AddAssessmentVM
+                {
+                    CourseId = x.Id,
+                    CourseName = x.Name,
+                    TeacherName = x.teacher.First_Name + " " + x.teacher.Last_Name,
+                    Initials = $"{char.ToUpper(x.teacher.First_Name[0])}{char.ToUpper(x.teacher.Last_Name[0])}"
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task AddAssessment(AddAssessmentVM model) 
+        {
+            var assessment = new Exam 
+            {
+                Name = model.AssessmentTitle,
+                CreatedAt = DateTime.Now,
+                StartDate = DateTime.Now,
+                DueDate = model.Date.ToDateTime(model.Time),
+                Type = Enums.ExamType.Assignment,
+                Total_Marks = model.TotalMark,
+                PassingPercentage = model.PassingScore,
+                Course_Id = model.CourseId
+            };
+
+            _context.Exam.Add(assessment);
+            await _context.SaveChangesAsync();
+
+            var question = new Question
+            {
+                Text = model.Instruction,
+                Mark = model.TotalMark,
+                Exam_Id = assessment.Id
+            };
+
+            _context.Question.Add(question);
+            await _context.SaveChangesAsync();
+        }
     }
 }
