@@ -225,5 +225,31 @@ namespace EduGate.Services.TeachService
             _context.Question.Add(question);
             await _context.SaveChangesAsync();
         }
+        public async Task<AddCourseVM> GetAddCourse(int id)
+        {
+            var data = await _context.Teacher
+                .Where(t => t.Id == id)
+                .Select(x => new AddCourseVM
+                {
+                    TeacherName = x.First_Name + " " + x.Last_Name,
+                    Initials = $"{char.ToUpper(x.First_Name[0])}{char.ToUpper(x.Last_Name[0])}",
+                    TeacherId = id
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task AddCourse(AddCourseVM model)
+        {
+            var course = new Course
+            {
+                Name = model.CourseName,
+                Description = model.Description,
+                CreatedAt = DateTime.Now,
+                Teacher_Id = model.TeacherId
+            };
+
+            _context.Course.Add(course);
+            await _context.SaveChangesAsync();
+        }
     }
 }

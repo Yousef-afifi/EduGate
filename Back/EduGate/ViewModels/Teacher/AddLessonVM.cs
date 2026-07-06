@@ -71,4 +71,14 @@ namespace EduGate.ViewModels.Teacher
         [Required]
         public string Instruction { get; set; }
     }
+    public class AddCourseVM
+    {
+        public string? TeacherName { get; set; }
+        public string? Initials { get; set; }
+        public int TeacherId { get; set; }
+        [Required]
+        public string CourseName { get; set; }
+        [Required]
+        public string Description { get; set; }
+    }
 }
