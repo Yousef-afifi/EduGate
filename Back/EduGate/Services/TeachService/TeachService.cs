@@ -66,7 +66,7 @@ namespace EduGate.Services.TeachService
                     .Select(q => new QuizVM
                     {
                         Name = q.Name,
-                        QustionConut = q.Questions != null ? q.Questions.Count() : 0
+                        QusetionConut = q.Questions != null ? q.Questions.Count() : 0
                     }).ToList() ?? new List<QuizVM>(),
                     Assessments = c.Exams.Where(e => e.Type == Enums.ExamType.Assignment)
                     .Select(a => new AssessmentVM
@@ -129,6 +129,59 @@ namespace EduGate.Services.TeachService
                 CreatedAt = DateTime.Now
             };
             _context.Lesson.Add(lesson);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<AddQuizVM> GetAddQuiz(int courseId)
+        {
+            var data = await _context.Course
+                .Where(c => c.Id == courseId)
+                .Select(x => new AddQuizVM
+                {
+                    CourseId = x.Id,
+                    CourseName = x.Name,
+                    TeacherName = x.teacher.First_Name + " " + x.teacher.Last_Name,
+                    Initials = $"{char.ToUpper(x.teacher.First_Name[0])}{char.ToUpper(x.teacher.Last_Name[0])}"
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task AddQuiz(AddQuizVM model)
+        {
+            var quiz = new Exam
+            {
+                Name = model.QuizTitle,
+                Course_Id = model.CourseId,
+                StartDate = model.Date.ToDateTime(model.Time),
+                CreatedAt = DateTime.Now,
+                Duration = model.Duration,
+                PassingPercentage = model.PassingScore,
+                Type = Enums.ExamType.Quiz,
+                Total_Marks = model.TotalMark,
+                Questions = new List<Question>()
+            };
+
+            foreach(var q in model.Questions)
+            {
+                var question = new Question
+                {
+                    Text = q.Text,
+                    Mark = q.Mark,
+                    Choices = new List<Choice>()
+                };
+
+                foreach(var c in q.Choices)
+                {
+                    question.Choices.Add(new Choice
+                    {
+                        Text = c.Text,
+                        IsCorrect = c.IsCorrect
+                    });
+                }
+
+                quiz.Questions.Add(question);
+            }
+
+            _context.Exam.Add(quiz);
             await _context.SaveChangesAsync();
         }
     }

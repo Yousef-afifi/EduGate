@@ -37,7 +37,7 @@ namespace EduGate.ViewModels.Teacher
     public class QuizVM
     {
         public string Name { get; set;}
-        public int QustionConut { get; set; }
+        public int QusetionConut { get; set; }
     }
     public class AssessmentVM
     {

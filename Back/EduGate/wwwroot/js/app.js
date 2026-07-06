@@ -147,47 +147,140 @@ function generatePassword(length = 10) {
 
 // ===== Quiz Builder =====
 function addQuestion(containerId) {
-  const container = document.getElementById(containerId);
-  const qNum = container.children.length + 1;
 
-  const questionHTML = `
-    <div class="card" style="margin-bottom: 16px;">
-      <div class="form-group">
-        <label class="form-label">Question ${qNum}</label>
-        <input type="text" class="form-input" placeholder="Enter question text...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Options</label>
-        <div class="quiz-option">
-          <div class="quiz-option-letter">A</div>
-          <input type="text" class="quiz-option-input" placeholder="Option A">
+    const container = document.getElementById(containerId);
+
+    const qIndex = container.children.length;
+
+    const questionHTML = `
+    <div class="card" style="margin-bottom:16px;">
+
+        <div class="form-group">
+            <label class="form-label">
+                Question ${qIndex + 1}
+            </label>
+
+            <input
+                type="text"
+                class="form-input"
+                name="Questions[${qIndex}].Text">
         </div>
-        <div class="quiz-option">
-          <div class="quiz-option-letter">B</div>
-          <input type="text" class="quiz-option-input" placeholder="Option B">
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Mark
+            </label>
+
+            <input
+                type="number"
+                class="form-input"
+                name="Questions[${qIndex}].Mark">
+
         </div>
-        <div class="quiz-option">
-          <div class="quiz-option-letter">C</div>
-          <input type="text" class="quiz-option-input" placeholder="Option C">
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+
+                Options
+
+            </label>
+
+            ${createChoice(qIndex, 0, 'A')}
+
+            ${createChoice(qIndex, 1, 'B')}
+
+            ${createChoice(qIndex, 2, 'C')}
+
+            ${createChoice(qIndex, 3, 'D')}
+
         </div>
-        <div class="quiz-option">
-          <div class="quiz-option-letter">D</div>
-          <input type="text" class="quiz-option-input" placeholder="Option D">
+
+
+        <div class="form-group">
+
+            <label class="form-label">
+
+                Correct Answer
+
+            </label>
+
+            <select
+                class="form-select"
+                onchange="setCorrectAnswer(this,${qIndex})">
+
+                <option value="0">A</option>
+
+                <option value="1">B</option>
+
+                <option value="2">C</option>
+
+                <option value="3">D</option>
+
+            </select>
+
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Correct Answer</label>
-        <select class="form-select">
-          <option value="A">Option A</option>
-          <option value="B">Option B</option>
-          <option value="C">Option C</option>
-          <option value="D">Option D</option>
-        </select>
-      </div>
+
     </div>
-  `;
+    `;
 
-  container.insertAdjacentHTML('beforeend', questionHTML);
+    container.insertAdjacentHTML(
+        'beforeend',
+        questionHTML
+    );
+
+    setCorrectAnswer(
+        container.lastElementChild.querySelector("select"),
+        qIndex
+    );
+}
+
+function createChoice(q, c, letter) {
+
+    return `
+        <div class="quiz-option">
+
+            <div class="quiz-option-letter">
+                ${letter}
+            </div>
+
+            <input
+                type="text"
+                class="quiz-option-input"
+                name="Questions[${q}].Choices[${c}].Text">
+
+            <input
+                type="hidden"
+                name="Questions[${q}].Choices[${c}].IsCorrect"
+                value="false">
+
+        </div>
+    `;
+}
+
+function setCorrectAnswer(select, q) {
+
+    let value = parseInt(select.value);
+
+    for (let i = 0; i < 4; i++) {
+
+        document.querySelector(
+
+            `input[name="Questions[${q}].Choices[${i}].IsCorrect"]`
+
+        ).value = "false";
+
+    }
+
+    document.querySelector(
+
+        `input[name="Questions[${q}].Choices[${value}].IsCorrect"]`
+
+    ).value = "true";
+
 }
 
 // ===== Smooth Scroll =====

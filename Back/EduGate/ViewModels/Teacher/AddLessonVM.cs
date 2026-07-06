@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EduGate.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace EduGate.ViewModels.Teacher
 {
@@ -12,5 +13,42 @@ namespace EduGate.ViewModels.Teacher
         public string LessonTitle { get; set; }
         [Required]
         public string VideoUrl { get; set; }
+    }
+    public class AddQuizVM
+    {
+        public string? TeacherName { get; set; }
+        public string? Initials { get; set; }
+        public string? CourseName { get; set; }
+        public int CourseId { get; set; }
+        [Required]
+        public string QuizTitle { get; set; }
+        [Required]
+        public DateOnly Date { get; set; }
+        [Required]
+        public TimeOnly Time { get; set; }
+        [Required]
+        public int Duration { get; set; }
+        [Required]
+        public int TotalMark { get; set; }
+        [Required]
+        public int PassingScore { get; set; }
+        [Required]
+        public List<QuestionVM> Questions { get; set; } = new();
+    }
+    public class QuestionVM
+    {
+        [Required]
+        public string Text { get; set; }
+        [Required]
+        public int Mark { get; set; }
+        [Required]
+        public List<ChoiceVM> Choices { get; set; } = new();
+    }
+    public class ChoiceVM
+    {
+        [Required]
+        public string Text { get; set; }
+        [Required]
+        public bool IsCorrect { get; set; }
     }
 }

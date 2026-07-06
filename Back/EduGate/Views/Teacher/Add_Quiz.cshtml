@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.AddQuizVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Quiz - Calculus II - EduGate</title>
@@ -14,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -39,107 +40,78 @@
         <main class="main-content">
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a asp-controller="Teacher" asp-action="Course_Details" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
                     <h1 class="topbar-title">Add Quiz</h1>
                 </div>
             </div>
 
             <div class="page-content">
-                <div style="max-width:700px;">
-                    <div class="card" style="margin-bottom:24px;">
-                        <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
-                            <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: Calculus II</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Quiz Title</label>
-                            <input type="text" class="form-input" placeholder="e.g., Calculus II - Integration Quiz" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Course</label>
-                            <select class="form-select">
-                                <option>Calculus II</option>
-                            </select>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Date</label>
-                                <input type="date" class="form-input">
+                <form asp-action="Add_Quiz" method="post">
+                    <div style="max-width:700px;">
+                        <div class="card" style="margin-bottom:24px;">
+                            <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
+                                <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: @Model.CourseName</span>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Start Time</label>
-                                <input type="time" class="form-input">
+                                <label asp-for="@Model.QuizTitle" class="form-label">Quiz Title</label>
+                                <input asp-for="@Model.QuizTitle" type="text" class="form-input" placeholder="e.g., Calculus II - Integration Quiz" required>
                             </div>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label asp-for="@Model.Date" class="form-label">Date</label>
+                                    <input asp-for="@Model.Date" type="date" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="@Model.Time" class="form-label">Start Time</label>
+                                    <input asp-for="@Model.Time" type="time" class="form-input">
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <label class="form-label">Duration (minutes)</label>
-                                <input type="number" class="form-input" placeholder="30" min="1">
+                                <label asp-for="@Model.Duration" class="form-label">Duration (minutes)</label>
+                                <input asp-for="@Model.Duration" type="number" class="form-input" placeholder="30" min="1">
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Total Questions</label>
-                                <input type="number" class="form-input" placeholder="10" min="1">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label asp-for="@Model.PassingScore" class="form-label">Passing Score (%)</label>
+                                    <input asp-for="@Model.PassingScore" type="number" class="form-input" placeholder="60" min="0" max="100">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="@Model.TotalMark" class="form-label">Total Marks</label>
+                                    <input asp-for="@Model.TotalMark" class="form-input" placeholder="10" min="1">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Passing Score (%)</label>
-                            <input type="number" class="form-input" placeholder="60" min="0" max="100">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Instructions</label>
-                            <textarea class="form-textarea" placeholder="Quiz instructions for students..."></textarea>
-                        </div>
-                    </div>
 
-                    <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Quiz Questions</h3>
-                    <div id="quizQuestions">
-                        <div class="card" style="margin-bottom:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Question 1</label>
-                                <input type="text" class="form-input" placeholder="Enter question text...">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Options</label>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">A</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option A">
-                                </div>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">B</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option B">
-                                </div>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">C</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option C">
-                                </div>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">D</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option D">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Correct Answer</label>
-                                <select class="form-select">
-                                    <option value="A">Option A</option>
-                                    <option value="B">Option B</option>
-                                    <option value="C">Option C</option>
-                                    <option value="D">Option D</option>
-                                </select>
-                            </div>
+                        <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Quiz Questions</h3>
+
+                        <input asp-for="CourseId" hidden>
+
+                        <div id="quizQuestions">
                         </div>
-                    </div>
 
-                    <button class="btn btn-outline w-full" style="margin-bottom:24px;" onclick="addQuestion('quizQuestions')">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        Add Question
-                    </button>
+                        <button type="button" class="btn btn-outline w-full" style="margin-bottom:24px;" onclick="addQuestion('quizQuestions')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                            Add Question
+                        </button>
 
-                    <div style="display:flex;gap:12px;justify-content:flex-end;">
-                        <a asp-controller="Teacher" asp-action="Course_Details" class="btn btn-outline">Cancel</a>
-                        <button class="btn btn-primary" onclick="showToast('Quiz created successfully!', 'success'); setTimeout(()=>window.location.href='../../1.html', 800);">Create Quiz</button>
+                        <div style="display:flex;gap:12px;justify-content:flex-end;">
+                            <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="btn btn-outline">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Create Quiz</button>
+                        </div>
+
                     </div>
-                </div>
+                </form>
             </div>
         </main>
     </div>
     <script src="~/js/app.js"></script>
+    <script>
+
+            document.addEventListener("DOMContentLoaded", function(){
+
+                addQuestion('quizQuestions');
+
+            });
+
+    </script>
 </body>

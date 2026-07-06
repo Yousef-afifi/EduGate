@@ -51,14 +51,6 @@ namespace EduGate.Controllers
                 model.CourseName = data.CourseName;
                 model.Initials = data.Initials;
 
-                foreach (var item in ModelState)
-                {
-                    foreach (var error in item.Value.Errors)
-                    {
-                        Console.WriteLine($"{item.Key} : {error.ErrorMessage}");
-                    }
-                }
-
                 return View(model);
             }
 
@@ -66,9 +58,29 @@ namespace EduGate.Controllers
 
             return RedirectToAction("Course_Details", "Teacher", new {id = model.CourseId});
         }
-        public IActionResult Add_Quiz(int id)
+        [HttpGet]
+        public async Task<IActionResult> Add_Quiz(int id)
         {
-            return View();
+            var data = await _service.GetAddQuiz(id);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add_Quiz(AddQuizVM model)
+        {
+            if(!ModelState.IsValid)
+            {
+                var data = await _service.GetAddQuiz(model.CourseId);
+
+                model.CourseName = data.CourseName;
+                model.TeacherName= data.TeacherName;
+                model.Initials = data.Initials;
+
+                return View(model);
+            }
+
+            await _service.AddQuiz(model);
+
+            return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
         public IActionResult Add_Assessment(int id)
         {
