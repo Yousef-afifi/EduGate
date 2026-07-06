@@ -18,11 +18,12 @@ namespace EduGate.Services.StuServices
 
         public async Task<DashboardVM> GetStudentOverview(int studentId)
         {
-            return new DashboardVM {
+            return new DashboardVM
+            {
                 EnrolledCourses = await GetAllCoursesEnrolled(studentId),
                 RecentGrades = await GetQuiz_AssesmentGrades(studentId),
             };
-            
+
         }
 
         public async Task<List<CoursesVM>> GetAllCoursesEnrolled(int studentId)
@@ -53,9 +54,9 @@ namespace EduGate.Services.StuServices
             var recentGrades = studentAttempts.Select(a => new RecentGradesVM
             {
                 Id = a.Id,
-                AssessmentName = a.exam?.Name, 
+                AssessmentName = a.exam?.Name,
                 CourseName = a.exam?.course?.Name,
-                StudentGrade=a.Score,
+                StudentGrade = a.Score,
                 TotalMark = a.exam != null ? a.exam.Total_Marks : 0,
 
             }).ToList();
@@ -86,10 +87,10 @@ namespace EduGate.Services.StuServices
 
             var result = new coursepageVM
             {
-                initials = Student != null? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper(): "??",
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
                 StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
                 courses = data,
-                
+
             };
 
 
@@ -491,6 +492,38 @@ namespace EduGate.Services.StuServices
             await _context.SaveChangesAsync();
         }
 
-       
+        public async Task<List<ExamScheduleVM>> GetExamSchedule(int studentId)
+        {
+            var enrollments = await _context.Enrollment
+                .Where(e => e.Student_Id == studentId)
+                .Include(e => e.course)
+                    .ThenInclude(c => c.Exams)
+                    .ToListAsync();
+
+            var exams = enrollments
+                .SelectMany(e => e.course.Exams)
+                .Where(e => e.StartDate >= DateTime.Now)
+                .ToList();
+
+            var completedExamIds = await _context.ExamAttempt
+                .Where(s => s.Student_Id == studentId && s.IsCompleted)
+                .Select(s => s.Exam_Id)
+                .ToListAsync();
+
+            return exams
+             .Where(e => !completedExamIds.Contains(e.Id))
+             .OrderBy(e => e.StartDate)
+             .Select(e => new ExamScheduleVM
+             {
+                 Id = e.Id,
+                 Name = e.Name,
+                 Type = e.Type,
+                 Duration = e.Duration,
+                 StartDate = e.StartDate,
+
+                 CourseName = e.course.Name
+             })
+             .ToList();
+        }
     }
 }

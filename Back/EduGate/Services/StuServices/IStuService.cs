@@ -18,5 +18,6 @@ namespace EduGate.Services.StuServices
         Task<List<CompletedExamVM>> GetCompletedExams(int studentId);
         Task<TakeExamVM?> StartExam(int studentId, int examId);
         Task SubmitExam(int studentId, SubmitExamVM model);
+        Task<List<ExamScheduleVM>> GetExamSchedule(int studentId);
     }
 }

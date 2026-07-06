@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model List<EduGate.ViewModels.Student.ExamScheduleVM>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule - EduGate</title>
@@ -46,46 +47,49 @@
             <div class="page-content">
                 <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Upcoming Events</h3>
                 <div class="schedule-list">
-                    <div class="schedule-item">
-                        <div class="schedule-date"><div class="schedule-day">15</div><div class="schedule-month">MAR</div></div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Calculus II - Midterm Examination</div>
-                            <div class="schedule-time">9:00 AM - 11:00 AM &middot; Main Hall</div>
+
+                    @foreach (var exam in Model)
+                    {
+                        <div class="schedule-item">
+
+                            <div class="schedule-date">
+                                <div class="schedule-day">
+                                    @exam.StartDate.Day
+                                </div>
+
+                                <div class="schedule-month">
+                                    @exam.StartDate.ToString("MMM").ToUpper()
+                                </div>
+                            </div>
+
+                            <div class="schedule-content">
+
+                                <div class="schedule-title">
+                                    @exam.Name
+                                </div>
+
+                                <div class="schedule-time">
+                                    @exam.CourseName &middot;
+                                    @exam.StartDate.ToString("hh:mm tt") &middot;
+                                    @exam.Duration min
+                                </div>
+
+                            </div>
+
+                            <span class="badge badge-warning">
+                                @exam.Type
+                            </span>
+
                         </div>
-                        <span class="badge badge-warning">Exam</span>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-date"><div class="schedule-day">17</div><div class="schedule-month">MAR</div></div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Physics 101 - Lab Session</div>
-                            <div class="schedule-time">2:00 PM - 4:00 PM &middot; Lab B</div>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <div class="card" style="text-align:center;padding:40px;">
+                            <h5>No upcoming schedule</h5>
                         </div>
-                        <span class="badge badge-info">Lab</span>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-date"><div class="schedule-day">18</div><div class="schedule-month">MAR</div></div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Organic Chemistry - Lecture</div>
-                            <div class="schedule-time">9:00 AM - 10:30 AM &middot; Room 301</div>
-                        </div>
-                        <span class="badge badge-primary">Lecture</span>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-date"><div class="schedule-day">20</div><div class="schedule-month">MAR</div></div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Linear Algebra - Tutorial</div>
-                            <div class="schedule-time">11:00 AM - 12:00 PM &middot; Room 205</div>
-                        </div>
-                        <span class="badge badge-primary">Tutorial</span>
-                    </div>
-                    <div class="schedule-item">
-                        <div class="schedule-date"><div class="schedule-day">28</div><div class="schedule-month">APR</div></div>
-                        <div class="schedule-content">
-                            <div class="schedule-title">Physics 101 - Final Exam</div>
-                            <div class="schedule-time">10:00 AM - 1:00 PM &middot; Main Hall</div>
-                        </div>
-                        <span class="badge badge-warning">Exam</span>
-                    </div>
+                    }
+
                 </div>
             </div>
         </main>

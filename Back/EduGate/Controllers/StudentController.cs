@@ -90,9 +90,13 @@ namespace EduGate.Controllers
         {
             return View();
         }
-        public IActionResult Schedule()
+        public async Task<IActionResult> Schedule()
         {
-            return View();
+            int StudentId = UserId.Value;
+
+            var model = await _service.GetExamSchedule(StudentId);
+
+            return View(model);
         }
         public IActionResult Settings()
         {
