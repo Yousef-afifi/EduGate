@@ -1,6 +1,7 @@
 ﻿using EduGate.Data;
 using EduGate.Models;
 using EduGate.ViewModels.Teacher;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
@@ -249,6 +250,40 @@ namespace EduGate.Services.TeachService
             };
 
             _context.Course.Add(course);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<UploadMaterialVM> GetUploadMaterial(int courseId)
+        {
+            var data = await _context.Course
+                .Where(c => c.Id == courseId)
+                .Include(c => c.teacher)
+                .Select(x => new UploadMaterialVM
+                {
+                    Lessons = x.Lessons.Select(l => new SelectListItem
+                    {
+                        Value = l.Id.ToString(),
+                        Text = l.Name
+                    }).ToList(),
+                    TeacherName = x.teacher.First_Name + " " + x.teacher.Last_Name,
+                    CourseId = x.Id,
+                    CourseName = x.Name,
+                    Initials = $"{char.ToUpper(x.teacher.First_Name[0])}{char.ToUpper(x.teacher.Last_Name[0])}"
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task UploadMaterial(UploadMaterialVM model)
+        {
+            var material = new LessonMaterial
+            {
+                Title = model.Title,
+                Lesson_Id = model.LessonId,
+                File_Type = model.File.ContentType,
+                File_Size = (model.File.Length / (1024 * 1024)),
+                File_Path = $"https://edugate.com/videos/{model.File.FileName}"
+            };
+
+            _context.Material.Add(material);
             await _context.SaveChangesAsync();
         }
     }

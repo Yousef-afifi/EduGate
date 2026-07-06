@@ -1,4 +1,5 @@
 ﻿using EduGate.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 
@@ -80,5 +81,19 @@ namespace EduGate.ViewModels.Teacher
         public string CourseName { get; set; }
         [Required]
         public string Description { get; set; }
+    }
+    public class UploadMaterialVM
+    {
+        public string? TeacherName { get; set; }
+        public string? Initials { get; set; }
+        public string? CourseName { get; set; }
+        public int CourseId { get; set; }
+        [Required]
+        public int LessonId { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public IFormFile File { get; set; }
+        public List<SelectListItem> Lessons { get; set; } = new();
     }
 }

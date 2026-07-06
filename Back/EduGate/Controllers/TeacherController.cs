@@ -5,6 +5,7 @@ using EduGate.Services.TeachService;
 using EduGate.ViewModels.Teacher;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace EduGate.Controllers
 {
@@ -123,6 +124,30 @@ namespace EduGate.Controllers
             }
 
             await _service.AddAssessment(model);
+
+            return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Upload_Material(int id)
+        {
+            var data = await _service.GetUploadMaterial(id);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Upload_Material(UploadMaterialVM model)
+        {
+            if(!ModelState.IsValid)
+            {
+                var data = await _service.GetUploadMaterial(model.CourseId);
+
+                model.CourseName = data.CourseName;
+                model.TeacherName= data.TeacherName;
+                model.Initials = data.Initials;
+
+                return View(data);
+            }
+
+            await _service.UploadMaterial(model);
 
             return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
