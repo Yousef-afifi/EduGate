@@ -103,6 +103,13 @@
                             </div>
                         </div>
                     }
+
+                    @if (!Model.UpcomingExams.Any())
+                    {
+                        <div class="card" style="text-align:center;padding:40px;">
+                            <h5>No upcoming Exam</h5>
+                        </div>
+                    }
                 </div>
 
                 <div class="exam-section" data-section="completed" style="display:none;">
@@ -140,7 +147,17 @@
                                 </span>
                             </div>
                         </div>
+
+
                     }
+
+                    @if (!Model.CompletedExams.Any())
+                    {
+                        <div class="card" style="text-align:center;padding:40px;">
+                            <h5>No completed Exam</h5>
+                        </div>
+                    }
+                   
                 </div>
             </div>
         </main>

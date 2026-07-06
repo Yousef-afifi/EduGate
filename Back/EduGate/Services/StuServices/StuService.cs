@@ -3,6 +3,7 @@ using EduGate.Enums;
 using EduGate.Models;
 using EduGate.ViewModels.Student;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace EduGate.Services.StuServices
 {
@@ -18,10 +19,32 @@ namespace EduGate.Services.StuServices
 
         public async Task<DashboardVM> GetStudentOverview(int studentId)
         {
+            var AllExamList = await GetExamInfo(studentId);
+            var completedexam = await GetCompletedExams(studentId);
+            var upcoming = await GetUpcomingExams(studentId);
+            double avg = 0;
+            foreach (var exam in completedexam) 
+            {
+                avg += exam.Score;
+
+            }
+            avg = completedexam.Count > 0 ? Math.Round(avg / completedexam.Count) : 0;
+
+            var Student = await _context.Student
+               .Where(s => s.Id == studentId)
+               .FirstOrDefaultAsync();
+
             return new DashboardVM
             {
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
+                UpcomingExamsCount = upcoming.Count,
+                CompletedExamsCount = completedexam.Count,
+                ExamsAvgScore=avg,
+                EnrolledCoursesCount = await _context.Enrollment.CountAsync(s => s.Student_Id == studentId),
                 EnrolledCourses = await GetAllCoursesEnrolled(studentId),
                 RecentGrades = await GetQuiz_AssesmentGrades(studentId),
+                ExamsSchedule = AllExamList
             };
 
         }
@@ -47,7 +70,7 @@ namespace EduGate.Services.StuServices
             var studentAttempts = await _context.ExamAttempt
             .Include(a => a.exam)
             .ThenInclude(e => e.course)
-            .Where(a => a.Student_Id == studentId)
+            .Where(a => a.Student_Id == studentId && a.IsCompleted)
             .OrderByDescending(a => a.SubmittedAt)
             .ToListAsync();
 
@@ -492,7 +515,24 @@ namespace EduGate.Services.StuServices
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<ExamScheduleVM>> GetExamSchedule(int studentId)
+        public async Task<ExamScheduleVM> GetExamSchedule(int studentId)
+        {
+            var Student = await _context.Student
+                .Where(s => s.Id == studentId)
+                .FirstOrDefaultAsync();
+
+            return new ExamScheduleVM
+            {
+                StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
+                initials = Student != null ? $"{Student.First_Name?[0]}{Student.Last_Name?[0]}".ToUpper() : "??",
+                Examinfo = await GetExamInfo(studentId),
+            };
+            
+        }
+
+
+
+        public async Task<List<ExamInfoVM>> GetExamInfo(int studentId)
         {
             var enrollments = await _context.Enrollment
                 .Where(e => e.Student_Id == studentId)
@@ -513,7 +553,7 @@ namespace EduGate.Services.StuServices
             return exams
              .Where(e => !completedExamIds.Contains(e.Id))
              .OrderBy(e => e.StartDate)
-             .Select(e => new ExamScheduleVM
+             .Select(e => new ExamInfoVM
              {
                  Id = e.Id,
                  Name = e.Name,

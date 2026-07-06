@@ -15,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar" style="background:#3B82F6;">SJ</div>
-                <div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div>
+                <div class="user-avatar" style="background:#3B82F6;">@Model.initials</div>
+                <div class="user-info"><div class="user-name">@Model.StudentName</div><div class="user-role">Student</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -47,30 +47,30 @@
             <div class="page-content">
                 <!-- Welcome Banner -->
                 <div class="card" style="background:linear-gradient(135deg,#3B82F6,#60A5FA);color:white;margin-bottom:32px;">
-                    <h2 style="font-size:22px;font-weight:700;margin-bottom:8px;">Welcome back, Sarah!</h2>
-                    <p style="opacity:0.9;font-size:14px;">You have 2 upcoming exams this week. Keep up the great work!</p>
+                    <h2 style="font-size:22px;font-weight:700;margin-bottom:8px;">Welcome back, @Model.StudentName!</h2>
+                    <p style="opacity:0.9;font-size:14px;">You have @Model.UpcomingExamsCount upcoming exams this week. Keep up the great work!</p>
                 </div>
 
                 <!-- Stats -->
                 <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);">
                     <div class="stat-card">
                         <div class="stat-header"><span class="stat-label">Enrolled Courses</span><div class="stat-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg></div></div>
-                        <div class="stat-value">5</div>
+                        <div class="stat-value">@Model.EnrolledCoursesCount</div>
                         <div class="stat-change up">Active</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-header"><span class="stat-label">Avg. Score</span><div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /></svg></div></div>
-                        <div class="stat-value">84%</div>
-                        <div class="stat-change up">+3% this month</div>
+                        <div class="stat-value">@Model.ExamsAvgScore%</div>
+                        <div class="stat-change up">Exams Average Score</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-header"><span class="stat-label">Completed</span><div class="stat-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg></div></div>
-                        <div class="stat-value">24</div>
-                        <div class="stat-change up">Lessons done</div>
+                        <div class="stat-value">@Model.CompletedExamsCount</div>
+                        <div class="stat-change up">Exams done</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-header"><span class="stat-label">Upcoming</span><div class="stat-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg></div></div>
-                        <div class="stat-value">2</div>
+                        <div class="stat-value">@Model.UpcomingExamsCount</div>
                         <div class="stat-change down">Exams this week</div>
                     </div>
                 </div>
@@ -80,9 +80,9 @@
                         <div class="card">
                             <div class="card-header"><h3 class="card-title">My Courses</h3><a asp-controller="Student" asp-action="Courses" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a></div>
                             <div style="display:flex;flex-direction:column;gap:16px;">
-                                @if(Model.EnrolledCourses != null)
+                                @if (Model.EnrolledCourses != null)
                                 {
-                                    @foreach(var course in Model.EnrolledCourses)
+                                    @foreach (var course in Model.EnrolledCourses)
                                     {
                                         <div>
                                             <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:500;">@course.Name</span></div>
@@ -98,13 +98,13 @@
                                 <table class="data-table">
                                     <thead><tr><th>Assessment</th><th>Course</th><th>Score</th></tr></thead>
                                     <tbody>
-                                        @if(Model.RecentGrades != null)
+                                        @if (Model.RecentGrades != null)
                                         {
                                             var MostRecentGrades = Model.RecentGrades.TakeLast(4).ToList();
                                             int? Percentage = 0;
-                                            @foreach(var grade in MostRecentGrades)
+                                            @foreach (var grade in MostRecentGrades)
                                             {
-                                                Percentage = (grade.StudentGrade/grade.TotalMark)*100;
+                                                Percentage = (grade.StudentGrade / grade.TotalMark) * 100;
                                                 <tr><td>@grade.AssessmentName</td><td>@grade.CourseName</td><td>@Percentage%</td></tr>
                                             }
                                         }
@@ -115,34 +115,41 @@
                     </div>
                     <div>
                         <div class="card">
-                            <div class="card-header"><h3 class="card-title">This Week's Schedule</h3></div>
-                            <div style="display:flex;flex-direction:column;gap:10px;">
-                                <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
-                                    <span style="width:70px;color:var(--text-muted);font-size:12px;">Mon</span>
-                                    <span style="flex:1;">Calculus II - Integration</span>
-                                    <span style="color:var(--text-muted);font-size:12px;">10:00 AM</span>
-                                </div>
-                                <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
-                                    <span style="width:70px;color:var(--text-muted);font-size:12px;">Tue</span>
-                                    <span style="flex:1;">Physics 101 - Lab</span>
-                                    <span style="color:var(--text-muted);font-size:12px;">2:00 PM</span>
-                                </div>
-                                <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
-                                    <span style="width:70px;color:var(--text-muted);font-size:12px;">Wed</span>
-                                    <span style="flex:1;">Organic Chemistry - Lecture</span>
-                                    <span style="color:var(--text-muted);font-size:12px;">9:00 AM</span>
-                                </div>
-                                <div style="display:flex;align-items:center;gap:10px;font-size:14px;">
-                                    <span style="width:70px;color:var(--text-muted);font-size:12px;">Thu</span>
-                                    <span style="flex:1;">Linear Algebra - Tutorial</span>
-                                    <span style="color:var(--text-muted);font-size:12px;">11:00 AM</span>
-                                </div>
+                            <div class="card-header"><h3 class="card-title">Exams Schedule</h3></div>
+                            <div style="display:flex; flex-direction:column; gap:10px;">
+
+                                @if (Model.ExamsSchedule != null && Model.ExamsSchedule.Any())
+                                {
+                                    @foreach (var item in Model.ExamsSchedule.TakeLast(6))
+                                    {
+                                        <div style="display:flex; align-items:center; gap:10px; font-size:14px;">
+                                            <span style="width:70px; color:var(--text-muted); font-size:12px;">
+                                                @item.StartDate.ToString("ddd")
+                                            </span>
+                                            <span style="flex:1;">
+                                                @item.CourseName - @item.Name
+                                            </span>
+
+                                            <span style="color:var(--text-muted); font-size:12px;">
+                                                @item.StartDate.ToString("hh:mm tt")
+                                            </span>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div style="text-align:center; color:var(--text-muted); font-size:13px; padding: 10px 0;">
+                                        No upcoming exams or assignments
+                                    </div>
+                                }
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
-    <script src="~/js/app.js"></script>
+        </div>
+    </main>
+</div>
+<script src="~/js/app.js"></script>
 </body>
