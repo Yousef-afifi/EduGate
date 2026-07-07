@@ -1703,3 +1703,26 @@ button {
   margin-left: auto;
   margin-right: auto;
 }
+
+.deleteButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+}
+
+.deleteButton:hover {
+    background: #c0392b;
+}
+
+.deleteButton:active {
+    background: #e74c3c;
+}

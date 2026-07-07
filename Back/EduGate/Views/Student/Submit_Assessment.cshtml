@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Student.SubmitAssessmentVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assessment - EduGate</title>
@@ -8,7 +9,7 @@
     <div class="app-layout">
         <aside class="sidebar">
             <div class="sidebar-header"><a asp-controller="Home" asp-action="Index" class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>EduGate</a></div>
-            <div class="sidebar-user"><div class="user-avatar" style="background:#3B82F6;">SJ</div><div class="user-info"><div class="user-name">Sarah Johnson</div><div class="user-role">Student</div></div></div>
+            <div class="sidebar-user"><div class="user-avatar" style="background:#3B82F6;">@Model.Initials</div><div class="user-info"><div class="user-name">@Model.StudentName</div><div class="user-role">Student</div></div></div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Main</div>
@@ -38,32 +39,34 @@
                 <div class="card" style="margin-bottom:24px;">
                     <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;">
                         <div>
-                            <h3 id="assessmentTitle" style="font-size:20px;font-weight:700;margin-bottom:6px;">Course Project Draft</h3>
-                            <p id="assessmentMeta" style="font-size:13px;color:var(--text-muted);">Due Mar 22 &middot; 100 points &middot; File upload</p>
+                            <h3 id="assessmentTitle" style="font-size:20px;font-weight:700;margin-bottom:6px;">@Model.AssessmentTitle</h3>
+                            <p id="assessmentMeta" style="font-size:13px;color:var(--text-muted);">Due @Model.DueDate &middot; @Model.TotalMark points &middot; File upload</p>
                         </div>
                         <span class="badge badge-primary">Due Soon</span>
                     </div>
                     <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border-light);">
                         <h4 style="font-size:15px;font-weight:600;margin-bottom:8px;">Instructions</h4>
-                        <p style="font-size:14px;color:var(--text-light);line-height:1.7;">Review the module requirements, prepare your solution, and submit a clear file with your working steps. Include references, screenshots, or notes when they help explain your answer.</p>
+                        <p style="font-size:14px;color:var(--text-light);line-height:1.7;">@Model.Instructions</p>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h3 class="card-title" style="margin-bottom:18px;">Submit Assessment</h3>
-                    <div class="form-group">
-                        <label class="form-label">Upload File</label>
-                        <input type="file" class="form-input">
+                <form asp-action="Submit_Assessment" method="post" enctype="multipart/form-data">
+                    <div class="card">
+                        <h3 class="card-title" style="margin-bottom:18px;">Submit Assessment</h3>
+                        <input asp-for="CourseId" type="hidden" />
+                        <input asp-for="StudentId" type="hidden" />
+                        <input asp-for="QuestionId" type="hidden" />
+                        <input asp-for="AssessmentId" type="hidden" />
+                        <div class="form-group">
+                            <label asp-for="@Model.File" class="form-label">Upload File</label>
+                            <input asp-for="@Model.File" type="file" class="form-input">
+                        </div>
+                        <div style="display:flex;justify-content:flex-end;gap:12px;">
+                            <a id="cancelLink" href="javascript:void(0);" onclick="history.back();" class="btn btn-outline">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit Assessment</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Submission Notes</label>
-                        <textarea class="form-textarea" placeholder="Add notes for your teacher..."></textarea>
-                    </div>
-                    <div style="display:flex;justify-content:flex-end;gap:12px;">
-                        <a id="cancelLink" href="javascript:void(0);" onclick="history.back();" class="btn btn-outline">Cancel</a>
-                        <button class="btn btn-primary" onclick="submitAssessment()">Submit Assessment</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </main>
     </div>

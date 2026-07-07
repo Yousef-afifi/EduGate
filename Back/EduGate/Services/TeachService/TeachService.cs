@@ -1,6 +1,7 @@
 using EduGate.Data;
 using EduGate.Models;
 using EduGate.ViewModels.Teacher;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
@@ -82,7 +83,7 @@ namespace EduGate.Services.TeachService
             var students = await _context.Account
                 .Where(a => a.Teacher_Id == id)
                 .Include(a => a.student)
-                .Select(s => new StudentVM 
+                .Select(s => new StudentVM
                 {
                     StudentName = s.student.First_Name + " " + s.student.Last_Name,
                     Initials = $"{char.ToUpper(s.student.First_Name[0])}{char.ToUpper(s.student.Last_Name[0])}",
@@ -160,7 +161,7 @@ namespace EduGate.Services.TeachService
                 Questions = new List<Question>()
             };
 
-            foreach(var q in model.Questions)
+            foreach (var q in model.Questions)
             {
                 var question = new Question
                 {
@@ -169,7 +170,7 @@ namespace EduGate.Services.TeachService
                     Choices = new List<Choice>()
                 };
 
-                foreach(var c in q.Choices)
+                foreach (var c in q.Choices)
                 {
                     question.Choices.Add(new Choice
                     {
@@ -198,9 +199,9 @@ namespace EduGate.Services.TeachService
 
             return data;
         }
-        public async Task AddAssessment(AddAssessmentVM model) 
+        public async Task AddAssessment(AddAssessmentVM model)
         {
-            var assessment = new Exam 
+            var assessment = new Exam
             {
                 Name = model.AssessmentTitle,
                 CreatedAt = DateTime.Now,
@@ -251,6 +252,7 @@ namespace EduGate.Services.TeachService
             _context.Course.Add(course);
             await _context.SaveChangesAsync();
         }
+
         public async Task<DashboardVM> GetDashboardData(int teacherId)
         {
             
@@ -341,5 +343,44 @@ namespace EduGate.Services.TeachService
             }
             return false;
         }
+
+        public async Task<UploadMaterialVM> GetUploadMaterial(int courseId)
+        {
+            var data = await _context.Course
+                .Where(c => c.Id == courseId)
+                .Include(c => c.teacher)
+                .Select(x => new UploadMaterialVM
+                {
+                    Lessons = x.Lessons.Select(l => new SelectListItem
+                    {
+                        Value = l.Id.ToString(),
+                        Text = l.Name
+                    }).ToList(),
+                    TeacherName = x.teacher.First_Name + " " + x.teacher.Last_Name,
+                    CourseId = x.Id,
+                    CourseName = x.Name,
+                    Initials = $"{char.ToUpper(x.teacher.First_Name[0])}{char.ToUpper(x.teacher.Last_Name[0])}"
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task UploadMaterial(UploadMaterialVM model)
+        {
+            var material = new LessonMaterial
+            {
+                Title = model.Title,
+                Lesson_Id = model.LessonId,
+                File_Type = model.File.ContentType,
+                File_Size = (model.File.Length / (1024 * 1024)),
+                File_Path = $"https://edugate.com/videos/{model.File.FileName}"
+            };
+
+            _context.Material.Add(material);
+            await _context.SaveChangesAsync();
+        }
+
+        
+
+
     }
 }

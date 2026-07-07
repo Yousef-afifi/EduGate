@@ -20,9 +20,12 @@ namespace EduGate.Services.StuServices
         Task SubmitExam(int studentId, SubmitExamVM model);
         Task<List<ExamInfoVM>> GetExamInfo(int studentId);
         Task<ExamScheduleVM> GetExamSchedule(int studentId);
-
         Task<EduGate.ViewModels.Shared.SettingsVM> GetSettings(int studentId);
         Task<bool> UpdateProfile(int studentId, EduGate.ViewModels.Shared.SettingsVM model);
         Task<bool> UpdatePassword(int studentId, EduGate.ViewModels.Shared.SettingsVM model);
+
+        //------------------------------------------------------------
+        Task<SubmitAssessmentVM> GetSubmitAssessment(int ExamId, int StudentId);
+        Task SubmitAssessment(SubmitAssessmentVM model);
     }
 }

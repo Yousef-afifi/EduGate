@@ -1,8 +1,8 @@
-﻿@model EduGate.ViewModels.Teacher.CoursePageVM
+﻿@model EduGate.ViewModels.Teacher.UploadMaterialVM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses - EduGate</title>
+    <title>Teacher Dashboard - EduGate</title>
     <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
@@ -39,41 +39,42 @@
 
         <main class="main-content">
             <div class="topbar">
-                <h1 class="topbar-title">Courses</h1>
-                <div class="topbar-actions">
-                    <button class="icon-btn" onclick="showToast('No new notifications', 'info')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 01-3.46 0" /></svg><span style="position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--primary);border-radius:50%;"></span></button>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <h1 class="topbar-title">Upload Material</h1>
                 </div>
             </div>
 
             <div class="page-content">
-                <div class="page-header">
-                   
-                    <a asp-controller="Teacher" asp-action="Add_Course" class="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        Add Course
-                    </a>
-                </div>
-
-                <div class="course-grid">
-                    @if(Model != null)
-                    {
-                        @foreach(var course in Model.Courses)
-                        {
-                            <div class="course-card card-hover">
-                                <div class="course-img" style="background:linear-gradient(135deg,#E84C4C,#FF8A80);">&#128218;</div>
-                                <div class="course-body">
-                                    <h3 class="course-title">@course.Name</h3>
-                                    <p class="course-meta">@course.TeacherName &middot; @course.LessonCount lessons &middot; @course.StudentConut students</p>
-                                    <div class="course-actions">
-                                        <a asp-controller="Teacher" asp-action="Add_Lesson" asp-route-id="@course.Id" class="btn btn-sm btn-ghost">+ Lesson</a>
-                                        <a asp-controller="Teacher" asp-action="Add_Quiz" asp-route-id="@course.Id" class="btn btn-sm btn-ghost">+ Quiz</a>
-                                        <a asp-controller="Teacher" asp-action="Add_Assessment" asp-route-id="@course.Id" class="btn btn-sm btn-ghost">+ Assessment</a>
-                                        <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@course.Id" class="btn btn-sm btn-outline course-view-btn">View Course</a>
-                                    </div>
-                                </div>
+                <div style="max-width:700px;">
+                    <div class="card" style="margin-bottom:24px;">
+                        <form asp-action="Upload_Material" method="post" enctype="multipart/form-data">
+                            <div style="padding:12px 16px;background:var(--primary-light);border-radius:var(--radius);margin-bottom:20px;">
+                                <span style="font-size:13px;color:var(--primary);font-weight:500;">Course: @Model.CourseName</span>
                             </div>
-                        }
-                    }
+                            <input asp-for="CourseId" type="hidden" />
+                            <div class="form-group">
+                                <label asp-for="@Model.Title" class="form-label">Material Title</label>
+                                <input asp-for="@Model.Title" type="text" class="form-input" placeholder="e.g., Integration by Parts.pdf" required>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LessonId">Select Lesson</label>
+                                <select asp-for="LessonId"
+                                        asp-items="Model.Lessons"
+                                        class="form-select">
+                                    <option value="">Select Lesson</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.File" class="form-label">File</label>
+                                <input asp-for="@Model.File" type="file" class="form-control" required>
+                            </div>
+                            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                                <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="btn btn-outline">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Upload Material</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>

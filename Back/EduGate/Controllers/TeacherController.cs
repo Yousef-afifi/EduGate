@@ -3,8 +3,10 @@ using EduGate.Models;
 using EduGate.Services.StuServices;
 using EduGate.Services.TeachService;
 using EduGate.ViewModels.Teacher;
+using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace EduGate.Controllers
 {
@@ -128,6 +130,30 @@ namespace EduGate.Controllers
 
             return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
+        [HttpGet]
+        public async Task<IActionResult> Upload_Material(int id)
+        {
+            var data = await _service.GetUploadMaterial(id);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Upload_Material(UploadMaterialVM model)
+        {
+            if(!ModelState.IsValid)
+            {
+                var data = await _service.GetUploadMaterial(model.CourseId);
+
+                model.CourseName = data.CourseName;
+                model.TeacherName= data.TeacherName;
+                model.Initials = data.Initials;
+
+                return View(data);
+            }
+
+            await _service.UploadMaterial(model);
+
+            return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
+        }
         public IActionResult Exams()
         {
             return View();
@@ -216,6 +242,19 @@ namespace EduGate.Controllers
                 model.Initials = currentData.Initials;
                 return View("Settings", model);
             }
+        }
+
+        public IActionResult Edit_Quiz(int id)
+        {
+            return View();
+        }
+        public IActionResult Edit_Lesson(int id)
+        {
+            return View();
+        }
+        public IActionResult Edit_Assesment(int id)
+        {
+            return View();
         }
 
     }
