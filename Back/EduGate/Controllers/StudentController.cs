@@ -1,4 +1,4 @@
-﻿using EduGate.Data;
+using EduGate.Data;
 using EduGate.Models;
 using EduGate.Services.StuServices;
 using EduGate.ViewModels.Student;
@@ -125,9 +125,66 @@ namespace EduGate.Controllers
 
             return View(model);
         }
-        public IActionResult Settings()
+        [HttpGet]
+        public async Task<IActionResult> Settings()
         {
-            return View();
+            int StudentId = UserId.Value;
+            var model = await _service.GetSettings(StudentId);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(EduGate.ViewModels.Shared.SettingsVM model)
+        {
+            var StudentId = UserId.Value;
+
+            ModelState.Remove("CurrentPassword");
+            ModelState.Remove("NewPassword");
+            ModelState.Remove("ConfirmNewPassword");
+
+            if (!ModelState.IsValid)
+            {
+                var currentData = await _service.GetSettings(StudentId);
+                model.TeacherName = currentData.TeacherName;
+                model.Initials = currentData.Initials;
+                return View("Settings", model); 
+            }
+
+            await _service.UpdateProfile(StudentId, model);
+            return RedirectToAction("Settings");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(EduGate.ViewModels.Shared.SettingsVM model)
+        {
+            var StudentId = UserId.Value;
+
+            ModelState.Remove("FirstName");
+            ModelState.Remove("LastName");
+            ModelState.Remove("Email");
+
+            if (!ModelState.IsValid)
+            {
+                var currentData = await _service.GetSettings(StudentId);
+                model.TeacherName = currentData.TeacherName;
+                model.Initials = currentData.Initials;
+                return View("Settings", model); 
+            }
+
+            var success = await _service.UpdatePassword(StudentId, model);
+
+            if (success)
+            {
+                return RedirectToAction("Settings");
+            }
+            else
+            {
+                ModelState.AddModelError("CurrentPassword", "Current password is incorrect");
+                var currentData = await _service.GetSettings(StudentId);
+                model.TeacherName = currentData.TeacherName;
+                model.Initials = currentData.Initials;
+                return View("Settings", model);
+            }
         }
     }
 }

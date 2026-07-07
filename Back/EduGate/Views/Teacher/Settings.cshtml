@@ -1,4 +1,5 @@
-﻿<head>
+@model EduGate.ViewModels.Shared.SettingsVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - EduGate</title>
@@ -14,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -46,57 +47,59 @@
 
             <div class="page-content">
                 <div style="max-width:700px;">
-                    <!-- Profile Settings -->
-                    <div class="settings-section">
-                        <h3 class="settings-title">Profile Information</h3>
-                        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-                            <div class="user-avatar" style="width:64px;height:64px;font-size:24px;">JD</div>
-                            <div>
-                                <button class="btn btn-sm btn-outline">Change Avatar</button>
-                            </div>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-input" value="John">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-input" value="Doe">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" value="john.doe@teacher.edu">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Department</label>
-                            <input type="text" class="form-input" value="Mathematics">
-                        </div>
-                        <div style="display:flex;justify-content:flex-end;">
-                            <button class="btn btn-primary" onclick="showToast('Profile saved!', 'success')">Save Changes</button>
-                        </div>
-                    </div>
+                    <!-- Profile Settings Form -->
+                    <form asp-action="UpdateProfile" method="POST">
+                        <div asp-validation-summary="ModelOnly" style="color:red; margin-bottom:10px;"></div>
 
-                    <!-- Security -->
-                    <div class="settings-section">
-                        <h3 class="settings-title">Security</h3>
-                        <div class="form-group">
-                            <label class="form-label">Current Password</label>
-                            <input type="password" class="form-input" placeholder="Enter current password">
+                        <div class="settings-section">
+                            <h3 class="settings-title">Profile Information</h3>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input asp-for="FirstName" class="form-input">
+                                    <span asp-validation-for="FirstName" style="color:red;font-size:12px;"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input asp-for="LastName" class="form-input">
+                                    <span asp-validation-for="LastName" style="color:red;font-size:12px;"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input asp-for="Email" class="form-input">
+                                <span asp-validation-for="Email" style="color:red;font-size:12px;"></span>
+                            </div>
+                            <div style="display:flex;justify-content:flex-end;">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">New Password</label>
-                            <input type="password" class="form-input" placeholder="Enter new password">
+                    </form>
+
+                    <!-- Security Form -->
+                    <form asp-action="ChangePassword" method="POST">
+                        <div class="settings-section">
+                            <h3 class="settings-title">Security</h3>
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input asp-for="CurrentPassword" type="password" class="form-input" placeholder="Enter current password">
+                                <span asp-validation-for="CurrentPassword" style="color:red;font-size:12px;"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input asp-for="NewPassword" type="password" class="form-input" placeholder="Enter new password">
+                                <span asp-validation-for="NewPassword" style="color:red;font-size:12px;"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input asp-for="ConfirmNewPassword" type="password" class="form-input" placeholder="Confirm new password">
+                                <span asp-validation-for="ConfirmNewPassword" style="color:red;font-size:12px;"></span>
+                            </div>
+                            <div style="display:flex;justify-content:flex-end;">
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-input" placeholder="Confirm new password">
-                        </div>
-                        <div style="display:flex;justify-content:flex-end;">
-                            <button class="btn btn-primary" onclick="showToast('Password updated!', 'success')">Update Password</button>
-                        </div>
-                    </div>
+                    </form>
 
                 </div>
             </div>

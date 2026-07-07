@@ -1,4 +1,4 @@
-﻿using EduGate.Data;
+using EduGate.Data;
 using EduGate.Enums;
 using EduGate.Models;
 using EduGate.ViewModels.Student;
@@ -566,6 +566,51 @@ namespace EduGate.Services.StuServices
              })
              .ToList();
         }
+
+        public async Task<EduGate.ViewModels.Shared.SettingsVM> GetSettings(int studentId)
+        {
+            var account = await _context.Account.Include(a => a.student).FirstOrDefaultAsync(a => a.Student_Id == studentId);
+            if (account == null || account.student == null) return new EduGate.ViewModels.Shared.SettingsVM();
+
+            return new EduGate.ViewModels.Shared.SettingsVM
+            {
+                FirstName = account.student.First_Name,
+                LastName = account.student.Last_Name,
+                Email = account.User_Name,
+                TeacherName = account.student.First_Name + " " + account.student.Last_Name,
+                Initials = $"{char.ToUpper(account.student.First_Name[0])}{char.ToUpper(account.student.Last_Name[0])}"
+            };
+        }
+
+        public async Task<bool> UpdateProfile(int studentId, EduGate.ViewModels.Shared.SettingsVM model)
+        {
+            var account = await _context.Account.Include(a => a.student).FirstOrDefaultAsync(a => a.Student_Id == studentId);
+            if (account == null || account.student == null) return false;
+
+            account.student.First_Name = model.FirstName;
+            account.student.Last_Name = model.LastName;
+            account.User_Name = model.Email;
+
+            _context.Account.Update(account);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdatePassword(int studentId, EduGate.ViewModels.Shared.SettingsVM model)
+        {
+            var account = await _context.Account.FirstOrDefaultAsync(a => a.Student_Id == studentId);
+            if (account == null) return false;
+
+            if (account.Password == model.CurrentPassword)
+            {
+                account.Password = model.NewPassword;
+                _context.Account.Update(account);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         //---------------------------------------------------------------------------
         public async Task<SubmitAssessmentVM> GetSubmitAssessment(int ExamId , int StudentId)
         {

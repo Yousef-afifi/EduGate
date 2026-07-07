@@ -1,4 +1,5 @@
-﻿<head>
+@model EduGate.ViewModels.Teacher.DashboardVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard - EduGate</title>
@@ -18,9 +19,9 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
+                <div class="user-avatar">@Model.Initials</div>
                 <div class="user-info">
-                    <div class="user-name">John Doe</div>
+                    <div class="user-name">@Model.TeacherName</div>
                     <div class="user-role">Teacher</div>
                 </div>
             </div>
@@ -86,8 +87,8 @@
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
                             </div>
                         </div>
-                        <div class="stat-value" data-counter="248">248</div>
-                        <div class="stat-change up">+12 this month</div>
+                        <div class="stat-value">@Model.TotalStudents</div>
+                        @* <div class="stat-change up">+12 this month</div> *@
                     </div>
                     <div class="stat-card">
                         <div class="stat-header">
@@ -96,18 +97,8 @@
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
                             </div>
                         </div>
-                        <div class="stat-value" data-counter="8">8</div>
-                        <div class="stat-change up">+2 new</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <span class="stat-label">Avg. Completion</span>
-                            <div class="stat-icon orange">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
-                            </div>
-                        </div>
-                        <div class="stat-value">72%</div>
-                        <div class="stat-change up">+5% vs last month</div>
+                        <div class="stat-value">@Model.ActiveCourses</div>
+                        @* <div class="stat-change up">+2 new</div> *@
                     </div>
                     <div class="stat-card">
                         <div class="stat-header">
@@ -116,120 +107,47 @@
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
                             </div>
                         </div>
-                        <div class="stat-value" data-counter="3">3</div>
-                        <div class="stat-change down">Next in 2 days</div>
+                        <div class="stat-value">@Model.UpcomingExams</div>
                     </div>
                 </div>
 
                 <!-- Dashboard Grid -->
                 <div class="dashboard-grid">
+                    
+                    <!-- Left Column (wider) -->
                     <div>
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Student Enrollment</h3>
-                                <select class="form-select" style="width:auto;font-size:13px;">
-                                    <option>This Month</option>
-                                    <option>Last Month</option>
-                                    <option>This Year</option>
-                                </select>
+                                <h3 class="card-title">Recent Courses</h3>
                             </div>
-                            <div class="chart-container">
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="120px" data-value="180"></div>
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="160px" data-value="220"></div>
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="140px" data-value="195"></div>
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="200px" data-value="248"></div>
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="180px" data-value="210"></div>
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="220px" data-value="265"></div>
-                                <div class="chart-bar blue" style="height:0;background:#3B82F6;" data-height="190px" data-value="230"></div>
+                            <div style="display:flex;flex-direction:column;gap:16px;">
+                                @if (Model.RecentCourses != null && Model.RecentCourses.Any())
+                                {
+                                    foreach (var course in Model.RecentCourses)
+                                    {
+                                        <div style="padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                                            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                                                <span style="font-size:14px; font-weight:600;">@course.Name</span>
+                                                <span style="font-size:12px;color:var(--text-muted);">
+                                                    @course.CreatedAt.ToString("MMM dd, yyyy")
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div style="font-size:13px;color:var(--text-muted);text-align:center;">
+                                        No courses added yet.
+                                    </div>
+                                }
                             </div>
-                            <div style="display:flex;justify-content:space-around;font-size:11px;color:var(--text-muted);margin-top:8px;">
-                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Recent Activity</h3>
-                                <a href="#" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a>
-                            </div>
-                            <ul class="activity-list">
-                                <li class="activity-item">
-                                    <span class="activity-dot" style="background:#10B981;"></span>
-                                    <div>
-                                        <div class="activity-content">Sarah Johnson completed <strong>Calculus Quiz 3</strong></div>
-                                        <div class="activity-time">2 minutes ago</div>
-                                    </div>
-                                </li>
-                                <li class="activity-item">
-                                    <span class="activity-dot" style="background:#3B82F6;"></span>
-                                    <div>
-                                        <div class="activity-content">New student <strong>Mike Peters</strong> joined Physics 101</div>
-                                        <div class="activity-time">15 minutes ago</div>
-                                    </div>
-                                </li>
-                                <li class="activity-item">
-                                    <span class="activity-dot" style="background:#F59E0B;"></span>
-                                    <div>
-                                        <div class="activity-content"><strong>Midterm Exam</strong> submitted by 24 students</div>
-                                        <div class="activity-time">1 hour ago</div>
-                                    </div>
-                                </li>
-                                <li class="activity-item">
-                                    <span class="activity-dot" style="background:#8B5CF6;"></span>
-                                    <div>
-                                        <div class="activity-content">New lesson <strong>Chapter 7: Thermodynamics</strong> added</div>
-                                        <div class="activity-time">3 hours ago</div>
-                                    </div>
-                                </li>
-                                <li class="activity-item">
-                                    <span class="activity-dot" style="background:#10B981;"></span>
-                                    <div>
-                                        <div class="activity-content">Emma Wilson scored 95% on <strong>Organic Chemistry</strong></div>
-                                        <div class="activity-time">5 hours ago</div>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
+                    <!-- Right Column (narrower) -->
                     <div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Course Progress</h3>
-                            </div>
-                            <div style="display:flex;flex-direction:column;gap:16px;">
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                                        <span style="font-size:14px;">Calculus II</span>
-                                        <span style="font-size:13px;color:var(--text-muted);">78%</span>
-                                    </div>
-                                    <div class="progress-bar"><div class="progress-fill blue" style="width:78%"></div></div>
-                                </div>
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                                        <span style="font-size:14px;">Physics 101</span>
-                                        <span style="font-size:13px;color:var(--text-muted);">65%</span>
-                                    </div>
-                                    <div class="progress-bar"><div class="progress-fill green" style="width:65%"></div></div>
-                                </div>
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                                        <span style="font-size:14px;">Organic Chemistry</span>
-                                        <span style="font-size:13px;color:var(--text-muted);">92%</span>
-                                    </div>
-                                    <div class="progress-bar"><div class="progress-fill purple" style="width:92%"></div></div>
-                                </div>
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                                        <span style="font-size:14px;">Linear Algebra</span>
-                                        <span style="font-size:13px;color:var(--text-muted);">54%</span>
-                                    </div>
-                                    <div class="progress-bar"><div class="progress-fill orange" style="width:54%"></div></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
+                        <div class="card" style="margin-bottom: 24px;">
                             <div class="card-header">
                                 <h3 class="card-title">Quick Actions</h3>
                             </div>
@@ -248,7 +166,52 @@
                                 </a>
                             </div>
                         </div>
+
                     </div>
+                </div>
+
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Activity</h3>
+                        <a href="#" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a>
+                    </div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-dot" style="background:#10B981;"></span>
+                            <div>
+                                <div class="activity-content">Sarah Johnson completed <strong>Calculus Quiz 3</strong></div>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-dot" style="background:#3B82F6;"></span>
+                            <div>
+                                <div class="activity-content">New student <strong>Mike Peters</strong> joined Physics 101</div>
+                                <div class="activity-time">15 minutes ago</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-dot" style="background:#F59E0B;"></span>
+                            <div>
+                                <div class="activity-content"><strong>Midterm Exam</strong> submitted by 24 students</div>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-dot" style="background:#8B5CF6;"></span>
+                            <div>
+                                <div class="activity-content">New lesson <strong>Chapter 7: Thermodynamics</strong> added</div>
+                                <div class="activity-time">3 hours ago</div>
+                            </div>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-dot" style="background:#10B981;"></span>
+                            <div>
+                                <div class="activity-content">Emma Wilson scored 95% on <strong>Organic Chemistry</strong></div>
+                                <div class="activity-time">5 hours ago</div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </main>
