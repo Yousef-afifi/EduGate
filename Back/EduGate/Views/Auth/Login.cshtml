@@ -1,4 +1,4 @@
-﻿@model EduGate.ViewModels.Auth.LoginVM
+@model EduGate.ViewModels.Auth.LoginVM
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,7 @@
         </div>
 
         <form id="loginForm" asp-controller="Auth" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" style="color:red; margin-bottom:15px; font-size:14px; text-align:center;"></div>
             <div class="form-group">
                 <label class="form-label">Email</label>
                 <input asp-for="Email" type="email" class="form-input" placeholder="you@example.com" required id="email">

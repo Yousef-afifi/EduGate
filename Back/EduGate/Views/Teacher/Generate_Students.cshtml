@@ -1,4 +1,4 @@
-﻿<head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generate Students - EduGate</title>
@@ -118,7 +118,7 @@
       for (let i = 1; i <= count; i++) {
         const num = String(i).padStart(3, '0');
         const emailName = convention === 'prefix' ? `${prefix}${num}` : `${prefix}${Math.random().toString(36).substring(2, 8)}`;
-        const email = `${emailName.toLowerCase().replace(/[^a-z0-9._-]/g, '')}${emailDomain}`;
+        const email = `${emailName.toLowerCase().replace(/[^a-z0-9._-]/g, '')}@@${emailDomain}`;
         const password = generatePassword(10);
         
         tbody.innerHTML += `

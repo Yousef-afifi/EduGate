@@ -1,4 +1,4 @@
-﻿using EduGate.Data;
+using EduGate.Data;
 using EduGate.Models;
 using EduGate.ViewModels.Teacher;
 using Microsoft.EntityFrameworkCore;
@@ -250,6 +250,96 @@ namespace EduGate.Services.TeachService
 
             _context.Course.Add(course);
             await _context.SaveChangesAsync();
+        }
+        public async Task<DashboardVM> GetDashboardData(int teacherId)
+        {
+            
+            var teacher = await _context.Teacher.FirstOrDefaultAsync(t => t.Id == teacherId);
+
+            
+            var totalStudents = await _context.Account
+                .Where(a => a.Teacher_Id == teacherId && a.Student_Id != 0)
+                .CountAsync();
+
+            
+            var activeCourses = await _context.Course
+                .Where(c => c.Teacher_Id == teacherId)
+                .CountAsync();
+
+           
+            var upcomingExams = await _context.Exam
+                .Where(e => e.course.Teacher_Id == teacherId && e.StartDate > DateTime.Now)
+                .CountAsync();
+
+            
+            var recentCourses = await _context.Course
+                .Where(c => c.Teacher_Id == teacherId)
+                .OrderByDescending(c => c.CreatedAt)
+                .Take(4)
+                .Select(c => new EduGate.ViewModels.Teacher.RecentCourseVM
+                {
+                    Name = c.Name,
+                    CreatedAt = c.CreatedAt
+                })
+                .ToListAsync();
+
+            
+
+            
+            return new DashboardVM
+            {
+                TotalStudents = totalStudents,
+                ActiveCourses = activeCourses,
+                UpcomingExams = upcomingExams,
+
+                TeacherName = teacher.First_Name + " " + teacher.Last_Name,
+                Initials = $"{char.ToUpper(teacher.First_Name[0])}{char.ToUpper(teacher.Last_Name[0])}",
+
+                
+                RecentCourses = recentCourses,
+                
+            };
+        }
+        public async Task<EduGate.ViewModels.Shared.SettingsVM> GetSettings(int teacherId)
+        {
+            var teacher = await _context.Teacher.FirstOrDefaultAsync(t => t.Id == teacherId);
+            return new EduGate.ViewModels.Shared.SettingsVM
+            {
+                FirstName = teacher.First_Name,
+                LastName = teacher.Last_Name,
+                Email = teacher.Email,
+                TeacherName = teacher.First_Name + " " + teacher.Last_Name,
+                Initials = $"{char.ToUpper(teacher.First_Name[0])}{char.ToUpper(teacher.Last_Name[0])}"
+            };
+        }
+
+        public async Task<bool> UpdateProfile(int teacherId, EduGate.ViewModels.Shared.SettingsVM model)
+        {
+            var teacher = await _context.Teacher.FirstOrDefaultAsync(t => t.Id == teacherId);
+            if (teacher == null) return false;
+
+            teacher.First_Name = model.FirstName;
+            teacher.Last_Name = model.LastName;
+            teacher.Email = model.Email;
+
+            _context.Teacher.Update(teacher);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdatePassword(int teacherId, EduGate.ViewModels.Shared.SettingsVM model)
+        {
+            var teacher = await _context.Teacher.FirstOrDefaultAsync(t => t.Id == teacherId);
+            if (teacher == null) return false;
+
+            if (teacher.Password == model.CurrentPassword)
+            {
+                teacher.Password = model.NewPassword;
+                _context.Teacher.Update(teacher);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

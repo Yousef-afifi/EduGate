@@ -1,4 +1,4 @@
-﻿using EduGate.Data;
+using EduGate.Data;
 using EduGate.Models;
 using EduGate.Services.AuthServices;
 using EduGate.ViewModels.Auth;
@@ -36,6 +36,7 @@ namespace EduGate.Controllers
                 return RedirectToAction("Dashboard", "Student");
             }
 
+            ModelState.AddModelError("", "Invalid Email or Password.");
             return View(model);
         }
         [HttpGet]
