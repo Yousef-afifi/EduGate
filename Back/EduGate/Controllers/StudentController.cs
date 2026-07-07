@@ -3,6 +3,7 @@ using EduGate.Models;
 using EduGate.Services.StuServices;
 using EduGate.ViewModels.Student;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using System.Diagnostics;
 
 namespace EduGate.Controllers
@@ -86,9 +87,35 @@ namespace EduGate.Controllers
 
             return RedirectToAction(nameof(Course_Details), new { id = courseid });
         }
-        public IActionResult Submit_Assessment(int id)
+        [HttpGet]
+        public async Task<IActionResult> Submit_Assessment(int assessmentid)
         {
-            return View();
+            var studentid = UserId.Value;
+            var data = await _service.GetSubmitAssessment(assessmentid, studentid);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Submit_Assessment(SubmitAssessmentVM model)
+        {
+            if(ModelState.IsValid)
+            {
+                var data = await _service.GetSubmitAssessment(model.AssessmentId, model.StudentId);
+
+                model.StudentName = data.StudentName;
+                model.Initials = data.Initials;
+                model.AssessmentTitle = data.AssessmentTitle;
+                model.Instructions = data.Instructions;
+                model.QuestionId = data.QuestionId;
+                model.CourseId = data.CourseId;
+                model.TotalMark = data.TotalMark;
+                model.DueDate = data.DueDate;
+
+                View(model);
+            }
+
+            await _service.SubmitAssessment(model);
+
+            return RedirectToAction("Course_Details", "Student", new { id = model.CourseId });
         }
         public async Task<IActionResult> Schedule()
         {

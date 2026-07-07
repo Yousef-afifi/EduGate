@@ -3,6 +3,7 @@ using EduGate.Enums;
 using EduGate.Models;
 using EduGate.ViewModels.Student;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.VisualBasic;
 
 namespace EduGate.Services.StuServices
@@ -564,6 +565,74 @@ namespace EduGate.Services.StuServices
                  CourseName = e.course.Name
              })
              .ToList();
+        }
+        //---------------------------------------------------------------------------
+        public async Task<SubmitAssessmentVM> GetSubmitAssessment(int ExamId , int StudentId)
+        {
+            var student = await _context.Student
+                .Where(s => s.Id == StudentId)
+                .FirstOrDefaultAsync();
+
+            var question = await _context.Question
+                .Where(q => q.Exam_Id == ExamId)
+                .FirstOrDefaultAsync();
+
+            if (student == null)
+            {
+                throw new Exception("Student Not Found");
+            }
+
+            if (question == null)
+            {
+                throw new Exception("Question Not Found");
+            }
+
+            var data = await _context.Exam
+                .Where(e => e.Id == ExamId)
+                .Include(e => e.course)
+                .Select(x => new SubmitAssessmentVM
+                {
+                    AssessmentId = x.Id,
+                    AssessmentTitle = x.Name,
+                    QuestionId = question.Id,
+                    Instructions = question.Text,
+                    StudentId = StudentId,
+                    StudentName = student.First_Name + " " + student.Last_Name,
+                    Initials = $"{char.ToUpper(student.First_Name[0])}{char.ToUpper(student.Last_Name[0])}",
+                    CourseId = x.Course_Id,
+                    TotalMark = x.Total_Marks,
+                    DueDate = x.DueDate
+                }).FirstOrDefaultAsync();
+
+            return data;
+        }
+        public async Task SubmitAssessment(SubmitAssessmentVM model)
+        {
+            var submit = new StudentAnswer 
+            {
+                AnswerdAt = DateTime.Now,
+                Student_Id = model.StudentId,
+                Question_Id = model.QuestionId,
+                File_Name = model.File.FileName,
+                File_Path = $"https://edugate.com/videos/{model.File.FileName}",
+                File_Type = model.File.ContentType,
+                File_Size = model.File.Length,
+            };
+
+            _context.StudentAnswer.Add(submit);
+            await _context.SaveChangesAsync();
+
+            var attempt = new ExamAttempt
+            {
+                IsCompleted = true,
+                Student_Id = model.StudentId,
+                Exam_Id = model.AssessmentId,
+                SubmittedAt = DateTime.Now,
+                Score = model.TotalMark ?? 0
+            };
+
+            _context.ExamAttempt.Add(attempt);
+            await _context.SaveChangesAsync();
         }
     }
 }
