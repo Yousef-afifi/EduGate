@@ -3,6 +3,7 @@ using EduGate.Models;
 using EduGate.Services.StuServices;
 using EduGate.Services.TeachService;
 using EduGate.ViewModels.Teacher;
+using EduGate.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -181,5 +182,6 @@ namespace EduGate.Controllers
         {
             return View();
         }
+       
     }
 }

@@ -83,7 +83,7 @@ namespace EduGate.Services.TeachService
             var students = await _context.Account
                 .Where(a => a.Teacher_Id == id)
                 .Include(a => a.student)
-                .Select(s => new StudentVM 
+                .Select(s => new StudentVM
                 {
                     StudentName = s.student.First_Name + " " + s.student.Last_Name,
                     Initials = $"{char.ToUpper(s.student.First_Name[0])}{char.ToUpper(s.student.Last_Name[0])}",
@@ -161,7 +161,7 @@ namespace EduGate.Services.TeachService
                 Questions = new List<Question>()
             };
 
-            foreach(var q in model.Questions)
+            foreach (var q in model.Questions)
             {
                 var question = new Question
                 {
@@ -170,7 +170,7 @@ namespace EduGate.Services.TeachService
                     Choices = new List<Choice>()
                 };
 
-                foreach(var c in q.Choices)
+                foreach (var c in q.Choices)
                 {
                     question.Choices.Add(new Choice
                     {
@@ -199,9 +199,9 @@ namespace EduGate.Services.TeachService
 
             return data;
         }
-        public async Task AddAssessment(AddAssessmentVM model) 
+        public async Task AddAssessment(AddAssessmentVM model)
         {
-            var assessment = new Exam 
+            var assessment = new Exam
             {
                 Name = model.AssessmentTitle,
                 CreatedAt = DateTime.Now,
@@ -286,5 +286,8 @@ namespace EduGate.Services.TeachService
             _context.Material.Add(material);
             await _context.SaveChangesAsync();
         }
+
+        
+
     }
 }

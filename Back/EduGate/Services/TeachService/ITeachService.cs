@@ -17,5 +17,7 @@ namespace EduGate.Services.TeachService
         Task AddCourse(AddCourseVM model);
         Task<UploadMaterialVM> GetUploadMaterial(int courseId);
         Task UploadMaterial(UploadMaterialVM model);
+        
+
     }
 }
