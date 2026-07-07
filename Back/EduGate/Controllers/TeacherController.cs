@@ -182,6 +182,18 @@ namespace EduGate.Controllers
         {
             return View();
         }
-       
+        public IActionResult Edit_Quiz(int id)
+        {
+            return View();
+        }
+        public IActionResult Edit_Lesson(int id)
+        {
+            return View();
+        }
+        public IActionResult Edit_Assesment(int id)
+        {
+            return View();
+        }
+
     }
 }
