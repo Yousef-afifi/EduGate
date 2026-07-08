@@ -89,7 +89,7 @@
                                     <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
                                         <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">@LCNT</div>
                                         <div style="flex:1;"><div style="font-weight:600;">@lesson.Name</div></div>
-                                        <a asp-controller="Teacher" asp-action="Edit_Lesson" class="btn btn-sm btn-outline">Edit</a>
+                                        <a asp-controller="Teacher" asp-action="Edit_Lesson" asp-route-lessonid="@lesson.Id" class="btn btn-sm btn-outline">Edit</a>
                                         <button class="deleteButton">Delete</button>
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                                     <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-light);">
                                         <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q @QCNT</div>
                                         <div style="flex:1;"><div style="font-weight:600;">@quiz.Name</div><div style="font-size:13px;color:var(--text-muted);">@quiz.QusetionConut questions</div></div>
-                                        <a asp-controller="Teacher" asp-action="Edit_Quiz" class="btn btn-sm btn-outline">Edit</a>
+                                        <a asp-controller="Teacher" asp-action="Edit_Quiz" asp-route-quizid="@quiz.Id" class="btn btn-sm btn-outline">Edit</a>
                                         <button class="deleteButton">Delete</button>
                                     </div>
                                 </div>

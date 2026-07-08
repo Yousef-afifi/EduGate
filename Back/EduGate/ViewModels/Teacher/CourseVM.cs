@@ -31,16 +31,19 @@ namespace EduGate.ViewModels.Teacher
     }
     public class LessonVM
     {
+        public int Id { get; set; }
         public string Name { get; set;}
         public List<LessonMaterialVM> Materials { get; set; }
     }
     public class QuizVM
     {
+        public int Id { get; set; }
         public string Name { get; set;}
         public int QusetionConut { get; set; }
     }
     public class AssessmentVM
     {
+        public int Id { get; set; }
         public string Name { get; set;}
         public DateTime DueDate { get; set; }
     }

@@ -19,7 +19,6 @@ namespace EduGate.Services.TeachService
         Task<EduGate.ViewModels.Shared.SettingsVM> GetSettings(int teacherId);
         Task<bool> UpdateProfile(int teacherId, EduGate.ViewModels.Shared.SettingsVM model);
         Task<bool> UpdatePassword(int teacherId, EduGate.ViewModels.Shared.SettingsVM model);
-
         Task<UploadMaterialVM> GetUploadMaterial(int courseId);
         Task UploadMaterial(UploadMaterialVM model);
         Task<ExamPageVM> GetAllExams(int teacherId);
@@ -28,5 +27,9 @@ namespace EduGate.Services.TeachService
         Task<EditExamVM?> GetEditExam(int examId);
         Task EditExam(EditExamVM model);
         Task DeleteExam(int examId);
+        Task<EditLessonVM> GetUpdateLesson(int lessonid, int teacherid);
+        Task UpdateLesson(EditLessonVM model);
+        Task<EditQuizVM> GetUpdateQuiz(int quizId);
+        Task UpdateQuiz(EditQuizVM model);
     }
 }

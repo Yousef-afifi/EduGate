@@ -155,6 +155,7 @@ function addQuestion(containerId) {
     const questionHTML = `
     <div class="card" style="margin-bottom:16px;">
 
+        <input type="hidden" name="Questions[${qIndex}].QuestionId" value="0">
         <div class="form-group">
             <label class="form-label">
                 Question ${qIndex + 1}
@@ -247,6 +248,7 @@ function createChoice(q, c, letter) {
                 ${letter}
             </div>
 
+            <input type="hidden" name="Questions[${q}].Choices[${c}].ChoiceId" value="0">
             <input
                 type="text"
                 class="quiz-option-input"

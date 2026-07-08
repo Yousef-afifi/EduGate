@@ -285,14 +285,58 @@ namespace EduGate.Controllers
                 return View("Settings", model);
             }
         }
-
-        public IActionResult Edit_Quiz(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit_Quiz(int quizid)
         {
-            return View();
+            var data = await _service.GetUpdateQuiz(quizid);
+            return View(data);
         }
-        public IActionResult Edit_Lesson(int id)
+        [HttpPost]
+        public async Task<IActionResult> Edit_Quiz(EditQuizVM model)
         {
-            return View();
+            if(!ModelState.IsValid)
+            {
+                var data = await _service.GetUpdateQuiz(model.QuizId);
+
+                data.QuizTitle = model.QuizTitle;
+                data.Date = model.Date;
+                data.Time = model.Time;
+                data.Duration = model.Duration;
+                data.PassingScore = model.PassingScore;
+                data.TotalMarks = model.TotalMarks;
+                data.Questions = model.Questions;
+
+                return View(data);
+            }
+
+            await _service.UpdateQuiz(model);
+
+            return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit_Lesson(int lessonid)
+        {
+            int teacherid = UserId.Value;
+            var data = await _service.GetUpdateLesson(lessonid, teacherid);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit_Lesson(EditLessonVM model)
+        {
+            int teacherid = UserId.Value;
+            if (!ModelState.IsValid)
+            {
+                var data = await _service.GetUpdateLesson(model.LessonId, teacherid);
+                model.TeacherName = data.TeacherName;
+                model.Initials = data.Initials;
+                model.CourseId = data.CourseId;
+                model.LessonTitle = data.LessonTitle;
+                model.VideoURL = data.VideoURL;
+
+                return View(model);
+            }
+            await _service.UpdateLesson(model);
+            return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
         public IActionResult Edit_Assesment(int id)
         {

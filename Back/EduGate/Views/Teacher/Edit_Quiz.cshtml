@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.EditQuizVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Exam - Calculus II Midterm - EduGate</title>
@@ -14,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -39,69 +40,97 @@
         <main class="main-content">
             <div class="topbar">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a asp-controller="Teacher" asp-action="Course_Details" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
+                    <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></a>
                     <h1 class="topbar-title">Edit Quiz</h1>
                 </div>
             </div>
 
             <div class="page-content">
                 <div style="max-width:700px;">
-                    <div class="card" style="margin-bottom:24px;">
-                        <div class="form-group">
-                            <label class="form-label">Quiz Title</label>
-                            <input type="text" class="form-input" value="Calculus II - Midterm Examination" required>
+                    <form asp-action="Edit_Quiz" method="post">
+                        <div class="card" style="margin-bottom:24px;">
+                            <input asp-for="QuizId" type="hidden" />
+                            <input asp-for="CourseId" type="hidden" />
+                            <div class="form-group">
+                                <label asp-for="QuizTitle" class="form-label">Quiz Title</label>
+                                <input asp-for="QuizTitle" class="form-input">
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group"><label asp-for="Date" class="form-label">Date</label><input asp-for="Date" type="date" class="form-input"></div>
+                                <div class="form-group"><label asp-for="Time" class="form-label">Start Time</label><input asp-for="Time" type="time" class="form-input"></div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group"><label asp-for="Duration" class="form-label">Duration (minutes)</label><input asp-for="Duration" type="number" class="form-input"></div>
+                                <div class="form-group"><label asp-for="PassingScore" class="form-label">Passing Score%</label><input asp-for="PassingScore" type="number" class="form-input"></div>
+                            </div>
+                            <div class="form-group"><label asp-for="TotalMarks" class="form-label">Total Marks</label><input asp-for="TotalMarks" type="number" class="form-input"></div>
                         </div>
-                        
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" value="2026-03-15"></div>
-                            <div class="form-group"><label class="form-label">Start Time</label><input type="time" class="form-input" value="09:00"></div>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group"><label class="form-label">Duration (minutes)</label><input type="number" class="form-input" value="120"></div>
-                            <div class="form-group"><label class="form-label">Passing Score%</label><input type="number" class="form-input" value="50"></div>
-                            
-                        </div>
-                        <div class="form-group"><label class="form-label">Total Marks</label><input type="number" class="form-input" value="50"></div>
-                       
-                    </div>
 
-                    <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Questions (50 total)</h3>
-                    <div id="examQuestions">
-                        <div class="card" style="margin-bottom:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Question 1</label>
-                                <input type="text" class="form-input" value="Evaluate the integral of x^2 * ln(x) dx using integration by parts.">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Mark</label>
-                                <input type="number" class="form-input" value="Evaluate the integral of x^2 * ln(x) dx using integration by parts.">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Options</label>
-                                <div class="quiz-option"><div class="quiz-option-letter">A</div><input type="text" class="quiz-option-input" value="(x^3/3)ln(x) - x^3/9 + C"></div>
-                                <div class="quiz-option"><div class="quiz-option-letter">B</div><input type="text" class="quiz-option-input" value="(x^3/3)ln(x) - x^2/2 + C"></div>
-                                <div class="quiz-option"><div class="quiz-option-letter">C</div><input type="text" class="quiz-option-input" value="x^3 ln(x) - x^3 + C"></div>
-                                <div class="quiz-option"><div class="quiz-option-letter">D</div><input type="text" class="quiz-option-input" value="(x^2/2)ln(x) - x^2/4 + C"></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Correct Answer</label>
-                                <select class="form-select"><option value="A" selected>Option A</option><option value="B">Option B</option><option value="C">Option C</option><option value="D">Option D</option></select>
-                            </div>
+                        <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Questions</h3>
+                        <div id="examQuestions">
+                            @for (int i = 0; i < Model.Questions.Count; i++)
+                            {
+                                <div class="card" style="margin-bottom:16px;">
+                                    <input asp-for="Questions[i].QuestionId" type="hidden" />
+                                    <div class="form-group">
+                                        <label asp-for="Questions[i].Text" class="form-label">Question @(i + 1)</label>
+                                        <input asp-for="Questions[i].Text" type="text" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Questions[i].Mark" class="form-label">Mark</label>
+                                        <input asp-for="Questions[i].Mark" type="number" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Options</label>
+                                        @for (int j = 0; j < Model.Questions[i].Choices.Count; j++)
+                                        {
+                                            <input asp-for="Questions[i].Choices[j].ChoiceId" type="hidden" />
+                                            <input asp-for="Questions[i].Choices[j].IsCorrect" type="hidden" />
+                                            <div class="quiz-option"><div class="quiz-option-letter">@(Convert.ToChar('A' + j))</div><input asp-for="Questions[i].Choices[j].Text" type="text" class="quiz-option-input"></div>
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Correct Answer</label>
+                                        <select class="form-select" onchange="setCorrectAnswer(this,@i)">
+                                            @for(int j = 0; j < Model.Questions[i].Choices.Count; j++)
+                                            {
+                                                if(Model.Questions[i].Choices[j].IsCorrect)
+                                                {
+                                                    <option value="@j" selected>
+                                                        @(Convert.ToChar('A' + j))
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@j">
+                                                        @(Convert.ToChar('A' + j))
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    </div>
 
-                    <button class="btn btn-outline w-full" style="margin-bottom:24px;" onclick="addQuestion('examQuestions')">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        Add Question
-                    </button>
+                        <button type="button" class="btn btn-outline w-full" style="margin-bottom:24px;" onclick="addQuestion('examQuestions')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                            Add Question
+                        </button>
 
-                    <div style="display:flex;gap:12px;justify-content:flex-end;">
-                        <a asp-controller="Teacher" asp-action="Course_Details" class="btn btn-outline">Cancel</a>
-                        <button class="btn btn-primary" onclick="showToast('Exam updated successfully!', 'success'); setTimeout(()=>window.location.href='../../exams.html', 800);">Save Changes</button>
-                    </div>
+                        <div style="display:flex;gap:12px;justify-content:flex-end;">
+                            <a asp-controller="Teacher" asp-action="Course_Details" asp-route-id="@Model.CourseId" class="btn btn-outline">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>
     </div>
     <script src="~/js/app.js"></script>
+    <script>
+            document.querySelectorAll(".form-select").forEach((select, index) => {
+                setCorrectAnswer(select, index);
+            });
+    </script>
 </body>

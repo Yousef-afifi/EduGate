@@ -55,6 +55,7 @@ namespace EduGate.Services.TeachService
                     StudentConut = _context.Enrollment.Where(e => e.Course_Id == c.Id).Count(),
                     Lessons = c.Lessons.Select(l => new LessonVM
                     {
+                        Id = l.Id,
                         Name = l.Name,
                         Materials = l.Materials.Select(m => new LessonMaterialVM
                         {
@@ -66,12 +67,14 @@ namespace EduGate.Services.TeachService
                     Quizzes = c.Exams.Where(e => e.Type == Enums.ExamType.Quiz)
                     .Select(q => new QuizVM
                     {
+                        Id = q.Id,
                         Name = q.Name,
                         QusetionConut = q.Questions != null ? q.Questions.Count() : 0
                     }).ToList() ?? new List<QuizVM>(),
                     Assessments = c.Exams.Where(e => e.Type == Enums.ExamType.Assignment)
                     .Select(a => new AssessmentVM
                     {
+                        Id = a.Id,
                         Name = a.Name,
                         DueDate = a.CreatedAt.AddDays(7)
                     }).ToList() ?? new List<AssessmentVM>()
@@ -378,7 +381,128 @@ namespace EduGate.Services.TeachService
             _context.Material.Add(material);
             await _context.SaveChangesAsync();
         }
+        public async Task<EditLessonVM> GetUpdateLesson(int lessonid, int teacherid)
+        {
+            var teacher = await _context.Teacher.Where(t => t.Id == teacherid).FirstOrDefaultAsync();
+            var lesson = await _context.Lesson.Where(l => l.Id == lessonid).FirstOrDefaultAsync();
+            var data = new EditLessonVM 
+            {
+                TeacherName = teacher.First_Name + " " + teacher.Last_Name,
+                Initials = $"{char.ToUpper(teacher.First_Name[0])}{char.ToUpper(teacher.Last_Name[0])}",
+                LessonId = lessonid,
+                LessonTitle = lesson.Name,
+                VideoURL = lesson.Video_Url,
+                CourseId = lesson.Course_Id
+            };
+            return data;
+        }
+        public async Task UpdateLesson(EditLessonVM model)
+        {
+            var lesson = await _context.Lesson.Where(l => l.Id == model.LessonId).FirstOrDefaultAsync();
+            lesson.Name = model.LessonTitle;
+            lesson.Video_Url = model.VideoURL;
+            lesson.UpdatedAt = DateTime.Now;
+            _context.Lesson.Update(lesson);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<EditQuizVM> GetUpdateQuiz(int quizId)
+        {
+            var data = await _context.Exam
+                .Where(e => e.Id == quizId)
+                .Select(x => new EditQuizVM
+                {
+                    TeacherName = x.course.teacher.First_Name + " " + x.course.teacher.Last_Name,
+                    Initials = $"{char.ToUpper(x.course.teacher.First_Name[0])}{char.ToUpper(x.course.teacher.Last_Name[0])}",
+                    QuizId = x.Id,
+                    CourseId = x.Course_Id,
+                    QuizTitle = x.Name,
+                    Date = x.DueDate.HasValue ? DateOnly.FromDateTime(x.DueDate.Value) : default,
+                    Time = x.DueDate.HasValue ? TimeOnly.FromDateTime(x.DueDate.Value) : default,
+                    Duration = x.Duration ?? 0,
+                    PassingScore = x.PassingPercentage,
+                    TotalMarks = x.Total_Marks,
+                    Questions = x.Questions
+                        .Select(q => new EditQuestionVM
+                        {
+                            QuestionId = q.Id,
+                            Text = q.Text,
+                            Mark = q.Mark,
+                            Choices = q.Choices
+                                .Select(c => new EditChoiceVM
+                                {
+                                    ChoiceId = c.Id,
+                                    Text = c.Text,
+                                    IsCorrect = c.IsCorrect
+                                }).ToList(),
+                            CorrectChoiceId = q.Choices
+                                .Where(c => c.IsCorrect)
+                                .Select(c => c.Id)
+                                .FirstOrDefault()
+                        }).ToList()
+                }).FirstOrDefaultAsync();
+            return data;
+        }
+        private void UpdateQuizInfo(Exam quiz, EditQuizVM model)
+        {
+            quiz.Name = model.QuizTitle;
+            quiz.Duration = model.Duration;
+            quiz.PassingPercentage = model.PassingScore;
+            quiz.Total_Marks = model.TotalMarks;
+            quiz.DueDate = model.Date.ToDateTime(model.Time);
+            quiz.UpdatedAt = DateTime.Now;
+        }
+        private void AddQuestion(Exam quiz, EditQuestionVM questionVm)
+        {
+            var question = new Question
+            {
+                Text = questionVm.Text,
+                Mark = questionVm.Mark,
+                Choices = new List<Choice>()
+            };
 
+            foreach (var choiceVm in questionVm.Choices)
+            {
+                question.Choices.Add(new Choice
+                {
+                    Text = choiceVm.Text,
+                    IsCorrect = choiceVm.IsCorrect,
+                });
+            }
+
+            quiz.Questions.Add(question);
+        }
+        private void UpdateChoice(Question question, EditChoiceVM choiceVm)
+        {
+            var dbChoice = question.Choices
+                .FirstOrDefault(c => c.Id == choiceVm.ChoiceId);
+
+            dbChoice.Text = choiceVm.Text;
+            dbChoice.IsCorrect = choiceVm.IsCorrect;
+        }
+        private void UpdateQuestion(Exam quiz, EditQuestionVM questionVm)
+        {
+            var dbQuestion = quiz.Questions
+                .FirstOrDefault(q => q.Id == questionVm.QuestionId);
+
+            dbQuestion.Text = questionVm.Text;
+            dbQuestion.Mark = questionVm.Mark;
+
+            foreach (var choiceVm in questionVm.Choices)
+            {
+                UpdateChoice(dbQuestion, choiceVm);
+            }
+        }
+        public async Task UpdateQuiz(EditQuizVM model)
+        {
+            var quiz = await _context.Exam
+                .Include(e => e.Questions)
+                .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(e => e.Id == model.QuizId);
+
+            if (quiz == null)
+                return;
+
+            UpdateQuizInfo(quiz, model);
         //--------------------------------------------------------------------------------
         public async Task<ExamPageVM> GetAllExams(int teacherId)
         {
@@ -558,6 +682,15 @@ namespace EduGate.Services.TeachService
             await _context.SaveChangesAsync();
         }
 
+            foreach (var questionVm in model.Questions)
+            {
+                if (questionVm.QuestionId == 0)
+                    AddQuestion(quiz, questionVm);
+                else
+                    UpdateQuestion(quiz, questionVm);
+            }
 
+            await _context.SaveChangesAsync();
+        }
     }
 }
