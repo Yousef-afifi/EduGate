@@ -141,10 +141,12 @@ namespace EduGate.Controllers
             ModelState.Remove("CurrentPassword");
             ModelState.Remove("NewPassword");
             ModelState.Remove("ConfirmNewPassword");
+            ModelState.Remove("Email");
 
+            var currentData = await _service.GetSettings(StudentId);
+            model.Email = currentData.Email;
             if (!ModelState.IsValid)
             {
-                var currentData = await _service.GetSettings(StudentId);
                 model.TeacherName = currentData.TeacherName;
                 model.Initials = currentData.Initials;
                 return View("Settings", model); 
