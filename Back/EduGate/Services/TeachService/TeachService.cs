@@ -1,4 +1,5 @@
 using EduGate.Data;
+using EduGate.Enums;
 using EduGate.Models;
 using EduGate.ViewModels.Teacher;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -503,6 +504,16 @@ namespace EduGate.Services.TeachService
                 return;
 
             UpdateQuizInfo(quiz, model);
+            foreach (var questionVm in model.Questions)
+            {
+                if (questionVm.QuestionId == 0)
+                    AddQuestion(quiz, questionVm);
+                else
+                    UpdateQuestion(quiz, questionVm);
+            }
+
+            await _context.SaveChangesAsync();
+        }
         //--------------------------------------------------------------------------------
         public async Task<ExamPageVM> GetAllExams(int teacherId)
         {
@@ -512,6 +523,7 @@ namespace EduGate.Services.TeachService
                 .Include(e => e.course)
                 .Include(e => e.Questions)
                 .Where(e => e.course.Teacher_Id == teacherId)
+                .Where(e => e.Type == ExamType.Exam)
                 .OrderByDescending(e => e.StartDate)
                 .ToListAsync();
 
@@ -601,6 +613,7 @@ namespace EduGate.Services.TeachService
         {
             var exam = await _context.Exam
                 .Include(e => e.course)
+                .Include(e => e.course.teacher)
                 .Include(e => e.Questions)
                     .ThenInclude(q => q.Choices)
                 .FirstOrDefaultAsync(e => e.Id == examId);
@@ -609,6 +622,8 @@ namespace EduGate.Services.TeachService
 
             return new EditExamVM
             {
+                TeacherName = exam.course.teacher.First_Name + " " + exam.course.teacher.Last_Name,
+                Initials = $"{char.ToUpper(exam.course.teacher.First_Name[0])}{char.ToUpper(exam.course.teacher.Last_Name[0])}",
                 ExamId = exam.Id,
                 CourseId = exam.Course_Id,
                 CourseName = exam.course.Name,
@@ -679,17 +694,6 @@ namespace EduGate.Services.TeachService
             _context.Question.RemoveRange(exam.Questions);
 
             _context.Exam.Remove(exam);
-            await _context.SaveChangesAsync();
-        }
-
-            foreach (var questionVm in model.Questions)
-            {
-                if (questionVm.QuestionId == 0)
-                    AddQuestion(quiz, questionVm);
-                else
-                    UpdateQuestion(quiz, questionVm);
-            }
-
             await _context.SaveChangesAsync();
         }
     }
