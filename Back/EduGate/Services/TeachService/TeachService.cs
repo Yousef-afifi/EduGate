@@ -668,6 +668,7 @@ namespace EduGate.Services.TeachService
                 Time = TimeOnly.FromDateTime(exam.StartDate),
                 Duration = exam.Duration ?? 0,
                 PassingScore = exam.PassingPercentage,
+                TotalMarks = exam.Total_Marks,
                 Questions = exam.Questions?.Select(q => new QuestionVM
                 {
                     Text = q.Text,
@@ -693,7 +694,7 @@ namespace EduGate.Services.TeachService
             exam.Name = model.ExamTitle;
             exam.StartDate = model.Date.ToDateTime(model.Time);
             exam.Duration = model.Duration;
-            exam.Total_Marks = model.Questions.Sum(q => q.Mark);
+            exam.Total_Marks = model.TotalMarks;
             exam.PassingPercentage = model.PassingScore;
             exam.UpdatedAt = DateTime.Now;
 

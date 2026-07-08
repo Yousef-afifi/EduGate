@@ -65,6 +65,8 @@ namespace EduGate.ViewModels.Teacher
         
         [Required]
         public int PassingScore { get; set; }
+        [Required]
+        public int TotalMarks { get; set; }
         public List<QuestionVM> Questions { get; set; } = new();
     }
 }

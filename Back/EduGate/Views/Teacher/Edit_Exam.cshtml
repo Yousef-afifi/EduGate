@@ -65,17 +65,20 @@
                                     <input asp-for="Time" type="time" class="form-input">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="Duration" class="form-label">Duration (minutes)</label>
-                                <input asp-for="Duration" type="number" class="form-input" placeholder="120" min="1">
-                            </div>
-                            
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label asp-for="Duration" class="form-label">Duration (minutes)</label>
+                                    <input asp-for="Duration" type="number" class="form-input" placeholder="120" min="1">
+                                </div>
                                 <div class="form-group">
                                     <label asp-for="PassingScore" class="form-label">Passing Score (%)</label>
                                     <input asp-for="PassingScore" type="number" class="form-input" placeholder="60" min="0" max="100">
                                 </div>
-                                
-                            
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="TotalMarks" class="form-label">Total Marks</label>
+                                <input asp-for="TotalMarks" type="number" class="form-input" placeholder="60" min="0" max="100">
+                            </div>
                         </div>
 
                         <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Exam Questions</h3>
@@ -87,6 +90,10 @@
                                     <div class="form-group">
                                         <label class="form-label">Question @(i + 1)</label>
                                         <input type="text" class="form-input" name="Questions[@i].Text" value="@Model.Questions[i].Text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Questions[i].Mark" class="form-label">Mark</label>
+                                        <input asp-for="Questions[i].Mark" type="number" class="form-input">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Options</label>
