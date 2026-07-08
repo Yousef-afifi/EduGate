@@ -37,4 +37,17 @@
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
     }
+    public class EditAssessmentVM
+    {
+        public string? TeacherName { get; set; }
+        public string? Initials { get; set; }
+        public int AssessmentId { get; set; }
+        public int CourseId { get; set; }
+        public string AssessmentTitle { get; set; }
+        public DateOnly Date { get; set; }
+        public TimeOnly Time { get; set; }
+        public int TotalPoints { get; set; }
+        public int PassingScore { get; set; }
+        public string Instructions { get; set; }
+    }
 }

@@ -1,3 +1,4 @@
+using AspNetCoreGeneratedDocument;
 using EduGate.Data;
 using EduGate.Enums;
 using EduGate.Models;
@@ -512,6 +513,41 @@ namespace EduGate.Services.TeachService
                     UpdateQuestion(quiz, questionVm);
             }
 
+            await _context.SaveChangesAsync();
+        }
+        public async Task<EditAssessmentVM> GetUpdateAssessment(int assessmentId)
+        {
+            var data = await _context.Exam
+                .Where(e => e.Id == assessmentId)
+                .Select(x => new EditAssessmentVM
+                {
+                    TeacherName = x.course.teacher.First_Name + " " + x.course.teacher.Last_Name,
+                    Initials = $"{char.ToUpper(x.course.teacher.First_Name[0])}{char.ToUpper(x.course.teacher.Last_Name[0])}",
+                    AssessmentId = x.Id,
+                    CourseId = x.Course_Id,
+                    AssessmentTitle = x.Name,
+                    Date = x.DueDate.HasValue ? DateOnly.FromDateTime(x.DueDate.Value) : default,
+                    Time = x.DueDate.HasValue ? TimeOnly.FromDateTime(x.DueDate.Value) : default,
+                    TotalPoints = x.Total_Marks,
+                    PassingScore = x.PassingPercentage,
+                    Instructions = x.Questions.FirstOrDefault().Text
+                }).FirstOrDefaultAsync();
+            return data;
+        }
+        public async Task UpdateAssessment(EditAssessmentVM model)
+        {
+            var assessment = await _context.Exam
+                .Where(e => e.Id == model.AssessmentId)
+                .Include(e => e.Questions)
+                .FirstOrDefaultAsync();
+            assessment.Name = model.AssessmentTitle;
+            assessment.DueDate = model.Date.ToDateTime(model.Time);
+            assessment.Total_Marks = model.TotalPoints;
+            assessment.PassingPercentage = model.PassingScore;
+            assessment.Questions.FirstOrDefault().Text = model.Instructions;
+            assessment.Questions.FirstOrDefault().Mark = model.TotalPoints;
+            assessment.UpdatedAt = DateTime.Now;
+            _context.Exam.Update(assessment);
             await _context.SaveChangesAsync();
         }
         //--------------------------------------------------------------------------------
