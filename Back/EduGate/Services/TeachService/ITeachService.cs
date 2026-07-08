@@ -22,5 +22,11 @@ namespace EduGate.Services.TeachService
 
         Task<UploadMaterialVM> GetUploadMaterial(int courseId);
         Task UploadMaterial(UploadMaterialVM model);
+        Task<ExamPageVM> GetAllExams(int teacherId);
+        Task<AddExamVM> GetAddExam(int teacherId);
+        Task AddExam(AddExamVM model);
+        Task<EditExamVM?> GetEditExam(int examId);
+        Task EditExam(EditExamVM model);
+        Task DeleteExam(int examId);
     }
 }

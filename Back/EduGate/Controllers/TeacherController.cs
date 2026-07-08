@@ -154,17 +154,59 @@ namespace EduGate.Controllers
 
             return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
-        public IActionResult Exams()
+        public async Task<IActionResult> Exams()
         {
-            return View();
+            var teacherId = UserId.Value;
+            var data = await _service.GetAllExams(teacherId);
+            return View(data);
         }
-        public IActionResult Add_Exam()
+
+        [HttpGet]
+        public async Task<IActionResult> Add_Exam()
         {
-            return View();
+            var teacherId = UserId.Value;
+            var data = await _service.GetAddExam(teacherId);
+            return View(data);
         }
-        public IActionResult Edit_Exam(int id)
+
+        [HttpPost]
+        public async Task<IActionResult> Add_Exam(AddExamVM model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                var data = await _service.GetAddExam(UserId.Value);
+                model.Courses = data.Courses;
+                model.TeacherName = data.TeacherName;
+                model.Initials = data.Initials;
+                return View(model);
+            }
+
+            await _service.AddExam(model);
+            return RedirectToAction(nameof(Exams));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit_Exam(int id)
+        {
+            var data = await _service.GetEditExam(id);
+            if (data == null) return NotFound();
+            return View(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit_Exam(EditExamVM model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            await _service.EditExam(model);
+            return RedirectToAction(nameof(Exams));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete_Exam(int id)
+        {
+            await _service.DeleteExam(id);
+            return RedirectToAction(nameof(Exams));
         }
         public async Task<IActionResult> Students()
         {

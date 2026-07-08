@@ -379,7 +379,184 @@ namespace EduGate.Services.TeachService
             await _context.SaveChangesAsync();
         }
 
-        
+        //--------------------------------------------------------------------------------
+        public async Task<ExamPageVM> GetAllExams(int teacherId)
+        {
+            var teacher = await _context.Teacher.FirstOrDefaultAsync(t => t.Id == teacherId);
+
+            var exams = await _context.Exam
+                .Include(e => e.course)
+                .Include(e => e.Questions)
+                .Where(e => e.course.Teacher_Id == teacherId)
+                .OrderByDescending(e => e.StartDate)
+                .ToListAsync();
+
+            var courseIds = exams.Select(e => e.Course_Id).Distinct().ToList();
+            var enrolledCounts = await _context.Enrollment
+                .Where(en => courseIds.Contains(en.Course_Id))
+                .GroupBy(en => en.Course_Id)
+                .Select(g => new { CourseId = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            return new ExamPageVM
+            {
+                TeacherName = teacher != null ? teacher.First_Name + " " + teacher.Last_Name : "",
+                Initials = teacher != null ? $"{teacher.First_Name?[0]}{teacher.Last_Name?[0]}".ToUpper() : "??",
+                Exams = exams.Select(e => new ExamListItemVM
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Type = e.Type,
+                    CourseName = e.course.Name,
+                    StartDate = e.StartDate,
+                    Duration = e.Duration,
+                    QuestionCount = e.Questions?.Count ?? 0,
+                    EnrolledCount = enrolledCounts.FirstOrDefault(x => x.CourseId == e.Course_Id)?.Count ?? 0
+                }).ToList()
+            };
+        }
+
+        public async Task<AddExamVM> GetAddExam(int teacherId)
+        {
+            var teacher = await _context.Teacher.FirstOrDefaultAsync(t => t.Id == teacherId);
+
+            var courses = await _context.Course
+                .Where(c => c.Teacher_Id == teacherId)
+                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+                .ToListAsync();
+
+            return new AddExamVM
+            {
+                TeacherName = teacher != null ? teacher.First_Name + " " + teacher.Last_Name : "",
+                Initials = teacher != null ? $"{teacher.First_Name?[0]}{teacher.Last_Name?[0]}".ToUpper() : "??",
+                Courses = courses
+            };
+        }
+
+        public async Task AddExam(AddExamVM model)
+        {
+            var exam = new Exam
+            {
+                Name = model.ExamTitle,
+                Course_Id = model.CourseId,
+                StartDate = model.Date.ToDateTime(model.Time),
+                CreatedAt = DateTime.Now,
+                Duration = model.Duration,
+                PassingPercentage = model.PassingScore,
+                Type = Enums.ExamType.Exam,
+                Total_Marks = model.Questions.Sum(q => q.Mark),   
+                Questions = new List<Question>()
+            };
+
+            foreach (var q in model.Questions)
+            {
+                var question = new Question
+                {
+                    Text = q.Text,
+                    Mark = q.Mark,
+                    Choices = new List<Choice>()
+                };
+
+                foreach (var c in q.Choices)
+                {
+                    question.Choices.Add(new Choice
+                    {
+                        Text = c.Text,
+                        IsCorrect = c.IsCorrect
+                    });
+                }
+
+                exam.Questions.Add(question);
+            }
+
+            _context.Exam.Add(exam);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<EditExamVM?> GetEditExam(int examId)
+        {
+            var exam = await _context.Exam
+                .Include(e => e.course)
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(e => e.Id == examId);
+
+            if (exam == null) return null;
+
+            return new EditExamVM
+            {
+                ExamId = exam.Id,
+                CourseId = exam.Course_Id,
+                CourseName = exam.course.Name,
+                ExamTitle = exam.Name,
+                Date = DateOnly.FromDateTime(exam.StartDate),
+                Time = TimeOnly.FromDateTime(exam.StartDate),
+                Duration = exam.Duration ?? 0,
+                PassingScore = exam.PassingPercentage,
+                Questions = exam.Questions?.Select(q => new QuestionVM
+                {
+                    Text = q.Text,
+                    Mark = q.Mark,
+                    Choices = q.Choices.Select(c => new ChoiceVM
+                    {
+                        Text = c.Text,
+                        IsCorrect = c.IsCorrect
+                    }).ToList()
+                }).ToList() ?? new()
+            };
+        }
+
+        public async Task EditExam(EditExamVM model)
+        {
+            var exam = await _context.Exam
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(e => e.Id == model.ExamId);
+
+            if (exam == null) return;
+
+            exam.Name = model.ExamTitle;
+            exam.StartDate = model.Date.ToDateTime(model.Time);
+            exam.Duration = model.Duration;
+            exam.Total_Marks = model.Questions.Sum(q => q.Mark);
+            exam.PassingPercentage = model.PassingScore;
+            exam.UpdatedAt = DateTime.Now;
+
+            if (exam.Questions != null)
+                _context.Question.RemoveRange(exam.Questions);
+
+            exam.Questions = model.Questions.Select(q => new Question
+            {
+                Text = q.Text,
+                Mark = q.Mark,
+                Choices = q.Choices.Select(c => new Choice
+                {
+                    Text = c.Text,
+                    IsCorrect = c.IsCorrect
+                }).ToList()
+            }).ToList();
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteExam(int examId)
+        {
+            var exam = await _context.Exam
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(e => e.Id == examId);
+
+            if (exam == null) return;
+
+            foreach (var question in exam.Questions)
+            {
+                _context.Choice.RemoveRange(question.Choices);
+            }
+            _context.Question.RemoveRange(exam.Questions);
+
+            _context.Exam.Remove(exam);
+            await _context.SaveChangesAsync();
+        }
 
 
     }

@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.AddExamVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Exam - EduGate</title>
@@ -46,101 +47,61 @@
 
             <div class="page-content">
                 <div style="max-width:700px;">
-                    <div class="card" style="margin-bottom:24px;">
-                        <div class="form-group">
-                            <label class="form-label">Exam Title</label>
-                            <input type="text" class="form-input" placeholder="e.g., Calculus II - Final Examination" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Course</label>
-                            <select class="form-select">
-                                <option>Calculus II</option>
-                                <option>Physics 101</option>
-                                <option>Organic Chemistry</option>
-                                <option>Linear Algebra</option>
-                                <option>Data Structures</option>
-                            </select>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Date</label>
-                                <input type="date" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Start Time</label>
-                                <input type="time" class="form-input">
-                            </div>
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                            <div class="form-group">
-                                <label class="form-label">Duration (minutes)</label>
-                                <input type="number" class="form-input" placeholder="120" min="1">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Total Questions</label>
-                                <input type="number" class="form-input" placeholder="50" min="1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Passing Score (%)</label>
-                            <input type="number" class="form-input" placeholder="60" min="0" max="100">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Instructions</label>
-                            <textarea class="form-textarea" placeholder="Exam instructions for students..."></textarea>
-                        </div>
-                    </div>
+                    <form asp-action="Add_Exam" method="post">
+                        <div class="card" style="margin-bottom:24px;">
 
-                    <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Exam Questions</h3>
-                    <div id="examQuestions">
-                        <div class="card" style="margin-bottom:16px;">
                             <div class="form-group">
-                                <label class="form-label">Question 1</label>
-                                <input type="text" class="form-input" placeholder="Enter question text...">
+                                <label asp-for="ExamTitle" class="form-label">Exam Title</label>
+                                <input asp-for="ExamTitle" type="text" class="form-input" placeholder="e.g., Calculus II - Final Examination" required>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Options</label>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">A</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option A">
-                                </div>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">B</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option B">
-                                </div>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">C</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option C">
-                                </div>
-                                <div class="quiz-option">
-                                    <div class="quiz-option-letter">D</div>
-                                    <input type="text" class="quiz-option-input" placeholder="Option D">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Correct Answer</label>
-                                <select class="form-select">
-                                    <option value="A">Option A</option>
-                                    <option value="B">Option B</option>
-                                    <option value="C">Option C</option>
-                                    <option value="D">Option D</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
-                    <button class="btn btn-outline w-full" style="margin-bottom:24px;" onclick="addQuestion('examQuestions')">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        Add Question
-                    </button>
+                            <div class="form-group">
+                                <label asp-for="CourseId" class="form-label">Course</label>
+                                <select asp-for="CourseId" asp-items="Model.Courses" class="form-select"></select>
+                            </div>
 
-                    <div style="display:flex;gap:12px;justify-content:flex-end;">
-                        <a asp-controller="Teacher" asp-action="Exams" class="btn btn-outline">Cancel</a>
-                        <button class="btn btn-primary" onclick="showToast('Exam created successfully!', 'success'); setTimeout(()=>window.location.href='../exams.html', 800);">Create Exam</button>
-                    </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                                <div class="form-group">
+                                    <label asp-for="Date" class="form-label">Date</label>
+                                    <input asp-for="Date" type="date" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Time" class="form-label">Start Time</label>
+                                    <input asp-for="Time" type="time" class="form-input">
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label asp-for="Duration" class="form-label">Duration (minutes)</label>
+                                    <input asp-for="Duration" type="number" class="form-input" placeholder="120" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PassingScore" class="form-label">Passing Score (%)</label>
+                                    <input asp-for="PassingScore" type="number" class="form-input" placeholder="60" min="0" max="100">
+                                </div>
+                            </div>
+                            <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;">Exam Questions</h3>
+                            <div id="examQuestions">
+                            </div>
+
+                            <button type="button" class="btn btn-outline w-full" style="margin-bottom:24px;" onclick="addQuestion('examQuestions')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                                Add Question
+                            </button>
+                        
+                            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                                <a asp-controller="Teacher" asp-action="Exams" class="btn btn-outline">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Create Exam</button>
+                            </div>
+                    </form>
+
                 </div>
             </div>
         </main>
     </div>
     <script src="~/js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        addQuestion('examQuestions');
+        });
+    </script>
 </body>
