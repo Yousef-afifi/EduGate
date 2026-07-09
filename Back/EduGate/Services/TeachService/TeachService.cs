@@ -290,14 +290,33 @@ namespace EduGate.Services.TeachService
                 })
                 .ToListAsync();
 
-            
+           
+            var subscription = await _context.Subscription
+                .Include(s => s.package)
+                .Where(s => s.Teacher_Id == teacherId && s.Status == Enums.SubscriptionStatus.Active)
+                .OrderByDescending(s => s.Id)
+                .FirstOrDefaultAsync();
 
             
+            if (subscription == null)
+            {
+                subscription = await _context.Subscription
+                    .Include(s => s.package)
+                    .Where(s => s.Teacher_Id == teacherId)
+                    .OrderByDescending(s => s.Id)
+                    .FirstOrDefaultAsync();
+            }
+
+            var maxStudents = subscription?.package?.Max_Students ?? 0;
+            var remainingSeats = maxStudents - totalStudents;
+            if (remainingSeats < 0) remainingSeats = 0;
+
             return new DashboardVM
             {
                 TotalStudents = totalStudents,
                 ActiveCourses = activeCourses,
                 UpcomingExams = upcomingExams,
+                RemainingSeats = remainingSeats,
 
                 TeacherName = teacher.First_Name + " " + teacher.Last_Name,
                 Initials = $"{char.ToUpper(teacher.First_Name[0])}{char.ToUpper(teacher.Last_Name[0])}",
