@@ -7,6 +7,7 @@ namespace EduGate.ViewModels.Teacher
         public int TotalStudents { get; set; }
         public int ActiveCourses { get; set; }
         public int UpcomingExams { get; set; }
+        public int RemainingSeats { get; set; }
         public string TeacherName { get; set; }
         public string Initials { get; set; }
 

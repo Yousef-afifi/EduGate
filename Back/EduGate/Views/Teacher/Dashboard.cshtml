@@ -109,6 +109,15 @@
                         </div>
                         <div class="stat-value">@Model.UpcomingExams</div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span class="stat-label">Remaining Seats</span>
+                            <div class="stat-icon" style="background: rgba(249, 115, 22, 0.1); color: #F97316;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="23" y1="11" x2="17" y2="11" /></svg>
+                            </div>
+                        </div>
+                        <div class="stat-value">@Model.RemainingSeats</div>
+                    </div>
                 </div>
 
                 <!-- Dashboard Grid -->
@@ -170,49 +179,7 @@
                     </div>
                 </div>
 
-                <div class="card" style="margin-top: 24px;">
-                    <div class="card-header">
-                        <h3 class="card-title">Recent Activity</h3>
-                        <a href="#" style="font-size:13px;color:var(--primary);font-weight:500;">View All</a>
-                    </div>
-                    <ul class="activity-list">
-                        <li class="activity-item">
-                            <span class="activity-dot" style="background:#10B981;"></span>
-                            <div>
-                                <div class="activity-content">Sarah Johnson completed <strong>Calculus Quiz 3</strong></div>
-                                <div class="activity-time">2 minutes ago</div>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <span class="activity-dot" style="background:#3B82F6;"></span>
-                            <div>
-                                <div class="activity-content">New student <strong>Mike Peters</strong> joined Physics 101</div>
-                                <div class="activity-time">15 minutes ago</div>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <span class="activity-dot" style="background:#F59E0B;"></span>
-                            <div>
-                                <div class="activity-content"><strong>Midterm Exam</strong> submitted by 24 students</div>
-                                <div class="activity-time">1 hour ago</div>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <span class="activity-dot" style="background:#8B5CF6;"></span>
-                            <div>
-                                <div class="activity-content">New lesson <strong>Chapter 7: Thermodynamics</strong> added</div>
-                                <div class="activity-time">3 hours ago</div>
-                            </div>
-                        </li>
-                        <li class="activity-item">
-                            <span class="activity-dot" style="background:#10B981;"></span>
-                            <div>
-                                <div class="activity-content">Emma Wilson scored 95% on <strong>Organic Chemistry</strong></div>
-                                <div class="activity-time">5 hours ago</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
         </main>
     </div>
