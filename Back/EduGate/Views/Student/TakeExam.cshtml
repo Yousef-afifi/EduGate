@@ -46,9 +46,7 @@
 
             <div class="page-content">
 
-                <form asp-controller="Student"
-                      asp-action="SubmitExam"
-                      method="post">
+                <form id="examForm" asp-controller="Student" asp-action="SubmitExam" method="post">
 
                     <input type="hidden" name="ExamId" value="@Model.ExamId" />
 
@@ -66,7 +64,13 @@
                                 </p>
                             </div>
 
-                            <span class="badge badge-warning">In Progress</span>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="font-weight: 700; background: #fff; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); display: flex; align-items: center; gap: 6px;">
+                                    <span>⏱️</span>
+                                    <span id="timer" data-seconds="@Model.RemainingSeconds" style="font-family: monospace; font-size: 16px;">--:--</span>
+                                </div>
+                                <span class="badge badge-warning">In Progress</span>
+                            </div>
                         </div>
                     </div>
 
@@ -126,5 +130,47 @@
             </div>
         </main>
     </div>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timerElement = document.getElementById('timer');
+            const examForm = document.getElementById('examForm');
+
+            if (!timerElement || !examForm) {
+                console.error("لم يتم العثور على عنصر التيمر أو الفورم!");
+                return;
+            }
+
+            
+            let timeInSeconds = parseInt(timerElement.getAttribute('data-seconds'));
+            console.log("الوقت المستلم بالثواني: ", timeInSeconds);
+
+            if (isNaN(timeInSeconds) || timeInSeconds <= 0) {
+                timerElement.textContent = "00:00";
+                return;
+            }
+
+            const countdown = setInterval(() => {
+                let minutes = Math.floor(timeInSeconds / 60);
+                let seconds = timeInSeconds % 60;
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                timerElement.textContent = `${minutes}:${seconds}`;
+
+              
+                if (timeInSeconds <= 120) {
+                    timerElement.style.color = '#E84C4C';
+                }
+
+                if (timeInSeconds <= 0) {
+                    clearInterval(countdown);
+                    alert("انتهى وقت الامتحان! سيتم تسليم إجاباتك تلقائياً.");
+                    examForm.submit();
+                }
+
+                timeInSeconds--;
+            }, 1000);
+        });
+    </script>
 </body>

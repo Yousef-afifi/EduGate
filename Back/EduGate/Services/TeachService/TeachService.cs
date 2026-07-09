@@ -743,6 +743,15 @@ namespace EduGate.Services.TeachService
 
             if (exam == null) return;
 
+            var examAttempts = await _context.ExamAttempt
+                .Where(ea => ea.Exam_Id == examId)
+                .ToListAsync();
+
+            if (examAttempts.Any())
+            {
+                _context.ExamAttempt.RemoveRange(examAttempts);
+            }
+
             foreach (var question in exam.Questions)
             {
                 _context.Choice.RemoveRange(question.Choices);

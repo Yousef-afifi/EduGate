@@ -54,6 +54,9 @@
                     <h3 style="font-size:16px;font-weight:600;margin-bottom:16px;color:var(--text-light);">Upcoming Exams</h3>
                     @foreach (var exam in Model.UpcomingExams)
                     {
+                        // ---- حساب هل وقت الامتحان بدأ فعلياً أم لا ----
+                        bool isExamStarted = DateTime.Now >= exam.StartDate;
+
                         <div class="exam-card" data-status="upcoming">
                             <div class="exam-header">
                                 <div>
@@ -94,12 +97,24 @@
                             </div>
 
                             <div style="display:flex;gap:8px;margin-top:16px;">
-                                <a asp-controller="Student"
-                                   asp-action="TakeExam"
-                                   asp-route-id="@exam.Id"
-                                   class="btn btn-primary btn-sm">
-                                    Start Exam
-                                </a>
+                                @if (isExamStarted)
+                                {
+                                    <a asp-controller="Student"
+                                       asp-action="TakeExam"
+                                       asp-route-id="@exam.Id"
+                                       class="btn btn-primary btn-sm">
+                                        Start Exam
+                                    </a>
+                                }
+                                else
+                                {
+                                    <button type="button"
+                                            class="btn btn-outline btn-sm"
+                                            style="opacity: 0.7; cursor: not-allowed;"
+                                            onclick="showToast('ميعاد الامتحان لسه مجاش! يرجى الانتظار للميعاد المحدد.', 'info')">
+                                        Start Exam
+                                    </button>
+                                }
                             </div>
                         </div>
                     }
@@ -147,8 +162,6 @@
                                 </span>
                             </div>
                         </div>
-
-
                     }
 
                     @if (!Model.CompletedExams.Any())
@@ -157,7 +170,6 @@
                             <h5>No completed Exam</h5>
                         </div>
                     }
-                   
                 </div>
             </div>
         </main>

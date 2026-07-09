@@ -314,6 +314,7 @@ function initExamFilters() {
   });
 }
 
+
 // ===== Initialize on DOM Ready =====
 document.addEventListener('DOMContentLoaded', () => {
   initFaq();

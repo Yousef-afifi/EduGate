@@ -54,7 +54,7 @@
                             <h2 style="font-size:24px;font-weight:700;margin-bottom:4px;">@Model.Name</h2>
                             <p style="opacity:0.9;font-size:14px;">@Model.TeacherName &middot; @Model.Description</p>
                         </div>
-                       
+
                     </div>
                 </div>
 
@@ -78,15 +78,17 @@
                     </div>
                     <div class="card">
                         <div style="display:flex;flex-direction:column;gap:0;">
-                            @{int counter = 0;}
+                            @{
+                                int counter = 0;
+                            }
                             @foreach (var lesson in Model.Lessons)
                             {
-                                    counter += 1;
-                                    <div class="lesson-row" onclick="playLesson(this)" data-video="@lesson.Video_Url" style="display:flex;align-items:center;gap:16px;padding:16px 0;cursor:pointer;border-bottom:1px solid var(--border-light);">
+                                counter += 1;
+                                <div class="lesson-row" onclick="playLesson(this)" data-video="@lesson.Video_Url" style="display:flex;align-items:center;gap:16px;padding:16px 0;cursor:pointer;border-bottom:1px solid var(--border-light);">
                                     <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">@counter</div>
                                     <div style="flex:1;">
                                         <div style="font-weight:600;">@lesson.Name</div>
-                                        
+
                                     </div>
                                 </div>
                             }

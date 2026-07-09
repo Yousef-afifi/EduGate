@@ -11,6 +11,7 @@
             public int PassingPercentage { get; set; }
             public string StudentName { get; set; }
             public string initials { get; set; }
+            public int RemainingSeconds { get; set; }
             public List<QuestionVM> Questions { get; set; } = new();
         }
 

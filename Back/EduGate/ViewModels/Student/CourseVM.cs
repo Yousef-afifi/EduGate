@@ -49,6 +49,8 @@ namespace EduGate.ViewModels.Student
         public string score { get; set; }
         public string Status { get; set; }
        
+       
+       
     }
     public class AssessmentVM
     {

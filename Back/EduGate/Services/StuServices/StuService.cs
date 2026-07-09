@@ -231,6 +231,8 @@ namespace EduGate.Services.StuServices
             if (quiz.Type != ExamType.Quiz)
                 return null;
 
+
+
             var isEnrolled = await _context.Enrollment.AnyAsync(e =>
                 e.Student_Id == studentId &&
                 e.Course_Id == quiz.Course_Id);
@@ -260,6 +262,21 @@ namespace EduGate.Services.StuServices
                 await _context.SaveChangesAsync();
             }
 
+            int durationInMinutes = quiz.Duration ?? 60;
+            if (durationInMinutes <= 0) durationInMinutes = 60;
+
+
+            DateTime endTime = attempt.StartedAt.Value.AddMinutes(durationInMinutes);
+
+            int remainingSeconds = (int)(endTime - DateTime.Now).TotalSeconds;
+
+            if (remainingSeconds <= 0 && (DateTime.Now - attempt.StartedAt.Value).TotalSeconds > 5)
+            {
+                attempt.IsCompleted = true;
+                await _context.SaveChangesAsync();
+                return null;
+            }
+
             return new TakeExamVM
             {
                 StudentName = Student != null ? Student.First_Name + " " + Student.Last_Name : "No Student",
@@ -269,6 +286,7 @@ namespace EduGate.Services.StuServices
                 Duration = quiz.Duration ?? 0,
                 TotalMarks = quiz.Total_Marks,
                 PassingPercentage = quiz.PassingPercentage,
+                RemainingSeconds = remainingSeconds,
                 Questions = quiz.Questions.Select(q => new QuestionVM
                 {
                     Id = q.Id,
@@ -426,6 +444,12 @@ namespace EduGate.Services.StuServices
             if (exam.Type != ExamType.Exam)
                 return null;
 
+
+            if (DateTime.Now < exam.StartDate)
+            {
+                return null;
+            }
+
             var isEnrolled = await _context.Enrollment.AnyAsync(e =>
                 e.Student_Id == studentId &&
                 e.Course_Id == exam.Course_Id);
@@ -454,6 +478,19 @@ namespace EduGate.Services.StuServices
                 _context.ExamAttempt.Add(attempt);
                 await _context.SaveChangesAsync();
             }
+           
+            int durationInMinutes = exam.Duration ?? 60;
+            if (durationInMinutes <= 0) durationInMinutes = 60; 
+
+            DateTime endTime = attempt.StartedAt.Value.AddMinutes(durationInMinutes);
+
+            int remainingSeconds = (int)(endTime - DateTime.Now).TotalSeconds;
+            if (remainingSeconds <= 0 && (DateTime.Now - attempt.StartedAt.Value).TotalSeconds > 5)
+            {
+                attempt.IsCompleted = true;
+                await _context.SaveChangesAsync();
+                return null;
+            }
 
             return new TakeExamVM
             {
@@ -464,6 +501,7 @@ namespace EduGate.Services.StuServices
                 Duration = exam.Duration ?? 0,
                 TotalMarks = exam.Total_Marks,
                 PassingPercentage = exam.PassingPercentage,
+                RemainingSeconds = remainingSeconds,
                 Questions = exam.Questions.Select(q => new QuestionVM
                 {
                     Id = q.Id,
