@@ -260,9 +260,11 @@ namespace EduGate.Controllers
                 return View(model);
             }
         }
-        public IActionResult Upgrade()
+        public async Task<IActionResult> Upgrade()
         {
-            return View();
+            var TeacherId = UserId.Value;
+            var data = await _service.GetUpgrade(TeacherId);
+            return View(data);
         }
         [HttpGet]
         public async Task<IActionResult> Settings()

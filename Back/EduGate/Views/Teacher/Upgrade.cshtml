@@ -1,4 +1,5 @@
-﻿<head>
+﻿@model EduGate.ViewModels.Teacher.UpgradeVM
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upgrade Plan - EduGate</title>
@@ -14,8 +15,8 @@
                 </a>
             </div>
             <div class="sidebar-user">
-                <div class="user-avatar">JD</div>
-                <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+                <div class="user-avatar">@Model.Initials</div>
+                <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -94,31 +95,6 @@
                             <li><span class="feature-check">&#10003;</span> API Access</li>
                         </ul>
                         <button class="btn btn-outline w-full" onclick="showToast('Upgrade to Enterprise initiated', 'success')">Upgrade</button>
-                    </div>
-                </div>
-
-                <div class="card" style="margin-top:40px;">
-                    <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">Usage Overview</h3>
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-                        <div style="text-align:center;">
-                            <div style="font-size:36px;font-weight:700;color:var(--primary);">248</div>
-                            <div style="font-size:14px;color:var(--text-muted);">Active Students</div>
-                            <div style="font-size:12px;color:var(--text-muted);">of 600 limit</div>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="font-size:36px;font-weight:700;color:var(--primary);">8</div>
-                            <div style="font-size:14px;color:var(--text-muted);">Active Courses</div>
-                            <div style="font-size:12px;color:var(--text-muted);">Unlimited</div>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="font-size:36px;font-weight:700;color:var(--primary);">12GB</div>
-                            <div style="font-size:14px;color:var(--text-muted);">Storage Used</div>
-                            <div style="font-size:12px;color:var(--text-muted);">of 50GB limit</div>
-                        </div>
-                    </div>
-                    <div style="margin-top:20px;">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;">Student Usage</span><span style="font-size:14px;color:var(--text-muted);">248/600</span></div>
-                        <div class="progress-bar" style="height:10px;"><div class="progress-fill" style="width:41%;background:var(--primary);"></div></div>
                     </div>
                 </div>
             </div>

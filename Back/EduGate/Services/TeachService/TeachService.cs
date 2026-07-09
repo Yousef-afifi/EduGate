@@ -929,5 +929,16 @@ namespace EduGate.Services.TeachService
             await _context.SaveChangesAsync();
             return model;
         }
+        public async Task<UpgradeVM> GetUpgrade(int teacherid)
+        {
+            var teacher = await _context.Teacher
+                .FirstOrDefaultAsync(t => t.Id == teacherid);
+            var data = new UpgradeVM 
+            {
+                TeacherName = teacher.First_Name + " " + teacher.Last_Name,
+                Initials = $"{char.ToUpper(teacher.First_Name[0])}{char.ToUpper(teacher.Last_Name[0])}"
+            };
+            return data;
+        }
     }
 }
