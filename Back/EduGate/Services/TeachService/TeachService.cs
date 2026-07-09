@@ -78,7 +78,7 @@ namespace EduGate.Services.TeachService
                     {
                         Id = a.Id,
                         Name = a.Name,
-                        DueDate = a.CreatedAt.AddDays(7)
+                        DueDate = a.DueDate.HasValue ? a.DueDate.Value : default
                     }).ToList() ?? new List<AssessmentVM>()
                 }).FirstOrDefaultAsync();
             return data;

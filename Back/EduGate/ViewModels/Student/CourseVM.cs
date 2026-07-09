@@ -58,7 +58,7 @@ namespace EduGate.ViewModels.Student
         public string Name { get; set; }
         public string score { get; set; }
         public string Status { get; set; }
-        public string DueDate { get; set; }
+        public DateTime DueDate { get; set; }
         
     }
     public class LessonMaterialVM

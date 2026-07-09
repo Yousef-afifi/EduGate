@@ -204,9 +204,9 @@ namespace EduGate.Services.StuServices
                     {
                         Id = a.Id,
                         Name = a.Name,
-                        score = attempt != null && attempt.IsCompleted ? $"{attempt.Score}/100" : "--",
+                        score = attempt != null && attempt.IsCompleted ? $"{attempt.Score}" : "--",
                         Status = status,
-                        DueDate = a.Duration.HasValue ? $"{a.Duration.Value} Mins" : "No Limit"
+                        DueDate = a.DueDate.HasValue ? a.DueDate.Value : default
                     };
                 }).ToList() ?? new List<AssessmentVM>(),
             };
