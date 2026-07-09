@@ -1,3 +1,5 @@
+@model EduGate.ViewModels.Teacher.GenerateStudentsVM
+@using EduGate.Enums
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +17,8 @@
         </a>
       </div>
       <div class="sidebar-user">
-        <div class="user-avatar">JD</div>
-        <div class="user-info"><div class="user-name">John Doe</div><div class="user-role">Teacher</div></div>
+        <div class="user-avatar">@Model.Initials</div>
+        <div class="user-info"><div class="user-name">@Model.TeacherName</div><div class="user-role">Teacher</div></div>
       </div>
       <nav class="sidebar-nav">
         <div class="nav-section"><div class="nav-section-title">Main</div>
@@ -45,111 +47,117 @@
 
       <div class="page-content">
         <div style="max-width:600px;">
-          <div class="card" style="margin-bottom:24px;">
-            <div class="form-group">
-              <label class="form-label">Number of Students</label>
-              <input type="number" class="form-input" value="10" min="1" max="200" id="studentCount">
-              <p class="form-hint">You can generate up to 200 students at once. Remaining: 352 slots.</p>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Assign to Course (Optional)</label>
-              <select class="form-select">
-                <option>All Courses</option>
-                <option>Calculus II</option>
-                <option>Physics 101</option>
-                <option>Organic Chemistry</option>
-                <option>Linear Algebra</option>
-                <option>Data Structures</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Naming Convention</label>
-              <select class="form-select" id="namingConvention">
-                <option value="auto">Auto-generate emails</option>
-                <option value="prefix">Custom prefix (e.g., student001@EduGate.edu)</option>
-              </select>
-            </div>
-            <div class="form-group" id="prefixGroup" style="display:none;">
-              <label class="form-label">Email Prefix</label>
-              <input type="text" class="form-input" placeholder="student" value="student">
-            </div>
-            <div class="form-group">
-              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-                <input type="checkbox" checked style="accent-color:var(--primary);">
-                <span style="font-size:14px;">Send welcome email with login credentials</span>
-              </label>
-            </div>
-            <button class="btn btn-primary w-full" style="padding:12px;" onclick="generateStudents()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Generate Accounts
-            </button>
-          </div>
+          <form asp-action="Generate_Students" method='post'>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input asp-for="TeacherName" type="hidden" />
+                        <input asp-for="Initials" type="hidden" />
+                        <div class="card" style="margin-bottom:24px;">
+                            <div class="form-group">
+                                <label asp-for="NumberOfStudents" class="form-label">Number of Students</label>
+                                <input asp-for="NumberOfStudents" type="number" class="form-input" min="1" id="studentCount">
+                                <p class="form-hint">You can generate up to @Model.MaxStudents students at once. Remaining: @Model.RemainingSlots slots.</p>
+                                <span asp-validation-for="NumberOfStudents" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Assign to Course (Optional)</label>
+                                <select asp-for="CourseId" asp-items="Model.Courses" class="form-select">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="NamingType" class="form-label">Naming Convention</label>
+                                <select asp-for="NamingType" class="form-select" id="namingConvention">
+                                    <option value="@((int)NamingType.AutoGenerate)">Auto-generate emails</option>
+                                    <option value="@((int)NamingType.FixedPrefix)">Custom prefix</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="prefixGroup" style="display:none;">
+                                <label asp-for="Prefix" class="form-label">Email Prefix</label>
+                                <input asp-for="Prefix" type="text" class="form-input" placeholder="student">
+                            </div>
+                            <div class="form-group">
+                                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                                    <input asp-for="SendWelcomeEmail" type="checkbox" style="accent-color:var(--primary);">
+                                    <span style="font-size:14px;">Send welcome email with login credentials</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full" style="padding:12px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                                Generate Accounts
+                            </button>
+                        </div>
+          </form>
 
-          <div class="card" id="resultsCard" style="display:none;">
-            <div class="card-header">
-              <h3 class="card-title">Generated Accounts</h3>
-              <button class="btn btn-sm btn-outline" onclick="copyAllCredentials()">Copy All</button>
-            </div>
-            <div class="table-wrap">
-              <table class="data-table">
-                <thead><tr><th>Email</th><th>Password</th><th></th></tr></thead>
-                <tbody id="resultsBody"></tbody>
-              </table>
-            </div>
-          </div>
+          @if(Model.GeneratedStudents.Any())
+          {
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Generated Accounts</h3>
+                                <button class="btn btn-sm btn-outline" onclick="copyAllCredentials()">Copy All</button>
+                            </div>
+                            <div class="table-wrap">
+                                <table class="data-table">
+                                    <thead><tr><th>Email</th><th>Password</th><th></th></tr></thead>
+                                    <tbody>
+                                        @foreach(var item in Model.GeneratedStudents)
+                                        {
+                                            <tr>
+                                                <td>@item.Email</td>
+                                                <td>@item.Password</td>
+                                                <td><button type="button" class="btn btn-sm btn-outline" onclick="copyCredential('@item.Email','@item.Password')">Copy</button></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+          }
         </div>
       </div>
     </main>
   </div>
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
 
-  <script>
-    document.getElementById('namingConvention').addEventListener('change', function() {
-      document.getElementById('prefixGroup').style.display = this.value === 'prefix' ? 'block' : 'none';
-    });
+                const namingConvention = document.getElementById("namingConvention");
+                const prefixGroup = document.getElementById("prefixGroup");
 
-    function generateStudents() {
-      const count = parseInt(document.getElementById('studentCount').value);
-      const tbody = document.getElementById('resultsBody');
-      const convention = document.getElementById('namingConvention').value;
-      const prefix = convention === 'prefix' ? (document.querySelector('#prefixGroup input').value || 'student') : 'student';
-      const emailDomain = 'EduGate.edu';
-      
-      tbody.innerHTML = '';
-      for (let i = 1; i <= count; i++) {
-        const num = String(i).padStart(3, '0');
-        const emailName = convention === 'prefix' ? `${prefix}${num}` : `${prefix}${Math.random().toString(36).substring(2, 8)}`;
-        const email = `${emailName.toLowerCase().replace(/[^a-z0-9._-]/g, '')}@@${emailDomain}`;
-        const password = generatePassword(10);
-        
-        tbody.innerHTML += `
-          <tr>
-            <td><code style="background:var(--bg);padding:4px 8px;border-radius:4px;font-size:13px;">${email}</code></td>
-            <td><code style="background:var(--bg);padding:4px 8px;border-radius:4px;font-size:13px;">${password}</code></td>
-            <td><button class="btn btn-sm btn-ghost" onclick="copyToClipboard('${email} / ${password}')">Copy</button></td>
-          </tr>
-        `;
-      }
-      
-      document.getElementById('resultsCard').style.display = 'block';
-      showToast(`${count} student accounts generated!`, 'success');
-    }
+                function togglePrefix() {
+                    prefixGroup.style.display =
+                        namingConvention.value == "2" ? "block" : "none";
+                }
 
-    function generatePassword(length) {
-      const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let pw = '';
-      for (let i = 0; i < length; i++) pw += chars.charAt(Math.floor(Math.random() * chars.length));
-      return pw;
-    }
+                togglePrefix();
 
-    function copyAllCredentials() {
-      const rows = document.querySelectorAll('#resultsBody tr');
-      let text = 'Student Accounts\\n================\\n\\n';
-      rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        text += `${cells[0].textContent} / ${cells[1].textContent}\\n`;
-      });
-      copyToClipboard(text);
-    }
-  </script>
+                namingConvention.addEventListener("change", togglePrefix);
+
+            });
+
+            function copyCredential(email, password) {
+
+                navigator.clipboard.writeText(email + " / " + password);
+
+                showToast("Credentials copied successfully!", "success");
+            }
+
+            function copyAllCredentials() {
+
+                let text = "Student Accounts\n====================\n\n";
+
+                const rows = document.querySelectorAll(".data-table tbody tr");
+
+                rows.forEach(row => {
+
+                    const email = row.cells[0].innerText;
+                    const password = row.cells[1].innerText;
+
+                    text += `${email} / ${password}\n`;
+
+                });
+
+                navigator.clipboard.writeText(text);
+
+                showToast("All credentials copied successfully!", "success");
+            }
+    </script>
   <script src="~/js/app.js"></script>
 </body>

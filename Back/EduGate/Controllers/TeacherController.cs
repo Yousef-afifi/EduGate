@@ -214,9 +214,51 @@ namespace EduGate.Controllers
             var data = await _service.GetAllStudentsAsync(TeacherId);
             return View(data);
         }
-        public IActionResult Generate_Students()
+        [HttpGet]
+        public async Task<IActionResult> Generate_Students()
         {
-            return View();
+            var TeacherId = UserId.Value;
+            var data = await _service.GetGenerateStudents(TeacherId);
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Generate_Students(GenerateStudentsVM model)
+        {
+            model.TeacherId = UserId.Value;
+
+            if (!ModelState.IsValid)
+            {
+                var data = await _service.GetGenerateStudents(model.TeacherId);
+
+                model.TeacherName = data.TeacherName;
+                model.Initials = data.Initials;
+                model.Courses = data.Courses;
+                model.RemainingSlots = data.RemainingSlots;
+                model.MaxStudents = data.MaxStudents;
+
+                return View(model);
+            }
+
+            try
+            {
+                model = await _service.GenerateStudents(model);
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                var data = await _service.GetGenerateStudents(model.TeacherId);
+
+                model.TeacherName = data.TeacherName;
+                model.Initials = data.Initials;
+                model.Courses = data.Courses;
+                model.RemainingSlots = data.RemainingSlots;
+                model.MaxStudents = data.MaxStudents;
+
+                return View(model);
+            }
         }
         public IActionResult Upgrade()
         {

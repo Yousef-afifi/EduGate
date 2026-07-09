@@ -766,5 +766,159 @@ namespace EduGate.Services.TeachService
             _context.Lesson.Remove(lesson);
             await _context.SaveChangesAsync();
         }
+        public async Task<GenerateStudentsVM> GetGenerateStudents(int teacherid)
+        {
+            var teacher = await _context.Teacher
+                .FirstOrDefaultAsync(t => t.Id == teacherid);
+
+            var subscription = await _context.Subscription
+                .Include(s => s.package)
+                .FirstOrDefaultAsync(s => s.Teacher_Id == teacherid && s.Status == SubscriptionStatus.Active);
+
+            var generatedaccounts = await _context.Account
+                .CountAsync(a => a.Teacher_Id == teacherid);
+
+            var data = new GenerateStudentsVM
+            {
+                TeacherName = teacher.First_Name + " " + teacher.Last_Name,
+                Initials = $"{char.ToUpper(teacher.First_Name[0])}{char.ToUpper(teacher.Last_Name[0])}",
+                TeacherId = teacherid,
+                MaxStudents = subscription.package.Max_Students,
+                RemainingSlots = subscription.package.Max_Students - generatedaccounts
+            };
+
+            data.Courses.Add(new SelectListItem 
+            {
+                Text = "All Courses",
+                Value = "0"
+            });
+
+            data.Courses.AddRange(await _context.Course
+                .Where(c => c.Teacher_Id == teacherid)
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                })
+                .ToListAsync()
+            );
+
+            return data;
+        }
+        private readonly Random _random = new();
+        private async Task<string> GenerateUserName(GenerateStudentsVM model, int index)
+        {
+            if (model.NamingType == NamingType.FixedPrefix)
+            {
+                var count = await _context.Account
+                    .CountAsync(a => a.User_Name.StartsWith(model.Prefix + "_"));
+
+                return $"{model.Prefix}_{count + index}";
+            }
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            while (true)
+            {
+                var suffix = new string(Enumerable.Repeat(chars, 5)
+                    .Select(s => s[_random.Next(s.Length)])
+                    .ToArray());
+
+                var userName = $"student{suffix}";
+
+                bool exists = await _context.Account
+                    .AnyAsync(a => a.User_Name == userName);
+
+                if (!exists)
+                    return userName;
+            }
+        }
+        private string GeneratePassword()
+        {
+            const string chars =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+
+            return new string(Enumerable.Repeat(chars, 10)
+                .Select(s => s[_random.Next(s.Length)])
+                .ToArray());
+        }
+        public async Task<GenerateStudentsVM> GenerateStudents(GenerateStudentsVM model)
+        {
+            var data = await GetGenerateStudents(model.TeacherId);
+            model.TeacherName = data.TeacherName;
+            model.Initials = data.Initials;
+            model.TeacherId = data.TeacherId;
+            model.Courses = data.Courses;
+            model.RemainingSlots = data.RemainingSlots;
+            model.MaxStudents = data.MaxStudents;
+            if (model.NumberOfStudents > model.RemainingSlots)
+            {
+                throw new Exception("The number of students exceeds your remaining slots.");
+            }
+            if (model.NamingType == NamingType.FixedPrefix)
+            {
+                if (string.IsNullOrWhiteSpace(model.Prefix))
+                {
+                    throw new Exception("Prefix is required.");
+                }
+                bool exists = await _context.Account
+                .AnyAsync(a => a.User_Name.StartsWith(model.Prefix + "_"));
+                if (exists)
+                {
+                    throw new Exception("This prefix is already used.");
+                }
+            }
+            List<Course> courses;
+            if (model.CourseId == 0)
+            {
+                courses = await _context.Course
+                    .Where(c => c.Teacher_Id == model.TeacherId)
+                    .ToListAsync();
+            }
+            else
+            {
+                courses = await _context.Course
+                    .Where(c => c.Id == model.CourseId)
+                    .ToListAsync();
+            }
+            for (int i = 1; i <= model.NumberOfStudents; i++)
+            {
+                var userName = await GenerateUserName(model, i);
+                var password = GeneratePassword();
+                var student = new Student
+                {
+                    First_Name = "Student",
+                    Last_Name = i.ToString(),
+                    Gender = Gender.Male,
+                    Phone = ""
+                };
+                var account = new Account
+                {
+                    User_Name = userName,
+                    Password = password,
+                    Status = AccountStatus.Active,
+                    CreatedAt = DateTime.Now,
+                    student = student,
+                    Teacher_Id = model.TeacherId
+                };
+                _context.Account.Add(account);
+                await _context.SaveChangesAsync();
+                foreach (var course in courses)
+                {
+                    _context.Enrollment.Add(new Enrollment
+                    {
+                        Student_Id = student.Id,
+                        Course_Id = course.Id
+                    });
+                }
+                model.GeneratedStudents.Add(new GeneratedStudentVM
+                {
+                    Email = userName,
+                    Password = password
+                });
+            }
+            await _context.SaveChangesAsync();
+            return model;
+        }
     }
 }
