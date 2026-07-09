@@ -70,10 +70,17 @@
                         <h3 style="font-size:18px;font-weight:600;">Lessons</h3>
                     </div>
                     <div class="card" style="margin-bottom:16px;">
-                        <div class="student-video-player" style="aspect-ratio:16/9;border-radius:var(--radius);background:linear-gradient(135deg,#111827,#374151);color:white;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
-                            <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:28px;">&#9658;</div>
-                            <div class="student-video-title" style="font-size:20px;font-weight:700;">@(Model.Lessons.FirstOrDefault()?.Name ?? "No Lessons Available")</div>
-                            <div style="font-size:13px;opacity:0.75;">Lesson video preview</div>
+                        <div class="student-video-player" style="aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;">
+
+                            <iframe id="lessonFrame"
+                                    width="100%"
+                                    height="100%"
+                                    src=""
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                            </iframe>
+
                         </div>
                     </div>
                     <div class="card">
@@ -245,11 +252,30 @@
                 document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
                 document.getElementById(tabId).style.display = 'block';
             }
+
             function playLesson(row) {
                 if (!row.closest('#lessons')) return;
-                const title = row.querySelector('div[style*="font-weight:600"]');
-                const videoTitle = document.querySelector('.student-video-title');
-                if (title && videoTitle) videoTitle.textContent = title.textContent;
+
+                const videoUrl = row.dataset.video;
+
+                if (!videoUrl) return;
+
+                let embedUrl = "";
+
+                if (videoUrl.includes("youtube.com")) {
+
+                    const url = new URL(videoUrl);
+                    const videoId = url.searchParams.get("v");
+
+                    embedUrl = "https://www.youtube.com/embed/" + videoId;
+                }
+                else if (videoUrl.includes("youtu.be")) {
+
+                    const videoId = videoUrl.split("/").pop().split("?")[0];
+                    embedUrl = "https://www.youtube.com/embed/" + videoId;
+                }
+
+                document.getElementById("lessonFrame").src = embedUrl;
             }
     </script>
     <script src="~/js/app.js"></script>
