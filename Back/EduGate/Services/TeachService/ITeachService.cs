@@ -33,5 +33,6 @@ namespace EduGate.Services.TeachService
         Task UpdateQuiz(EditQuizVM model);
         Task<EditAssessmentVM> GetUpdateAssessment(int assessmentId);
         Task UpdateAssessment(EditAssessmentVM model);
+        Task DeleteLesson(int lessonId);
     }
 }

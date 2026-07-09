@@ -366,5 +366,26 @@ namespace EduGate.Controllers
             await _service.UpdateAssessment(model);
             return RedirectToAction("Course_Details", "Teacher", new { id = model.CourseId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete_Lesson(int id, int courseId)
+        {
+            await _service.DeleteLesson(id);
+            return RedirectToAction(nameof(Course_Details), new { id = courseId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete_Quiz(int id, int courseId)
+        {
+            await _service.DeleteExam(id);
+            return RedirectToAction(nameof(Course_Details), new { id = courseId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete_Assessment(int id, int courseId)
+        {
+            await _service.DeleteExam(id);
+            return RedirectToAction(nameof(Course_Details), new { id = courseId });
+        }
     }
 }

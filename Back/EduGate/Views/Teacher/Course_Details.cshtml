@@ -90,7 +90,9 @@
                                         <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">@LCNT</div>
                                         <div style="flex:1;"><div style="font-weight:600;">@lesson.Name</div></div>
                                         <a asp-controller="Teacher" asp-action="Edit_Lesson" asp-route-lessonid="@lesson.Id" class="btn btn-sm btn-outline">Edit</a>
-                                        <button class="deleteButton">Delete</button>
+                                        <form asp-controller="Teacher" asp-action="Delete_Lesson" asp-route-id="@lesson.Id" asp-route-courseId="@Model.Id" method="post" style="display:inline;" onsubmit="return confirm('Delete this lesson?');">
+                                            <button type="submit" class="deleteButton">Delete</button>
+                                        </form>
                                     </div>
                                 </div>
                             }
@@ -120,7 +122,9 @@
                                         <div style="width:36px;height:36px;border-radius:50%;background:#DBEAFE;color:#2563EB;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">Q @QCNT</div>
                                         <div style="flex:1;"><div style="font-weight:600;">@quiz.Name</div><div style="font-size:13px;color:var(--text-muted);">@quiz.QusetionConut questions</div></div>
                                         <a asp-controller="Teacher" asp-action="Edit_Quiz" asp-route-quizid="@quiz.Id" class="btn btn-sm btn-outline">Edit</a>
-                                        <button class="deleteButton">Delete</button>
+                                        <form asp-controller="Teacher" asp-action="Delete_Quiz" asp-route-id="@quiz.Id" asp-route-courseId="@Model.Id" method="post" style="display:inline;" onsubmit="return confirm('Delete this quiz?');">
+                                            <button type="submit" class="deleteButton">Delete</button>
+                                        </form>
                                     </div>
                                 </div>
                             }
@@ -150,7 +154,9 @@
                                         <div style="width:36px;height:36px;border-radius:50%;background:#FEF3C7;color:#D97706;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">A @ACNT</div>
                                         <div style="flex:1;"><div style="font-weight:600;">@assessment.Name</div><div style="font-size:13px;color:var(--text-muted);">Due @assessment.DueDate</div></div>
                                         <a asp-controller="Teacher" asp-action="Edit_Assesment" asp-route-assessmentid="@assessment.Id" class="btn btn-sm btn-outline">Edit</a>
-                                        <button class="deleteButton">Delete</button>
+                                        <form asp-controller="Teacher" asp-action="Delete_Assessment" asp-route-id="@assessment.Id" asp-route-courseId="@Model.Id" method="post" style="display:inline;" onsubmit="return confirm('Delete this assessment?');">
+                                            <button type="submit" class="deleteButton">Delete</button>
+                                        </form>
                                     </div>
                                  }
                             }

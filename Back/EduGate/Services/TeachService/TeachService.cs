@@ -733,5 +733,19 @@ namespace EduGate.Services.TeachService
             _context.Exam.Remove(exam);
             await _context.SaveChangesAsync();
         }
+        public async Task DeleteLesson(int lessonId)
+        {
+            var lesson = await _context.Lesson
+                .Include(l => l.Materials)
+                .FirstOrDefaultAsync(l => l.Id == lessonId);
+
+            if (lesson == null) return;
+
+            if (lesson.Materials != null && lesson.Materials.Any())
+                _context.Material.RemoveRange(lesson.Materials);
+
+            _context.Lesson.Remove(lesson);
+            await _context.SaveChangesAsync();
+        }
     }
 }
