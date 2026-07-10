@@ -469,7 +469,7 @@ namespace EduGate.Services.TeachService
             quiz.Duration = model.Duration;
             quiz.PassingPercentage = model.PassingScore;
             quiz.Total_Marks = model.TotalMarks;
-            quiz.DueDate = model.Date.ToDateTime(model.Time);
+            quiz.StartDate = model.Date.ToDateTime(model.Time);
             quiz.UpdatedAt = DateTime.Now;
         }
         private void AddQuestion(Exam quiz, EditQuestionVM questionVm)
