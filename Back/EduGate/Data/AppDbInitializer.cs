@@ -23,7 +23,7 @@ namespace EduGate.Data
                             Last_Name = "Tawfik",
                             Gender =Enums.Gender.Male,
                             Email = "mohamedtawfik34@gmail.com",
-                            Password = "pasword",
+                            Password = "password",
                             Phone = "01299783142",
                             CreatedAt = DateTime.Now,
                         },
@@ -33,7 +33,7 @@ namespace EduGate.Data
                             Last_Name = "Ismail",
                             Gender =Enums.Gender.Male,
                             Email = "A_Ismail400@gmail.com",
-                            Password = "pasword",
+                            Password = "password",
                             Phone = "01542217836",
                             CreatedAt = DateTime.Now,
                         },
@@ -43,7 +43,7 @@ namespace EduGate.Data
                             Last_Name = "Mohamed",
                             Gender =Enums.Gender.Female,
                             Email = "Nawal778@gmail.com",
-                            Password = "pasword",
+                            Password = "password",
                             Phone = "01123479120",
                             CreatedAt = DateTime.Now,
                         },
@@ -53,7 +53,7 @@ namespace EduGate.Data
                             Last_Name = "Gomaa",
                             Gender =Enums.Gender.Male,
                             Email = "EB_Gomaaaa12@gmail.com",
-                            Password = "pasword",
+                            Password = "password",
                             Phone = "010089125631",
                             CreatedAt = DateTime.Now,
                         }
@@ -211,21 +211,21 @@ namespace EduGate.Data
                         {
                             Name = "Starter",
                             Description = "Perfect for individual teachers launching their first online class." ,
-                            Price = 100.0,
+                            Price = 29.99,
                             Max_Students = 200
                         },
                         new Package()
                         {
-                            Name = "Growth",
+                            Name = "Professional",
                             Description = "Best for teachers with multiple groups and recurring lecture drops." ,
-                            Price = 270.0,
+                            Price = 79.99,
                             Max_Students = 600
                         },
                         new Package()
                         {
-                            Name = "Scale",
+                            Name = "Enterprise",
                             Description = "For established teachers and academies serving large student communities." ,
-                            Price = 450.0,
+                            Price = 149.99,
                             Max_Students = 1000
                         }
                     });
@@ -314,36 +314,35 @@ namespace EduGate.Data
                     {
                          new Subscription() 
                          {
-                             Start_Date = new DateOnly(2027, 1, 1), 
-                             End_Date = new DateOnly(2027, 5, 1),
+                             Start_Date = new DateOnly(2026, 1, 1), 
+                             End_Date = new DateOnly(2027, 1, 1),
                              Status = SubscriptionStatus.Active,
                              Package_Id = 1,
                              Teacher_Id = 1
                          },
                          new Subscription() 
                          {
-                             Start_Date = new DateOnly(2026, 3, 15), 
-                             End_Date = new DateOnly(2026, 6, 15),
-                             Status = SubscriptionStatus.Expired,
+                             Start_Date = new DateOnly(2026, 1, 1),
+                             End_Date = new DateOnly(2027, 1, 1),
+                             Status = SubscriptionStatus.Active,
                              Package_Id = 1,
                              Teacher_Id = 2
                          },
                          new Subscription() 
                          {
-                             Start_Date = new DateOnly(2026, 7, 10), 
-                             End_Date = new DateOnly(2026, 12, 10),
+                             Start_Date = new DateOnly(2026, 1, 1),
+                             End_Date = new DateOnly(2027, 1, 1),
                              Status = SubscriptionStatus.Active,
                              Package_Id = 2,
                              Teacher_Id = 3
                          },
                          new Subscription() 
                          {
-                             Start_Date = new DateOnly(2026, 9, 1), 
-                             End_Date = new DateOnly(2027, 3, 1),
+                             Start_Date = new DateOnly(2026, 1, 1),
+                             End_Date = new DateOnly(2027, 1, 1),
                              Status = SubscriptionStatus.Active,
                              Package_Id = 3,
                              Teacher_Id = 4 
-
                          }
                     }); 
                     context.SaveChanges();
@@ -463,98 +462,98 @@ namespace EduGate.Data
                          new Lesson
                          {
                               Name = "Introduction to C# & .NET",
-                              Video_Url = "https://edugate.com/videos/csharp-intro",
+                              Video_Url = "https://www.youtube.com/watch?v=_R8nRszKxWs",
                               CreatedAt = DateTime.Now,
                               Course_Id = 1
                          },
                          new Lesson
                          {
                                Name = "Variables and Data Types",
-                               Video_Url = "https://edugate.com/videos/csharp-variables",
+                               Video_Url = "https://www.youtube.com/watch?v=_D-HCF3jZKk",
                                CreatedAt = DateTime.Now,
                                Course_Id = 1
                          },
                          new Lesson
                          {
                                Name = "Understanding MVC Architecture",
-                               Video_Url = "https://edugate.com/videos/mvc-basics",
+                               Video_Url = "https://www.youtube.com/watch?v=kk_JmicFVjE",
                                CreatedAt = DateTime.Now,
                                Course_Id = 2
                         },
                         new Lesson
                         {
                                Name = "Dependency Injection in .NET",
-                               Video_Url = "https://edugate.com/videos/dotnet-di",
+                               Video_Url = "https://www.youtube.com/watch?v=wwzhReyKV2Y",
                                CreatedAt = DateTime.Now,
                                Course_Id = 2
                         },
                         new Lesson
                         {
                                Name = "Introduction to Relational Databases",
-                               Video_Url = "https://edugate.com/videos/csharp-variables",
+                               Video_Url = "https://www.youtube.com/watch?v=OqjJjpjDRLc",
                                CreatedAt = DateTime.Now,
                                Course_Id = 3
                         },
                         new Lesson
                         {
                                Name = "Mastering Joins and Subqueries",
-                               Video_Url = "https://edugate.com/videos/sql-joins",
+                               Video_Url = "https://www.youtube.com/watch?v=GpC0XyiJPEo",
                                CreatedAt = DateTime.Now,
                                Course_Id = 3
                         },
                         new Lesson
                         {
                                Name = "HTML5 Semantic Elements",
-                               Video_Url = "https://edugate.com/videos/html-basics",
+                               Video_Url = "https://www.youtube.com/watch?v=kX3TfdUqpuU",
                                CreatedAt = DateTime.Now,
                                Course_Id = 4
                         },
                         new Lesson
                         {
                                Name = "CSS Flexbox and Grid Layouts",
-                               Video_Url = "https://edugate.com/videos/css-layouts",
+                               Video_Url = "https://www.youtube.com/watch?v=phWxA89Dy94",
                                CreatedAt = DateTime.Now,
                                Course_Id = 4
                         },
                         new Lesson
                         {
                                Name = "Intro to Digital Signal Processing",
-                               Video_Url = "https://edugate.com/videos/intro-to-dsp",
+                               Video_Url = "https://www.youtube.com/watch?v=iCaDt9Esdv4",
                                CreatedAt = DateTime.Now,
                                Course_Id = 5
                         },
                         new Lesson
                         {
                                Name = "Intro to Image Processing",
-                               Video_Url = "https://edugate.com/videos/intro-to-ip",
+                               Video_Url = "https://www.youtube.com/watch?v=eMqpBbttYbo",
                                CreatedAt = DateTime.Now,
                                Course_Id = 6
                         },
                         new Lesson
                         {
                                Name = "Definition of Limits",
-                               Video_Url = "https://edugate.com/videos/limits",
+                               Video_Url = "https://www.youtube.com/watch?v=YNstP0ESndU&t=827s",
                                CreatedAt = DateTime.Now,
                                Course_Id = 7
                         },
                         new Lesson
                         {
                                Name = "Waves (Analogue and Digital Signals)",
-                               Video_Url = "https://edugate.com/videos/waves",
+                               Video_Url = "https://www.youtube.com/watch?v=WxJKXGugfh8",
                                CreatedAt = DateTime.Now,
                                Course_Id = 8
                         },
                         new Lesson
                         {
                                Name = "Variables and Data Types",
-                               Video_Url = "https://edugate.com/videos/cpp-variables",
+                               Video_Url = "https://www.youtube.com/watch?v=zgutFVxOlTY",
                                CreatedAt = DateTime.Now,
                                Course_Id = 9
                         },
                         new Lesson
                         {
                                Name = "Lists & Arrays",
-                               Video_Url = "https://edugate.com/videos/cpp-list",
+                               Video_Url = "https://www.youtube.com/watch?v=dMy2hq9OUMc",
                                CreatedAt = DateTime.Now,
                                Course_Id = 10
                         }
@@ -613,7 +612,8 @@ namespace EduGate.Data
                             Total_Marks = 50,
                             PassingPercentage = 60,
                             StartDate = DateTime.Now.AddDays(-7),
-                            CreatedAt = DateTime.Now,
+                            DueDate = DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 1
                         },
                         new Exam
@@ -624,7 +624,8 @@ namespace EduGate.Data
                             Total_Marks = 50,
                             PassingPercentage = 60,
                             StartDate = DateTime.Now.AddDays(-7),
-                            CreatedAt = DateTime.Now,
+                            DueDate = DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 1
                         },
                         new Exam
@@ -635,7 +636,8 @@ namespace EduGate.Data
                             Total_Marks = 50,
                             PassingPercentage = 60,
                             StartDate = DateTime.Now.AddDays(-7),
-                            CreatedAt = DateTime.Now,
+                            DueDate = DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 1
                         },
                         new Exam
@@ -645,8 +647,9 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now.AddDays(-3),
-                            CreatedAt = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(-7),
+                            DueDate= DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 2
                         },
                         new Exam
@@ -656,8 +659,9 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now.AddDays(-3),
-                            CreatedAt = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(-7),
+                            DueDate = DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 2
                         },
                         new Exam
@@ -667,8 +671,9 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now.AddDays(-3),
-                            CreatedAt = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(-7),
+                            DueDate = DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 2
                         },
                         new Exam
@@ -678,8 +683,9 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 70,
-                            StartDate = DateTime.Now.AddDays(-5),
-                            CreatedAt = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(-7),
+                            DueDate = DateTime.Now,
+                            CreatedAt = DateTime.Now.AddDays(-7),
                             Course_Id = 3
                         },
                         // Upcoming
@@ -690,7 +696,8 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             PassingPercentage = 60,
-                            StartDate = DateTime.Now.AddDays(7),
+                            StartDate = DateTime.Now,
+                            DueDate= DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
                         },
@@ -701,7 +708,8 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             PassingPercentage = 60,
-                            StartDate = DateTime.Now.AddDays(7),
+                            StartDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
                         },
@@ -712,7 +720,8 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             PassingPercentage = 60,
-                            StartDate = DateTime.Now.AddDays(7),
+                            StartDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
                         },
@@ -723,7 +732,8 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now.AddDays(3),
+                            StartDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 2
                         },
@@ -734,7 +744,8 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now.AddDays(3),
+                            StartDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 2
                         },
@@ -745,7 +756,8 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now.AddDays(3),
+                            StartDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 2
                         },
@@ -756,7 +768,8 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 70,
-                            StartDate = DateTime.Now.AddDays(5),
+                            StartDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 3
                         },
@@ -1141,8 +1154,6 @@ namespace EduGate.Data
                            Question_Id = 9,
                            Choice_Id = 19
                        },
-                      
-
                        new StudentAnswer
                        {
                            AnswerdAt = DateTime.Now.AddHours(-1.5),
