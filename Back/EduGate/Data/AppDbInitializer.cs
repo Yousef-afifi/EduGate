@@ -696,7 +696,7 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             PassingPercentage = 60,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate= DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
@@ -708,7 +708,7 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             PassingPercentage = 60,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
@@ -720,7 +720,7 @@ namespace EduGate.Data
                             Duration = 30,
                             Total_Marks = 50,
                             PassingPercentage = 60,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 1
@@ -732,7 +732,7 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 2
@@ -744,7 +744,7 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 2
@@ -756,7 +756,7 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 50,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 2
@@ -768,7 +768,7 @@ namespace EduGate.Data
                             Duration = 120,
                             Total_Marks = 10,
                             PassingPercentage = 70,
-                            StartDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(3),
                             DueDate = DateTime.Now.AddDays(7),
                             CreatedAt = DateTime.Now,
                             Course_Id = 3
